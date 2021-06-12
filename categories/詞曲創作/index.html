@@ -542,12 +542,6 @@
 
 
           
-    
-      <div onclick="showGitment()" id="gitment-display-button">顯示 Gitment 評論</div>
-      <div id="gitment-container" style="display:none"></div>
-    
-  
-
 
         </div>
         
@@ -831,30 +825,6 @@
 
 
 
-
-    
-    
-    
-    
-    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
-    
-        <script type="text/javascript">
-            function showGitment(){
-                document.getElementById("gitment-display-button").style.display = "none";
-                document.getElementById("gitment-container").style.display = "block";
-                var gitment = new Gitment({
-                        id: window.location.pathname, 
-                        owner: 'tingchuchi',
-                        repo: 'tingchuchi.github.io',
-                        oauth: {
-                            client_id: '7c5785b3c57623a58628',
-                            client_secret: 'b96ca94c2a2fe25a9a983fad789736360c10c2b4',
-                        }});
-                gitment.render('gitment-container');
-            }
-        </script>
-    
 
 
 
