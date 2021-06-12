@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="藍牙," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="2. 空中介面封包 (Air Interface Packets)在這章節中，我們會介紹BLE裝置的Packet格式 2.1 低功耗藍牙未編碼的實體封包格式 (Packet Format For the LE Uncoded PHYs)以下的packet format定義在BLE尚未編碼的PHYs (LE 1M and LE 2M)，這些Packet format 包含了 Advertising">
+<meta name="keywords" content="藍牙">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4. 低功耗藍牙規範-鏈結層(2)">
+<meta property="og:url" content="https://tingchuchi.github.io/2018/11/30/ble_ch4_2/index.html">
+<meta property="og:site_name" content="Timmy 技術筆記">
+<meta property="og:description" content="2. 空中介面封包 (Air Interface Packets)在這章節中，我們會介紹BLE裝置的Packet格式 2.1 低功耗藍牙未編碼的實體封包格式 (Packet Format For the LE Uncoded PHYs)以下的packet format定義在BLE尚未編碼的PHYs (LE 1M and LE 2M)，這些Packet format 包含了 Advertising">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_19.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_20.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_21.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_22.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_23.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_24.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_25.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_26.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_27.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_28.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_29.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_30.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_31.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_32.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_33.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_34.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_35.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_36.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_37.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_38.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_39.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_40.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_41.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_42.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_43.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_44.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_45.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_46.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_47.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_48.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_49.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_50.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_51.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_52.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_53.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_54.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_55.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_56.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_57.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_58.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_59.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_60.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_61.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_62.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_63.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_64.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_65.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_66.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_67.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_68.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_69.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_70.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_71.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_72.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_73.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_74.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_75.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_76.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_77.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_78.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_79.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_80.png">
+<meta property="og:updated_time" content="2018-11-30T08:29:48.127Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4. 低功耗藍牙規範-鏈結層(2)">
+<meta name="twitter:description" content="2. 空中介面封包 (Air Interface Packets)在這章節中，我們會介紹BLE裝置的Packet格式 2.1 低功耗藍牙未編碼的實體封包格式 (Packet Format For the LE Uncoded PHYs)以下的packet format定義在BLE尚未編碼的PHYs (LE 1M and LE 2M)，這些Packet format 包含了 Advertising">
+<meta name="twitter:image" content="https://tingchuchi.github.io/images/ble_19.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://tingchuchi.github.io/2018/11/30/ble_ch4_2/"/>
+
+
+
+
+
+  <title>4. 低功耗藍牙規範-鏈結層(2) | Timmy 技術筆記</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Timmy 技術筆記</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-vocal">
+          <a href="/categories/歌唱教學" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            歌唱教學
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-music">
+          <a href="/categories/音樂" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            音樂相關
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-musiccreate">
+          <a href="/categories/詞曲創作" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-building"></i> <br />
+            
+            詞曲創作
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guitar">
+          <a href="/categories/吉他" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            吉他
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bluetooth">
+          <a href="/categories/藍牙" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-bluetooth"></i> <br />
+            
+            藍牙技術
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://tingchuchi.github.io/2018/11/30/ble_ch4_2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Timmy Chi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timmy 技術筆記">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">4. 低功耗藍牙規範-鏈結層(2)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+		    
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-11-30T17:00:02+08:00">
+                2018-11-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/藍牙/" itemprop="url" rel="index">
+                    <span itemprop="name">藍牙</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/30/ble_ch4_2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/11/30/ble_ch4_2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/11/30/ble_ch4_2/" class="leancloud_visitors" data-flag-title="4. 低功耗藍牙規範-鏈結層(2)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="2-空中介面封包-Air-Interface-Packets"><a href="#2-空中介面封包-Air-Interface-Packets" class="headerlink" title="2. 空中介面封包 (Air Interface Packets)"></a>2. 空中介面封包 (Air Interface Packets)</h2><p>在這章節中，我們會介紹BLE裝置的Packet格式</p>
+<h3 id="2-1-低功耗藍牙未編碼的實體封包格式-Packet-Format-For-the-LE-Uncoded-PHYs"><a href="#2-1-低功耗藍牙未編碼的實體封包格式-Packet-Format-For-the-LE-Uncoded-PHYs" class="headerlink" title="2.1 低功耗藍牙未編碼的實體封包格式 (Packet Format For the LE Uncoded PHYs)"></a>2.1 低功耗藍牙未編碼的實體封包格式 (Packet Format For the LE Uncoded PHYs)</h3><p>以下的packet format定義在BLE尚未編碼的PHYs (LE 1M and LE 2M)，這些Packet format 包含了 Advertising Channel Packets 及 Data Channel Packets。</p>
+<p>Packet format 如下圖所示，每一個Packet由四個部分組成：Preamble, Access Address, PDU, CRC</p>
+<center><br><img src="/images/ble_19.png" alt=""><br></center><br><a id="more"></a><br><br>在 LE 1M PHY 上傳輸或接收時， Preamble為1 octet。在 LE 2M PHY 上傳輸或接收時， Preamble為2 octets。Access Address 為 4 octets。PDU範圍為2-257 octets。CRC為 3 octets。<br>Preamble會第一個發送、接著是Access Address、PDU、CRC。Packet會以相同的Symblo Rate (1 Msym/s or 2Msys/s Modualation)傳輸<br><br>#### 2.1.1 Preamble<br><br>所有的Link Layer Packet 都有一個Preamble，用來在Receiver當中實行頻率同步、符號時間同步(Symbol Timing Estimation)、自動增益控制 (Automatic Gain Control (AGC) training)。Preamble為0與1的交錯序列。LE 1M PHY上傳輸的packet Preamble為8 bits。LE 2M PHY上傳輸的packet，Preamble為16 bits。<br><br>Preamble的First Bit (依照傳輸順序)應該要與Access Address 的LSB相同。<br><br>Preamble之所以非常重要，是因為Chip必須能夠應對輸入訊號強度的可能範圍。Receiver需要應付-10dBm ~ -90dBm 的訊號強度，也就是80db的動態範圍。從Receiver的角度來看，也就是1pW~0.1mW的能量。Automatic Gain Control必須檢測出輸入訊號的能量等級，並且調整Gain，使得訊號剛好處於Receiver能夠輕鬆工作的範圍之中。<br><br><center><br><img src="/images/ble_20.png" alt=""><br></center>
+
+<h3 id="2-1-2-Access-Address-接入地址"><a href="#2-1-2-Access-Address-接入地址" class="headerlink" title="2.1.2 Access Address (接入地址)"></a>2.1.2 Access Address (接入地址)</h3><p>Access Address的first bit決定了Preamble為(01010101, 0101010101010101)還是(10101010, 1010101010101010)。如果Access Address的first bit為0，則使用(01010101, 0101010101010101)；如果Access Address的first bit為0，則使用(10101010, 1010101010101010)。</p>
+<p>Access Address主要分為兩種類型：Advertising Access Address、Data Access Address。Advertising Access Address在廣播資料，或是廣播、搜尋、發起連接時使用；Data Access Address在連線建立之後的兩個設備間使用。</p>
+<p>當Controller試圖接收一個Packet時，它要知道該Packet的Access Address。Receiver開啟並調整到正確的頻率後就可收到資料。即使附近沒人發送，Receiver還是有可能會收到背景輻射。考慮接收到純隨機噪音的機率，接收一段噪音與Preamble 相同的可能性還是比較高的。在實際案例中，通常BLE Receiver一直開著，每隔幾分鐘就能收到一個假的Preamble。考慮到這樣的情況就必須要使用Access Address來減少隨機噪音造成假Preamble接收的機率。</p>
+<p>除了Extended Advertising PDUs(BLE 5 新增的規範)，對於Advertising Channel ，Access Address是固定值10001110100010011011111011010110b(0x8E89BED6)。這意味者Advertise的Preamble為用(01010101, 0101010101010101)。當BLE裝置接收到廣播後驗證Access Address正確，才認為它是個Broadcast Packet而不是噪音。</p>
+<p>對於Data Channel 而言，Access Address是隨機值。不同的連接會有不同的值。在Initiating State發起傳送時，會在每個要發起的PDU中產生新的Access Address。在Advertising State中，如果是採用週期性廣播(Periodic Advertising)，則每次都會產生新的Access Address。</p>
+<p>Access Address 是個 32-bit 值，當需要新的Access Address時，Link Layer將會隨機產生，須符合以下要求：</p>
+<ol>
+<li>產生的Access Address不能與現有任何Link Layer所連接的Access Address 一樣。</li>
+<li>產生的Access Address不能與任何啟用Periodic Advertising的Access Address 一樣。</li>
+<li>產生的Access Address不能有六個連續的0或1。</li>
+<li>產生的Access Address不能與Advertising channel packets的Access Address一樣。</li>
+<li>產生的Access Address不能與Advertising channel packets只相差1bit</li>
+<li>產生的Access Address四個Byte之間需各不相同</li>
+<li>產生的Access Address不能超過24次Transitions</li>
+<li>最高有效位(MSB)的6個Bit至少要有兩次Bit翻轉，避免Header連續0或1會帶來不好的影響。<br>如果產生的隨機Access Address不符合上述要求，則繼續產生Access Address直到滿足要求。<br>在支援LE Coded PHY的情況中，Access Address必須要符合以下要求：</li>
+<li>最低有效位(LSB)的8bit 至少要有3個1</li>
+<li>最低有效位(LSB)的16 bits不能超過11次Transitions</li>
+</ol>
+<h3 id="2-1-3-PDU"><a href="#2-1-3-PDU" class="headerlink" title="2.1.3 PDU"></a>2.1.3 PDU</h3><p>Preamble 及 Access Address 遵照 PDU 格式。當packet在primary或secondary advertising channel 傳輸時，該PDU為Advertising Channel PDU，詳細的格式會定義在2.3節。當該packet在physical channel 傳輸時，該PDU為Data Channel PDU。</p>
+<h3 id="2-1-4-CRC"><a href="#2-1-4-CRC" class="headerlink" title="2.1.4 CRC"></a>2.1.4 CRC</h3><p>Link Layer Packet結尾都有24 bit CRC。CRC會根據PDU計算。詳細的公式定義在3.1章節。
+ </p>
+<h2 id="2-2-低功耗藍牙編碼的實體封包格式-Packet-Format-For-the-LE-Coded-PHYs"><a href="#2-2-低功耗藍牙編碼的實體封包格式-Packet-Format-For-the-LE-Coded-PHYs" class="headerlink" title="2.2 低功耗藍牙編碼的實體封包格式 (Packet Format For the LE Coded PHYs)"></a>2.2 低功耗藍牙編碼的實體封包格式 (Packet Format For the LE Coded PHYs)</h2><p>低功耗藍牙編碼的Packet包含了Advertise Channel Packets 及 Data Channel Packets。格式定義如下圖：</p>
+<center><br><img src="/images/ble_21.png" alt=""><br></center>
+
+<p>其中Preamble 不需要編碼，Access Address、CI和TERM1屬於FEC block 1，PDU、CRC和TERM2屬於FEC block 2。FEC block 1採用S=8編碼演算法，FEC block 2根據CI欄位值採用S=2或S=8編碼演算法。</p>
+<center><br><img src="/images/ble_22.png" alt=""><br></center>
+
+<p>LE Coded PHYs的符號傳輸速率是1M Sym/s，當採用S=2編碼，資料傳輸速率為500bit/s，當採用S=8編碼，資料傳輸速率為125bit/s。</p>
+<h3 id="2-2-1-Preamble"><a href="#2-2-1-Preamble" class="headerlink" title="2.2.1 Preamble"></a>2.2.1 Preamble</h3><p>Preamble內容為重複10次的00111100序列，它不執行FEC編碼。</p>
+<h3 id="2-2-2-Access-Address"><a href="#2-2-2-Access-Address" class="headerlink" title="2.2.2 Access Address"></a>2.2.2 Access Address</h3><p>Access Address在 Section 2.1.2. 中定義</p>
+<h3 id="2-2-3-Coding-Indication-編碼指示器"><a href="#2-2-3-Coding-Indication-編碼指示器" class="headerlink" title="2.2.3 Coding Indication (編碼指示器)"></a>2.2.3 Coding Indication (編碼指示器)</h3><p>CI 定義於下表：</p>
+<center><br><img src="/images/ble_23.png" alt=""><br></center>
+
+<p>CI=0則FE C block 2執行S=8編碼；CI=1則FEC block 2執行S=2編碼。其餘的值保留給將來使用。</p>
+<h3 id="2-2-4-PDU"><a href="#2-2-4-PDU" class="headerlink" title="2.2.4 PDU"></a>2.2.4 PDU</h3><p>Packet在Primary或Secondary Advertising Channel上傳輸時，該PDU為Advertising Channel PDU，格式定義在2.3章節。</p>
+<p>Packet 在 Data Physical Channel 上傳輸時，該PDU為Data Channel PDU，格式定義在2.4章節</p>
+<h3 id="2-2-5-CRC"><a href="#2-2-5-CRC" class="headerlink" title="2.2.5 CRC"></a>2.2.5 CRC</h3><p>CRC 為24 bit ，會根據每個PDU的值來計算，詳細公式定義在3.1.1 章節</p>
+<h3 id="2-2-6-TERM-and-TERM2"><a href="#2-2-6-TERM-and-TERM2" class="headerlink" title="2.2.6 TERM and TERM2"></a>2.2.6 TERM and TERM2</h3><p>TERM1和TERM2：FEC演算法結束字元，每一個termination field占3bit。定義在3.3.1 章節</p>
+<h2 id="2-3-Advertising-Channel-PDU"><a href="#2-3-Advertising-Channel-PDU" class="headerlink" title="2.3 Advertising Channel PDU"></a>2.3 Advertising Channel PDU</h2><p>Advertising Channel PDU 有16bit Header 及 payload，詳細的Advertising Channel PDU格式如下圖：</p>
+<center><br><img src="/images/ble_24.png" alt=""><br></center>
+
+<p>其中Header格式如下圖所示：</p>
+<center><br><img src="/images/ble_25.png" alt=""><br></center>
+
+
+<p>PDU Type：PDU資料的類型，具體而言就是不同的廣播資料。</p>
+<p>RFU：For Future Use，即暫時不用。</p>
+<p>ChSel：通道選擇。</p>
+<p>TxAdd：發送資料的設備位址類別型，如果該位是0表示Public Address，1表示Random Address。</p>
+<p>RxAdd：接收資料的設備位址類別型，如果該位是0表示Public Address，1表示Random Address。</p>
+<p>Length：Payload的長度。有效範圍為1 – 255位元組。</p>
+<p>PDU Type 詳細的對應關係如下表所示，該表顯示了不同的PDU Type 對應到的 PDU Name 、分布的 Channel ，及允許使用在哪種PHYs。</p>
+<center><br><img src="/images/ble_26.png" alt=""><br></center>
+
+<h3 id="2-3-1-Advertising-PDUs"><a href="#2-3-1-Advertising-PDUs" class="headerlink" title="2.3.1 Advertising PDUs"></a>2.3.1 Advertising PDUs</h3><p>Advertising PDUs 包含以下幾種：<br>• ADV_IND</p>
+<p>• ADV_DIRECT_IND</p>
+<p>• ADV_NONCONN_IND</p>
+<p>• ADV_SCAN_IND</p>
+<p>• ADV_EXT_IND</p>
+<p>• AUX_ADV_IND</p>
+<p>• AUX_SYNC_IND</p>
+<p>• AUX_CHAIN_IND</p>
+<p>這些PDU在Advertising State中發送，在Scanning State 或 Initiating State 被接收。其中ADV_IND, ADV_DIRECT_IND, ADV_NONCONN_IND, and ADV_SCAN_IND稱為Legacy Advertising PDUs。ADV_EXT_IND, AUX_ADV_IND, AUX_SYNC_IND, AUX_CHAIN_IND PDUs 稱為Extended<br>Advertising PDUs。在Legacy Advertising PDUs的Advertising Events稱為Legacy Advertising Events。</p>
+<h4 id="2-3-1-1-ADV-IND"><a href="#2-3-1-1-ADV-IND" class="headerlink" title="2.3.1.1 ADV_IND"></a>2.3.1.1 ADV_IND</h4><p>適用於Connectable and Scannable Undirected Advertising Event，Payload包含Advertise Address及Advertise Data。</p>
+<center><br><img src="/images/ble_27.png" alt=""><br></center>
+
+<h4 id="2-3-1-2-ADV-DIRECT-IND"><a href="#2-3-1-2-ADV-DIRECT-IND" class="headerlink" title="2.3.1.2 ADV_DIRECT_IND"></a>2.3.1.2 ADV_DIRECT_IND</h4><p>適用於Connectable Directed Advertising Event，Payload包含Advertise Address及Target Address。</p>
+<center><br><img src="/images/ble_28.png" alt=""><br></center>
+
+<h4 id="2-3-1-3-ADV-NONCONN-IND"><a href="#2-3-1-3-ADV-NONCONN-IND" class="headerlink" title="2.3.1.3 ADV_NONCONN_IND"></a>2.3.1.3 ADV_NONCONN_IND</h4><p>適用於 non-connectable and non-scannable undirected advertising event，payload包含Advertise Address及Advertise Data。</p>
+<center><br><img src="/images/ble_29.png" alt=""><br></center>
+
+<h4 id="2-3-1-4-ADV-SCAN-IND"><a href="#2-3-1-4-ADV-SCAN-IND" class="headerlink" title="2.3.1.4 ADV_SCAN_IND"></a>2.3.1.4 ADV_SCAN_IND</h4><p>適用於 scannable undirected advertising event，Payload包含Advertise Address及Advertise Data。</p>
+<center><br><img src="/images/ble_30.png" alt=""><br></center>
+
+<h4 id="2-3-1-5-ADV-EXT-IND"><a href="#2-3-1-5-ADV-EXT-IND" class="headerlink" title="2.3.1.5 ADV_EXT_IND"></a>2.3.1.5 ADV_EXT_IND</h4><p>ADV_EXT_IND PDU 使用Common Extended Advertising Payload Format 如下表所示，該PDU使用了大部分的事件(除了Connectable及Scannable Undirected)對應到Adv mode。</p>
+<p>對於以下沒有ACAD或AdvData的Event Type (non-connectable and non-scannable directed, non-connectable and non-scannable undirected)，Controller可以選擇是否要使用Auxiliary packet</p>
+<p>下表為Event Type 對應到的Payload Format</p>
+<center><br><img src="/images/ble_31.png" alt=""><br></center>
+
+<p>以下列出表格相關的欄位含義：</p>
+<p>M 必選</p>
+<p>O 可選</p>
+<p>X 保留給將來使用</p>
+<p>C1 在LE 1M PHY 中為可選的，並且保留給LE Coded PHY 將來使用。</p>
+<p>C2 如果ADV_EXT_IND PDU不存在，此欄位為必選。</p>
+<p>C3 如果對應到的PDU存在，此欄位為必選。</p>
+<p>C4如果ADV_EXT_IND PDU不存在，此欄位為可選。</p>
+<p>在發送packet 時，如該欄位為保留給將來使用的，則應該為空值。</p>
+<h4 id="2-3-1-6-AUX-ADV-IND"><a href="#2-3-1-6-AUX-ADV-IND" class="headerlink" title="2.3.1.6 AUX_ADV_IND"></a>2.3.1.6 AUX_ADV_IND</h4><p>AUX_ADV_IND PDU使用Common Extended Advertising Payload Format 在2.3.4會提到。</p>
+<p>如下表所示，該PDU使用了大部分的事件(除了Connectable及Scannable Undirected)對應到Adv mode。<br>下表為Event Type 對應到的Common Extended Advertising Payload</p>
+<center><br><img src="/images/ble_32.png" alt=""><br></center>
+
+<h4 id="2-3-1-7-AUX-SYNC-IND"><a href="#2-3-1-7-AUX-SYNC-IND" class="headerlink" title="2.3.1.7 AUX_SYNC_IND"></a>2.3.1.7 AUX_SYNC_IND</h4><p>AUX_SYNC_IND使用Common Extended Advertising Payload Format，在2.3.4會提到。<br>AdvMode 要設為00b。</p>
+<p>任何的auxiliary PDU 都是 AUX_CHAIN_IND PDU<br>下表為Event Type 對應到的Common Extended Advertising Payload </p>
+<center><br><img src="/images/ble_33.png" alt=""><br></center>
+
+<h4 id="2-3-1-8-AUX-CHAIN-IND"><a href="#2-3-1-8-AUX-CHAIN-IND" class="headerlink" title="2.3.1.8 AUX_CHAIN_IND"></a>2.3.1.8 AUX_CHAIN_IND</h4><p>AUX_CHAIN_IND使用Common Extended Advertising Payload Format ，在2.3.4會提到。<br>AUX_CHAIN_IND主要用來hold additional AdvData。它的上層為AUX_ADV_IND, AUX_SYNC_IND, AUX_SCAN_RSP or another AUX_CHAIN_IND PDU.</p>
+<p>AdvMode 要設為00b<br>下表為Event Type 對應到的Common Extended Advertising Payload </p>
+<center><br><img src="/images/ble_34.png" alt=""><br></center>
+
+
+<h3 id="2-3-2-Scanning-PDUs"><a href="#2-3-2-Scanning-PDUs" class="headerlink" title="2.3.2 Scanning PDUs"></a>2.3.2 Scanning PDUs</h3><p>scanning PDUs 主要有下面幾種類型</p>
+<p>• SCAN_REQ</p>
+<p>• SCAN_RSP</p>
+<p>• AUX_SCAN_REQ</p>
+<p>• AUX_SCAN_RSP</p>
+<p>其中，SCAN_REQ和AUX_SCAN_REQ PDU被稱為掃描請求(Scan Request )PDU；SCAN_RSP和AUX_SCAN_RSP  PDU被稱為掃描回應(Scan Response)PDU。</p>
+<h4 id="2-3-2-1-SCAN-REQ-and-AUX-SCAN-REQ"><a href="#2-3-2-1-SCAN-REQ-and-AUX-SCAN-REQ" class="headerlink" title="2.3.2.1 SCAN_REQ and AUX_SCAN_REQ"></a>2.3.2.1 SCAN_REQ and AUX_SCAN_REQ</h4><p>在Advertising channel PDU header 中的 Txadd 決定ScanA為 public 或是 random；Rxadd ，決定AdvA為 public 或是 random。<br>ScanA 應該包含scanner’s public or random device address。AdvA為該PDU找到的裝置address</p>
+<center><br><img src="/images/ble_35.png" alt=""><br></center>
+
+
+<h4 id="2-3-2-2-SCAN-RSP"><a href="#2-3-2-2-SCAN-RSP" class="headerlink" title="2.3.2.2 SCAN_RSP"></a>2.3.2.2 SCAN_RSP</h4><p>在Advertising channel PDU header 中的 Txadd 決定AdvA 為 public 或是 random</p>
+<center><br><img src="/images/ble_36.png" alt=""><br></center>
+
+
+<h4 id="2-3-2-3-AUX-SCAN-RSP"><a href="#2-3-2-3-AUX-SCAN-RSP" class="headerlink" title="2.3.2.3 AUX_SCAN_RSP"></a>2.3.2.3 AUX_SCAN_RSP</h4><p>AUX_SCAN_RSP PDU 使用Common Extended Advertising Payload Format ，在2.3.4會提到。<br>AdvMode 欄位必須為 00b</p>
+<p>任何的 auxiliary PDU都是 AUX_CHAIN_IND PDU</p>
+<center><br><img src="/images/ble_37.png" alt=""><br></center>
+
+<h3 id="2-3-3-Initial-PDUs"><a href="#2-3-3-Initial-PDUs" class="headerlink" title="2.3.3 Initial PDUs"></a>2.3.3 Initial PDUs</h3><p>initiating PDUs 有以下幾種：</p>
+<p>• CONNECT_IND</p>
+<p>• AUX_CONNECT_REQ</p>
+<p>• AUX_CONNECT_RSP</p>
+<p>CONNECT_IND和AUX_CONNECT_REQ PDU 在 Initial State 發送，在Advertising State 接收。<br>AUX_CONNECT_RSP PDU在 Advertising State 發送，在 Initial State接收。</p>
+<h4 id="2-3-3-1-CONNECT-IND-and-AUX-CONNECT-REQ"><a href="#2-3-3-1-CONNECT-IND-and-AUX-CONNECT-REQ" class="headerlink" title="2.3.3.1 CONNECT_IND and AUX_CONNECT_REQ"></a>2.3.3.1 CONNECT_IND and AUX_CONNECT_REQ</h4><p>在Advertising Channel PDU Header 中的 Txadd 決定InitA為 Public 或是 Random Address；Rxadd 決定AdvA為 Public 或是 Random Address。</p>
+<p>在 CONNECT_IND PDU Header中，如果Initiator 支援 LE Channel Selection Algorithm #2 Feature ，ChSel欄位必須要設為1。在AUX_CONNECT_REQ PDU中的ChSel欄位則提供給將來使用。</p>
+<p>以下為 Payload格式：</p>
+<center><br><img src="/images/ble_38.png" alt=""><br></center>
+
+<p>其中，LLData包含了建立連接需要用到的參數資訊如下：</p>
+<center><br><img src="/images/ble_39.png" alt=""><br></center>
+
+<p>•    AA：Link Layer的Access Address詳細可參考2.1.2章節。</p>
+<p>•    CRCInit：校驗運算的初值，由Link Layer隨機生成。詳細可參考3.3.1章節</p>
+<p>•    WinSize：建立連接時的Connection Window Size。用來表示transmitWindowSize，其中transmitWindowSize = WinSize * 1.25 ms。</p>
+<p>•    WinOffset：建立連接時的Connection Window Offset，用來表示transmitWindowOffset。其中transmitWindowOffset = WinOffset * 1.25 ms。</p>
+<p>•    Interval：連接間隔。用來表示connInterval 。其中connInterval = Interval * 1.25 ms.</p>
+<p>•    Latency：Slave Device的握手潛伏期(connSlaveLatency)。connSlaveLatency = Latency</p>
+<p>•    Timeout：從Device斷開的超時時間。</p>
+<p>•    ChM：Channel佔用圖。該參數共40bit，第1位元表示Channel 0，第2位元表示Channel 1，以此類推。前37個bit代表37個Data Channel，如果對應的Channel曾經被使用過，則設置1，否則設置0。第38- 40 bit保留給將來使用。</p>
+<p>•    Hop：跳頻演算法的增量，它的範圍是5-16。</p>
+<p>•    SCA：睡眠時鐘精度（Sleep Clock Accuracy）。SCA的取值與睡眠時鐘精度的關係如下表：</p>
+<center><br><img src="/images/ble_40.png" alt=""><br></center>
+
+<h4 id="2-3-3-2-AUX-CONNECT-RSP"><a href="#2-3-3-2-AUX-CONNECT-RSP" class="headerlink" title="2.3.3.2 AUX_CONNECT_RSP"></a>2.3.3.2 AUX_CONNECT_RSP</h4><p>AUX_ADV_IND PDU 使用Common Extended Advertising Payload Format ，在2.3.4會提到。<br>AdvMode 欄位必須為 00b，格式如下表：</p>
+<center><br><img src="/images/ble_41.png" alt=""><br></center>
+
+<h3 id="2-3-4-Common-Extended-Advertising-Payload-Format"><a href="#2-3-4-Common-Extended-Advertising-Payload-Format" class="headerlink" title="2.3.4 Common Extended Advertising Payload Format"></a>2.3.4 Common Extended Advertising Payload Format</h3><p>擴展廣播是BLE 5新增的廣播類型，這裡將他們單獨提取出來如下：</p>
+<p>•    ADV_EXT_IND</p>
+<p>•    AUX_ADV_IND</p>
+<p>•    AUX_SCAN_RSP</p>
+<p>•    AUX_SYNC_IND</p>
+<p>•    AUX_CHAIN_IND</p>
+<p>•    AUX_CONNECT_RSP</p>
+<p>這些PDU具有相同的資料結構：</p>
+<center><br><img src="/images/ble_42.png" alt=""><br></center>
+
+<p>•    Extended Header Length：Extended Header欄位的長度，它的有效範圍是0到63。</p>
+<p>•    AdvData：AdvData可能來自於Advertiser’s Host。AdvData的最大size取決於Extended Header的size</p>
+<p>•    AdvMode：廣播事件發生時該Device所處在的模式，它與各種模式的對應關係如下：</p>
+<center><br><img src="/images/ble_43.png" alt=""><br></center>
+
+<p>•    Extended Header：擴展協定頭，其結構如下：</p>
+<center><br><img src="/images/ble_44.png" alt=""><br></center>
+
+<p>•    各欄位定義：</p>
+<p>o    Extended Header Flags：Extended Header各個欄位的開關標誌位元。該欄位有8 bit，前7位分別對應AdvA、TargetA、RFU、ADI、AuxPtr、SyncInfo、TxPower，如果設定為1表示包含該欄位，如果設定為0表示不包含。第8個bit不與ACAD欄位關聯，暫不使用。</p>
+<center><br><img src="/images/ble_45.png" alt=""><br></center>
+
+<p>o    AdvA：Advertiser’s Device Address</p>
+<center><br><img src="/images/ble_46.png" alt=""><br></center><br>o    TargetA：Scanner’s 或 initiator’s Device Address<br><center><br><img src="/images/ble_47.png" alt=""><br></center>
+
+<p>o    RFU：保留給將來使用<br>o    ADI(AdvDataInfo field)：該欄位分兩部分：DID（Advertising Data ID）和SID（Advertising Set ID），如果一個Advertise Packet由多個子Packet組成，那麼這些子Packet的SID相同，DID不同。如果DID也相同，則說明該Packet內容與前Packet內容一樣。</p>
+<center><br><img src="/images/ble_48.png" alt=""><br></center>
+
+<p>o    AuxPtr：Auxiliary Pointer。它告訴Link Layer下一個Auxiliary Packet的Advertising Channel Index和Time Offset(時間偏移)。</p>
+<center><br><img src="/images/ble_49.png" alt=""><br></center>
+
+<p>Offset Units為 AUX Offset 表示的單位，定義於下表：</p>
+<center><br><img src="/images/ble_50.png" alt=""><br></center>
+
+<p>Aux Offset為包含AuxPtr的packet 開始到Auxiliary Packet 開始的時間<br>Aux Offset 至少為 packet + T_MAFS (4.1.2章節) length。如果Aux Offset 小於245,700 μs，Offset Units應設為0。Auxiliary Packet不能在Aux Offset之前Start，也不能慢於Aux Offset + one Offset Unit</p>
+<center><br><img src="/images/ble_51.png" alt=""><br></center>
+
+<p>Aux PHY 用來表示Auxiliary Packet 會使用到的PHY，Aux PHY 定義於下表</p>
+<center><br><img src="/images/ble_52.png" alt=""><br></center>
+
+<p>CA表示Advertiser’s Clock Accuracy，定義於下表</p>
+<center><br><img src="/images/ble_53.png" alt=""><br></center>
+
+<p>若 Aux Offset 為0 則表示不會發送auxiliary packet，當前PDU的Advertising Data 為不完整的。</p>
+<p>o    SyncInfo：週期廣播封包(Periodic Advertise Packey)資訊(AUX_SYNC_IND PDUs).，占有18 octets。</p>
+<center><br><img src="/images/ble_54.png" alt=""><br></center>
+
+<p>Offset Unit 表示 Sync Packet 使用的單位，如下表：</p>
+<center><br><img src="/images/ble_55.png" alt=""><br></center>
+
+<p>Sync Packet Offset 包含了 AUX_ADV_IND packet 開始到 AUX_SYNC_IND packet 開始的時間 ，以Offset Units表示對應的單位，Offset計算為 Sync Packet Offset * Units 。如果Sync Packet Offset小於245700μs，Offset Units field 會設為 0。</p>
+<p>如下圖所示，AUX_ADV_IND開始時間不應該晚於Sync Packet Offset，並且不得早於在AUX_SYNC_IND開始之前的Sync Packet Offset + one Offset unit</p>
+<center><br><img src="/images/ble_56.png" alt=""><br></center>
+
+<p>Sync Packet Offset 若為0，則表示到下一個AUX_SYNC_IND packet的時間大於可表示的時間。</p>
+<p>Interval 表示periodic advertisement packet 到下個packet的時間，值不得小於6 (7.5 ms)</p>
+<p>ChM : Secondary Advertising Channels佔用圖。該參數共37bit，第1位元表示Channel 0，第2位元表示Channel 1，以此類推。前37個bit代表37個Data Channel，如果對應的Channel曾經被使用過，則設置1，否則設置0。</p>
+<p>The AA, CRCInit, 及SCA與CONNECT_IND PDU的格式相同<br>Event Counter 表示 paEventCounter的值(參考4.4.2.1章節)，適用於AUX_SYNC_IND packet。</p>
+<p>TxPower：設備輸出功率。</p>
+<p>o    ACAD：額外的廣播資料（Additional Controller Advertising Data）。它能包含少量的廣播資料，可以配合普通廣播包使用。長度為Extended Header – Extended Header Flags (1 octet) </p>
+<p>ACAD 不可以在multiple advertising data PDUs中被分割，他適用於single advertising data PDU。<br>ACAD使用與AdvData相同的格式，定義在[Vol3] Part C, Section 11。ACAD 格式定義在Part A, Section 1</p>
+<p>•    Host Advertising Data ： AdvData來自於advertiser’s Host，格式定義於[Vol 3] Part C, Section 11.如果host不提供任何資料，則應省略AdvData。</p>
+<p>Controller可以支援Host Advertising Data 的分段。分段前的總量不得超過1650 octets.當Link Layer對Host advertising 進行分段時，Controller會選擇分段的數量及大小。</p>
+<p>Controller應盡可能減少分段數量以確保提供Host Advertising Data的可靠性，Host可以告訴Controller是否應該要分段Advertising Data，而控制器可能會忽略該偏好設定。單個PDU可達255 octets<br>Link Layer應將多的片段放置在不同PDU的AdvData中。當Host分割第一個片段應放在AUX_ADV_IND, UX_SYNC_IND or AUX_SCAN_RSP PDU，後續片段應放在AUX_CHAIN_IND PDUs。</p>
+<p>每個AUX_CHAIN_IND應包含前個分段PDU的auxiliary PDU，最後一個分段的AUX_CHAIN_IND PDU不能有auxiliary PDU。</p>
+<p>如果Link Layer對主機Host advertising data已進行分段，但隨後無法傳輸所有片段，這樣一來，它能夠傳輸的最後一個片段應包含一個AuxPtr，其Aux Offset為零，以便scanners知道data已被分段。</p>
+<h2 id="2-4-DATA-CHANNEL-PDU"><a href="#2-4-DATA-CHANNEL-PDU" class="headerlink" title="2.4 DATA CHANNEL PDU"></a>2.4 DATA CHANNEL PDU</h2><p>Data Channel PDU結構如下：</p>
+<center><br><img src="/images/ble_57.png" alt=""><br></center>
+
+<p>Header其結構如下：</p>
+<center><br><img src="/images/ble_58.png" alt=""><br></center>
+
+<p>•    其欄位含義如下：<br>o    LLID：鏈路ID（Link Layer ID），用以區分該PDU是一個資料還是控制命令。如果當前Payload是L2CAP Data Payload的開頭或結尾片段，則LLID=10b，否則LLID=01b。如果為Link Layer控制命令，則LLID=11b。</p>
+<p>o    NESN：下一個期望的PDU序號（Next Expected Sequence Number）。</p>
+<p>o    SN：當前PDU序號（Sequence Number）。SN與NESN合作，可以推測出該PDU是一個新資料，還是對上一個老資料的重傳，從而實現流程控制。</p>
+<p>o    MD：資料未完（More Data），表示後續還有資料片段。</p>
+<p>o    Length：Payload+ MIC的總長度，有效範圍為0-255位元組。</p>
+<p>•    Payload：裝載L2CAP Data Payload或Link Layer控制命令。對於Data Payload，最大Payload長度為251 octets。L2CAP資料可能被分段</p>
+<p>•    MIC：完整性檢測（Message Integrity Check）。用於確認加密的Payload是否完整有效。當Payload不加密或者Payload長度為0時，MIC欄位不存在。[Vol 6] Part E, Section 1]</p>
+<h3 id="2-4-1-LL-Data-PDU"><a href="#2-4-1-LL-Data-PDU" class="headerlink" title="2.4.1 LL Data PDU"></a>2.4.1 LL Data PDU</h3><p>在Header 中，LLID應設置為01b或是10b，Data Payload的開頭LLID為01 b、結尾LLID為10b。若Length設置為00000000b的LL Data PDU為空PDU。master’s Link Layer可以向slave發送一個空PDU並且允許slave回應Data Channel PDU(包含空PDU)。</p>
+<p>LLID為10b 的PDU (結尾)不能將Length設為00000000b。</p>
+<h3 id="2-4-2-LL-Control-PDU"><a href="#2-4-2-LL-Control-PDU" class="headerlink" title="2.4.2 LL Control PDU"></a>2.4.2 LL Control PDU</h3><p>LL Control PDU 結構如下：</p>
+<center><br><img src="/images/ble_59.png" alt=""><br></center><br>•    Opcode：操作碼，代表不同的控制命令。<br><br>•    CtrData：控制參數。<br><br>LL Control PDU不應將Length設置為00000000b。 所有LL Control PDU Length都是固定的，具體取決於Opcode。<br><br>Link Layer的所有Control 命令如下：<br><br><center><br><img src="/images/ble_60.png" alt=""><br></center>
+
+<h4 id="2-4-2-1-LL-CONNECTION-UPDATE-IND"><a href="#2-4-2-1-LL-CONNECTION-UPDATE-IND" class="headerlink" title="2.4.2.1 LL_CONNECTION_UPDATE_IND"></a>2.4.2.1 LL_CONNECTION_UPDATE_IND</h4><center><br><img src="/images/ble_61.png" alt=""><br></center>
+
+<p>WinSize：設定Connection Window Size(transmitWindowSize)。其中transmitWindowSize = WinSize * 1.25 ms。</p>
+<p>WinOffset：設定Connection Window Offset(transmitWindowOffset)。其中transmitWindowOffset = WinOffset * 1.25 ms。</p>
+<p>Interval：設定連接間隔(connInterval)。其中connInterval = Interval * 1.25 ms.</p>
+<p>Latency：設定Slave Device的握手潛伏期(connSlaveLatency)。connSlaveLatency = Latency.</p>
+<p>Timeout：設定從Device斷開的超時時間(connSupervisionTimeout)。connSupervisionTimeout = Timeout * 10 ms.</p>
+<p>Instant： 設定 instant 描述，會在Section 5.1.1 定義。</p>
+<h4 id="2-4-2-2-LL-CHANNEL-MAP-IND"><a href="#2-4-2-2-LL-CHANNEL-MAP-IND" class="headerlink" title="2.4.2.2 LL_CHANNEL_MAP_IND"></a>2.4.2.2 LL_CHANNEL_MAP_IND</h4><center><br><img src="/images/ble_62.png" alt=""><br></center>
+
+<p>ChM： Channel佔用圖，每個Channel都按照Section 4.5.8的定義對應。格式於CONNECT_IND PDU的ChM相同(參見Section 2.3.3.1)</p>
+<p>Instant： 設定 instant 描述，會在Section 5.1.1 定義。</p>
+<h4 id="2-4-2-3-LL-TERMINATE-IND"><a href="#2-4-2-3-LL-TERMINATE-IND" class="headerlink" title="2.4.2.3 LL_TERMINATE_IND"></a>2.4.2.3 LL_TERMINATE_IND</h4><center><br><img src="/images/ble_63.png" alt=""><br></center>
+
+<p>ErrorCode ：告知遠程裝置為什麼連接被終止(Terminate)</p>
+<h4 id="2-4-2-4-LL-ENC-REQ"><a href="#2-4-2-4-LL-ENC-REQ" class="headerlink" title="2.4.2.4 LL_ENC_REQ"></a>2.4.2.4 LL_ENC_REQ</h4><center><br><img src="/images/ble_64.png" alt=""><br></center>
+
+<p>• Rand： 由Host提供Random number 會與 EDIV一起使用 (see [Vol 3] Part H, Section 2.4.4).</p>
+<p>• EDIV：LE legacy pairing過程中，用來識別LTK分發</p>
+<p>• SKDm：Master的session key diversifier</p>
+<p>• IVm：Master的初始向量(initialization vector)</p>
+<h4 id="2-4-2-5-LL-ENC-RSP"><a href="#2-4-2-5-LL-ENC-RSP" class="headerlink" title="2.4.2.5 LL_ENC_RSP"></a>2.4.2.5 LL_ENC_RSP</h4><center><br><img src="/images/ble_65.png" alt=""><br></center><br>• SKDs：Slave的session key diversifier<br><br>• IVm：Slave的初始向量(initialization vector)<br><br><br>#### 2.4.2.6 LL_START_ENC_REQ<br>LL_START_ENC_REQ PDU 無CtrData 欄位<br>#### 2.4.2.7 LL_START_ENC_RSP<br>The LL_START_ENC_RSP PDU 無CtrData 欄位<br><br>#### 2.4.2.8 LL_UNKNOWN_RSP<br><br><center><br><img src="/images/ble_66.png" alt=""><br></center>
+
+<p>•UnknownType：接收到的LL Control PDU Opcode</p>
+<h4 id="2-4-2-9-LL-FEATURE-REQ"><a href="#2-4-2-9-LL-FEATURE-REQ" class="headerlink" title="2.4.2.9 LL_FEATURE_REQ"></a>2.4.2.9 LL_FEATURE_REQ</h4><center><br><img src="/images/ble_67.png" alt=""><br></center>
+
+<p>• FeatureSet：Master’s Link Layer 支援的功能</p>
+<h4 id="2-4-2-10-LL-FEATURE-RSP"><a href="#2-4-2-10-LL-FEATURE-RSP" class="headerlink" title="2.4.2.10 LL_FEATURE_RSP"></a>2.4.2.10 LL_FEATURE_RSP</h4><center><br><img src="/images/ble_68.png" alt=""><br></center>
+
+<p>• FeatureSet[0]：Master 及 Slave Link Layer 支援的功能</p>
+<p>• FeatureSet[1-7] ：Link Layer傳送此 PDU所支援的功能</p>
+<h4 id="2-4-2-11-LL-PAUSE-ENC-REQ"><a href="#2-4-2-11-LL-PAUSE-ENC-REQ" class="headerlink" title="2.4.2.11 LL_PAUSE_ENC_REQ"></a>2.4.2.11 LL_PAUSE_ENC_REQ</h4><p>The LL_PAUSE_ENC_REQ packet無CtrData 欄位</p>
+<h4 id="2-4-2-12-LL-PAUSE-ENC-RSP"><a href="#2-4-2-12-LL-PAUSE-ENC-RSP" class="headerlink" title="2.4.2.12 LL_PAUSE_ENC_RSP"></a>2.4.2.12 LL_PAUSE_ENC_RSP</h4><p>The LL_PAUSE_ENC_RSP packet無CtrData 欄位</p>
+<h4 id="2-4-2-13-LL-VERSION-IND"><a href="#2-4-2-13-LL-VERSION-IND" class="headerlink" title="2.4.2.13 LL_VERSION_IND"></a>2.4.2.13 LL_VERSION_IND</h4><center><br><img src="/images/ble_69.png" alt=""><br></center><br>The LL_VERSION_IND CtrData consists of three fields:<br>• VersNr：描述了藍牙控制器標準的版本<br>• CompId ：藍牙控制器製造商的公司ID<br>• SubVersNr：描述了藍牙控制器的唯一序號或藍牙控制器版本號<br><br>#### 2.4.2.14 LL_REJECT_IND<br><br><center><br><img src="/images/ble_70.png" alt=""><br></center>
+
+<p>ErrorCode ：錯誤代碼，參考 [Vol 2] Part D,</p>
+<h4 id="2-4-2-15-LL-SLAVE-FEATURE-REQ"><a href="#2-4-2-15-LL-SLAVE-FEATURE-REQ" class="headerlink" title="2.4.2.15 LL_SLAVE_FEATURE_REQ"></a>2.4.2.15 LL_SLAVE_FEATURE_REQ</h4><center><br><img src="/images/ble_71.png" alt=""><br></center><br>FeatureSet ：Slave’s Link Layer 支援的功能<br><br>#### 2.4.2.16 LL_CONNECTION_PARAM_REQ<br><center><br><img src="/images/ble_72.png" alt=""><br></center>
+
+<p>Interval_Min：最小連接間隔(connInterval)。connInterval = Interval_Min * 1.25 ms. (參考Section 4.5.1)</p>
+<p>Interval_Max：最大連接間隔(connInterval)。connInterval = Interval_Max * 1.25 ms (參考Section 4.5.1)</p>
+<p>Latency： 連接Slave等待時間(connSlaveLatency)。connSlaveLatency = Latency.(參考Section 4.5.1)</p>
+<p>Timeout： 連接Slave的超時時間(connSupervisionTimeout)。connSupervisionTimeout = Timeout <em> 10 ms<br>•PreferredPeriodicity：選出的connInterval值[connInterval = n  </em> (PreferredPeriodicity <em> 1.25 ms)] PreferredPeriodicity必定要&lt;= Interval_Max<br>•ReferenceConnEventCount：與Offset0 ~ Offset5 相關(值介於0-65535)。connEventCounter = ReferenceConnEventCount = Offset0-5 </em> 1.25</p>
+<p>• Offset0- Offset5：單位為1.25ms，並且按照優先順序排列Offset0為最高、其次為Offset1，以此類推。Offset0 - Offset5不可以小於Interval_Max。若值為0xFFF則為無效。Offset0 - Offset5若為有效值應該為唯一值，並且要擺在無效值的前面。</p>
+<h4 id="2-4-2-17-LL-CONNECTION-PARAM-RSP"><a href="#2-4-2-17-LL-CONNECTION-PARAM-RSP" class="headerlink" title="2.4.2.17 LL_CONNECTION_PARAM_RSP"></a>2.4.2.17 LL_CONNECTION_PARAM_RSP</h4><p>LL_CONNECTION_PARAM_RSP 格式與 LL_CONNECTION_PARAM_REQ PDU 相同 (參考 2.4.2.16).</p>
+<h4 id="2-4-2-18-LL-REJECT-EXT-IND"><a href="#2-4-2-18-LL-REJECT-EXT-IND" class="headerlink" title="2.4.2.18 LL_REJECT_EXT_IND"></a>2.4.2.18 LL_REJECT_EXT_IND</h4><center><br><img src="/images/ble_73.png" alt=""><br></center>
+
+<p>• RejectOpcode ：被拒絕的PDU中的 Opcode </p>
+<p>• ErrorCode ：描述拒絕的原因，參考[Vol 2] Part D,<br>只有Remote Link Layer支援 Extended Reject Indication Link Layer feature(Section 4.6) 才能發送此PDU，否則要發送LL_REJECT_IND PDU</p>
+<h4 id="2-4-2-19-LL-PING-REQ"><a href="#2-4-2-19-LL-PING-REQ" class="headerlink" title="2.4.2.19 LL_PING_REQ"></a>2.4.2.19 LL_PING_REQ</h4><p>The LL_PING_REQ PDU無CtrData 欄位</p>
+<h4 id="2-4-2-20-LL-PING-RSP"><a href="#2-4-2-20-LL-PING-RSP" class="headerlink" title="2.4.2.20 LL_PING_RSP"></a>2.4.2.20 LL_PING_RSP</h4><p>The LL_PING_RSP PDU無CtrData 欄位</p>
+<h4 id="2-4-2-21-LL-LENGTH-REQ-and-LL-LENGTH-RSP"><a href="#2-4-2-21-LL-LENGTH-REQ-and-LL-LENGTH-RSP" class="headerlink" title="2.4.2.21 LL_LENGTH_REQ and LL_LENGTH_RSP"></a>2.4.2.21 LL_LENGTH_REQ and LL_LENGTH_RSP</h4><center><br><img src="/images/ble_74.png" alt=""><br></center><br>• MaxRxOctets：connMaxRxOctets = 27-251 最大接受octets<br><br>• MaxRxTime：connMaxRxTime。328~2120 us<br><br>• MaxTxOctets：connMaxTxOctets= 27-251 最大接受octets<br><br>• MaxTxTime：connMaxTxTime。328~2120 us<br><br>參考Section 4.5.10<br><br>#### 2.4.2.22 LL_PHY_REQ and LL_PHY_RSP<br><center><br><img src="/images/ble_75.png" alt=""><br></center><br>• TX_PHYS：發送者選擇使用的Transmitter PHYs<br><br>• RX_PHYS：發送者選擇使用的Receiver PHYs<br><br>TX_PHYs 及 RX_PHYs 的對應可參考下表，TX_PHYS及RX_PHYS<br>欄位至少要有一個bit要設為1<br><br><center><br><img src="/images/ble_76.png" alt=""><br></center>
+
+<h4 id="2-4-2-23-LL-PHY-UPDATE-IND"><a href="#2-4-2-23-LL-PHY-UPDATE-IND" class="headerlink" title="2.4.2.23 LL_PHY_UPDATE_IND"></a>2.4.2.23 LL_PHY_UPDATE_IND</h4><center><br><img src="/images/ble_77.png" alt=""><br></center><br>• M_TO_S_PHY：從Master發送到Slave的Packet PHY類型<br><br>• S_TO_M_PHY：從Slave發送到Master的Packet PHY類型<br><br>Packet PHY類型可參考下表：<br><br><center><br><img src="/images/ble_78.png" alt=""><br></center>
+
+<p>如果PHY改變，對應的欄位應只會有一個bit被設為1，如果PHY不便，對應的欄位應設定為0</p>
+<p>• Instant：參考Section 5.1.10.描述。如果M_TO_S_PHY及S_TO_M_PHY欄位都為0，則不存在Instant欄位。</p>
+<h4 id="2-4-2-24-LL-MIN-USED-CHANNELS-IND"><a href="#2-4-2-24-LL-MIN-USED-CHANNELS-IND" class="headerlink" title="2.4.2.24 LL_MIN_USED_CHANNELS_IND"></a>2.4.2.24 LL_MIN_USED_CHANNELS_IND</h4><center><br><img src="/images/ble_79.png" alt=""><br></center>
+
+<p>• PHYS： PHY類型，PHYS欄位有8 bit如下表所示，至少有一個bit要設定為1。</p>
+<center><br><img src="/images/ble_80.png" alt=""><br></center>
+
+<p>• MinUsedChannels：在指定PHY上使用的最少Channel數，值的範圍為(2-37)</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/藍牙/" rel="tag"># 藍牙</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/30/ble_ch4_1/" rel="next" title="4. 低功耗藍牙規範-鏈結層(1)">
+                <i class="fa fa-chevron-left"></i> 4. 低功耗藍牙規範-鏈結層(1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/30/ble_ch4_3/" rel="prev" title="4. 低功耗藍牙規範-鏈結層(3)">
+                4. 低功耗藍牙規範-鏈結層(3) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">顯示 Gitment 評論</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Timmy Chi" />
+            
+              <p class="site-author-name" itemprop="name">Timmy Chi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/tingchuchi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:a22533884@hotmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/tccfab" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://streetvoice.com/timmy780311/songs/" target="_blank" title="StreetVoice">
+                      
+                        <i class="fa fa-fw fa-music"></i>StreetVoice</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-空中介面封包-Air-Interface-Packets"><span class="nav-number">1.</span> <span class="nav-text">2. 空中介面封包 (Air Interface Packets)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-低功耗藍牙未編碼的實體封包格式-Packet-Format-For-the-LE-Uncoded-PHYs"><span class="nav-number">1.1.</span> <span class="nav-text">2.1 低功耗藍牙未編碼的實體封包格式 (Packet Format For the LE Uncoded PHYs)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-Access-Address-接入地址"><span class="nav-number">1.2.</span> <span class="nav-text">2.1.2 Access Address (接入地址)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-PDU"><span class="nav-number">1.3.</span> <span class="nav-text">2.1.3 PDU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-4-CRC"><span class="nav-number">1.4.</span> <span class="nav-text">2.1.4 CRC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-低功耗藍牙編碼的實體封包格式-Packet-Format-For-the-LE-Coded-PHYs"><span class="nav-number">2.</span> <span class="nav-text">2.2 低功耗藍牙編碼的實體封包格式 (Packet Format For the LE Coded PHYs)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-Preamble"><span class="nav-number">2.1.</span> <span class="nav-text">2.2.1 Preamble</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-Access-Address"><span class="nav-number">2.2.</span> <span class="nav-text">2.2.2 Access Address</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-Coding-Indication-編碼指示器"><span class="nav-number">2.3.</span> <span class="nav-text">2.2.3 Coding Indication (編碼指示器)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-4-PDU"><span class="nav-number">2.4.</span> <span class="nav-text">2.2.4 PDU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-5-CRC"><span class="nav-number">2.5.</span> <span class="nav-text">2.2.5 CRC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-6-TERM-and-TERM2"><span class="nav-number">2.6.</span> <span class="nav-text">2.2.6 TERM and TERM2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-Advertising-Channel-PDU"><span class="nav-number">3.</span> <span class="nav-text">2.3 Advertising Channel PDU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-Advertising-PDUs"><span class="nav-number">3.1.</span> <span class="nav-text">2.3.1 Advertising PDUs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-1-ADV-IND"><span class="nav-number">3.1.1.</span> <span class="nav-text">2.3.1.1 ADV_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-2-ADV-DIRECT-IND"><span class="nav-number">3.1.2.</span> <span class="nav-text">2.3.1.2 ADV_DIRECT_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-3-ADV-NONCONN-IND"><span class="nav-number">3.1.3.</span> <span class="nav-text">2.3.1.3 ADV_NONCONN_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-4-ADV-SCAN-IND"><span class="nav-number">3.1.4.</span> <span class="nav-text">2.3.1.4 ADV_SCAN_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-5-ADV-EXT-IND"><span class="nav-number">3.1.5.</span> <span class="nav-text">2.3.1.5 ADV_EXT_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-6-AUX-ADV-IND"><span class="nav-number">3.1.6.</span> <span class="nav-text">2.3.1.6 AUX_ADV_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-7-AUX-SYNC-IND"><span class="nav-number">3.1.7.</span> <span class="nav-text">2.3.1.7 AUX_SYNC_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-8-AUX-CHAIN-IND"><span class="nav-number">3.1.8.</span> <span class="nav-text">2.3.1.8 AUX_CHAIN_IND</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-Scanning-PDUs"><span class="nav-number">3.2.</span> <span class="nav-text">2.3.2 Scanning PDUs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-1-SCAN-REQ-and-AUX-SCAN-REQ"><span class="nav-number">3.2.1.</span> <span class="nav-text">2.3.2.1 SCAN_REQ and AUX_SCAN_REQ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-2-SCAN-RSP"><span class="nav-number">3.2.2.</span> <span class="nav-text">2.3.2.2 SCAN_RSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-3-AUX-SCAN-RSP"><span class="nav-number">3.2.3.</span> <span class="nav-text">2.3.2.3 AUX_SCAN_RSP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-3-Initial-PDUs"><span class="nav-number">3.3.</span> <span class="nav-text">2.3.3 Initial PDUs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-1-CONNECT-IND-and-AUX-CONNECT-REQ"><span class="nav-number">3.3.1.</span> <span class="nav-text">2.3.3.1 CONNECT_IND and AUX_CONNECT_REQ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-2-AUX-CONNECT-RSP"><span class="nav-number">3.3.2.</span> <span class="nav-text">2.3.3.2 AUX_CONNECT_RSP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-4-Common-Extended-Advertising-Payload-Format"><span class="nav-number">3.4.</span> <span class="nav-text">2.3.4 Common Extended Advertising Payload Format</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-DATA-CHANNEL-PDU"><span class="nav-number">4.</span> <span class="nav-text">2.4 DATA CHANNEL PDU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-1-LL-Data-PDU"><span class="nav-number">4.1.</span> <span class="nav-text">2.4.1 LL Data PDU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-2-LL-Control-PDU"><span class="nav-number">4.2.</span> <span class="nav-text">2.4.2 LL Control PDU</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-1-LL-CONNECTION-UPDATE-IND"><span class="nav-number">4.2.1.</span> <span class="nav-text">2.4.2.1 LL_CONNECTION_UPDATE_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-2-LL-CHANNEL-MAP-IND"><span class="nav-number">4.2.2.</span> <span class="nav-text">2.4.2.2 LL_CHANNEL_MAP_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-3-LL-TERMINATE-IND"><span class="nav-number">4.2.3.</span> <span class="nav-text">2.4.2.3 LL_TERMINATE_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-4-LL-ENC-REQ"><span class="nav-number">4.2.4.</span> <span class="nav-text">2.4.2.4 LL_ENC_REQ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-5-LL-ENC-RSP"><span class="nav-number">4.2.5.</span> <span class="nav-text">2.4.2.5 LL_ENC_RSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-9-LL-FEATURE-REQ"><span class="nav-number">4.2.6.</span> <span class="nav-text">2.4.2.9 LL_FEATURE_REQ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-10-LL-FEATURE-RSP"><span class="nav-number">4.2.7.</span> <span class="nav-text">2.4.2.10 LL_FEATURE_RSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-11-LL-PAUSE-ENC-REQ"><span class="nav-number">4.2.8.</span> <span class="nav-text">2.4.2.11 LL_PAUSE_ENC_REQ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-12-LL-PAUSE-ENC-RSP"><span class="nav-number">4.2.9.</span> <span class="nav-text">2.4.2.12 LL_PAUSE_ENC_RSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-13-LL-VERSION-IND"><span class="nav-number">4.2.10.</span> <span class="nav-text">2.4.2.13 LL_VERSION_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-15-LL-SLAVE-FEATURE-REQ"><span class="nav-number">4.2.11.</span> <span class="nav-text">2.4.2.15 LL_SLAVE_FEATURE_REQ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-17-LL-CONNECTION-PARAM-RSP"><span class="nav-number">4.2.12.</span> <span class="nav-text">2.4.2.17 LL_CONNECTION_PARAM_RSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-18-LL-REJECT-EXT-IND"><span class="nav-number">4.2.13.</span> <span class="nav-text">2.4.2.18 LL_REJECT_EXT_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-19-LL-PING-REQ"><span class="nav-number">4.2.14.</span> <span class="nav-text">2.4.2.19 LL_PING_REQ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-20-LL-PING-RSP"><span class="nav-number">4.2.15.</span> <span class="nav-text">2.4.2.20 LL_PING_RSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-21-LL-LENGTH-REQ-and-LL-LENGTH-RSP"><span class="nav-number">4.2.16.</span> <span class="nav-text">2.4.2.21 LL_LENGTH_REQ and LL_LENGTH_RSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-23-LL-PHY-UPDATE-IND"><span class="nav-number">4.2.17.</span> <span class="nav-text">2.4.2.23 LL_PHY_UPDATE_IND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-24-LL-MIN-USED-CHANNELS-IND"><span class="nav-number">4.2.18.</span> <span class="nav-text">2.4.2.24 LL_MIN_USED_CHANNELS_IND</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<span id="busuanzi_container_site_pv">
+  本站總訪問量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Timmy Chi</span>
+
+  
+</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+    
+    
+    
+    
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+    
+        <script type="text/javascript">
+            function showGitment(){
+                document.getElementById("gitment-display-button").style.display = "none";
+                document.getElementById("gitment-container").style.display = "block";
+                var gitment = new Gitment({
+                        id: window.location.pathname, 
+                        owner: 'tingchuchi',
+                        repo: 'tingchuchi.github.io',
+                        oauth: {
+                            client_id: '7c5785b3c57623a58628',
+                            client_secret: 'b96ca94c2a2fe25a9a983fad789736360c10c2b4',
+                        }});
+                gitment.render('gitment-container');
+            }
+        </script>
+    
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("l4uPF5dh0nTJm8tqLG24rPjE-gzGzoHsz", "Enrp30fd6WNpGEClJmlsOKAi");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

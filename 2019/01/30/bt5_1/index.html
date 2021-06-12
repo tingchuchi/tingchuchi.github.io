@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="藍牙," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="藍牙5.1 更新功能介紹前言藍牙 5.1 於 2019.1.21 正式發布，以下簡略介紹更新的功能。詳細內容及技術資訊在文章後面會提出。 A. Direction Finding Direction Finding 新增 Angle of Arrival (AoA) , Angle of Departure(AoD) 兩種方法，可提升定位的精準度。 B. GATT Caching Enhancem">
+<meta name="keywords" content="藍牙">
+<meta property="og:type" content="article">
+<meta property="og:title" content="藍牙5.1 更新功能介紹">
+<meta property="og:url" content="https://tingchuchi.github.io/2019/01/30/bt5_1/index.html">
+<meta property="og:site_name" content="Timmy 技術筆記">
+<meta property="og:description" content="藍牙5.1 更新功能介紹前言藍牙 5.1 於 2019.1.21 正式發布，以下簡略介紹更新的功能。詳細內容及技術資訊在文章後面會提出。 A. Direction Finding Direction Finding 新增 Angle of Arrival (AoA) , Angle of Departure(AoD) 兩種方法，可提升定位的精準度。 B. GATT Caching Enhancem">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_88.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_89.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_90.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_91.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_92.png">
+<meta property="og:updated_time" content="2021-06-12T03:19:20.234Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="藍牙5.1 更新功能介紹">
+<meta name="twitter:description" content="藍牙5.1 更新功能介紹前言藍牙 5.1 於 2019.1.21 正式發布，以下簡略介紹更新的功能。詳細內容及技術資訊在文章後面會提出。 A. Direction Finding Direction Finding 新增 Angle of Arrival (AoA) , Angle of Departure(AoD) 兩種方法，可提升定位的精準度。 B. GATT Caching Enhancem">
+<meta name="twitter:image" content="https://tingchuchi.github.io/images/ble_88.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://tingchuchi.github.io/2019/01/30/bt5_1/"/>
+
+
+
+
+
+  <title>藍牙5.1 更新功能介紹 | Timmy 技術筆記</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Timmy 技術筆記</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-vocal">
+          <a href="/categories/歌唱教學" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            歌唱教學
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-music">
+          <a href="/categories/音樂" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            音樂相關
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-musiccreate">
+          <a href="/categories/詞曲創作" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-building"></i> <br />
+            
+            詞曲創作
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guitar">
+          <a href="/categories/吉他" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            吉他
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bluetooth">
+          <a href="/categories/藍牙" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-bluetooth"></i> <br />
+            
+            藍牙技術
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://tingchuchi.github.io/2019/01/30/bt5_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Timmy Chi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timmy 技術筆記">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">藍牙5.1 更新功能介紹</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+		    
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-01-30T21:20:00+08:00">
+                2019-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/藍牙/" itemprop="url" rel="index">
+                    <span itemprop="name">藍牙</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/01/30/bt5_1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/01/30/bt5_1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/01/30/bt5_1/" class="leancloud_visitors" data-flag-title="藍牙5.1 更新功能介紹">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="藍牙5-1-更新功能介紹"><a href="#藍牙5-1-更新功能介紹" class="headerlink" title="藍牙5.1 更新功能介紹"></a>藍牙5.1 更新功能介紹</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>藍牙 5.1 於 2019.1.21 正式發布，以下簡略介紹更新的功能。詳細內容及技術資訊在文章後面會提出。</p>
+<p>A. Direction Finding</p>
+<p>Direction Finding 新增 Angle of Arrival (AoA) , Angle of Departure(AoD) 兩種方法，可提升定位的精準度。</p>
+<p>B. GATT Caching Enhancements</p>
+<p>GATT Caching Enhancements 省略了BLE在連接時頻繁使用service discovery，藉以提升連接的效率及省電。</p>
+<p>C. Advertising Enhancement 1: Randomized Advertising Channel Indexing</p>
+<p>將原有固定Channel index廣播調整為隨機Channel index，提升BLE廣播在複雜環境下的可靠性。</p>
+<p>D. Advertising Enhancement 2: Periodic Advertising Sync Transfer</p>
+<p>因同步 Periodic Advertising 花的能量效益高，新版功能允許其他不受能量約束的裝置進行 同步 Periodic Advertising。 再將其資訊轉給受能量約束的裝置，進而減少設計成本。</p>
+<p>E. 其餘次要增強功能</p>
+<p>列於文章後面</p>
+<h2 id="Direction-Finding"><a href="#Direction-Finding" class="headerlink" title="Direction Finding"></a>Direction Finding</h2><p>原有的藍牙協議是用訊號強度(RSSI)來估算距離，BT 5.1提供了 Angle of Arrival (AoA) , Angle of Departure(AoD) 這兩種方法，可以高精度的確定藍牙訊號的傳輸角度。<br>這兩種技術要求藍牙設備發送端或接收端需要一個或多個天線陣列。若使用AoA方法，天線陣列要加在接收端，若使用AoD，天線要加在發送端。<br>該新增功能為BLE 接收端 controller 提供產生數據的能力，可使用該數據來計算發送端的方向角。<br>direction finding功能是藍牙核心規範中Bluetooth roadmap中的第一步，在未來，該規範會實現於藍牙定位服務(Bluetooth location services)。 藍牙開發人員將能夠利用新的direction finding controller功能來創建高精度的定位系統，如即時定位系統（RTLS）和室內定位系統（IPS）。</p>
+<center><br><img src="/images/ble_88.png" alt=""><br></center>
+
+<h2 id="技術細節"><a href="#技術細節" class="headerlink" title="技術細節"></a>技術細節</h2><p>Bluetooth direction finding feature使用In-Phase和Quadrature（IQ）sampling來測量在特定時間發射到天線上的無線電波的相位。在AoA方法中，取樣過程一次一個地應用於陣列中每個天線，並且根據陣列的設計來進行合適的取樣順序應用。<br>取樣數據透過（HCI）向上傳遞，並且透過將演算法計算一個設備到另一個設備的方向。在此核心規範版本中未定義用於從（IQ）sampling計算角度的算法。一旦關聯的配置文件可用，程序開發人員將可實現演算法。<br>為了支持IQ sampling以及在high layer使用IQsamples，Link Layer和HCI 層都有做調整。<br>在Link Layer，定義了Constant Tone Extension（CTE）的field（參見下圖）。 CTE field提供恆定的頻率和波長信號，可以對其進行IQ sampling。CTE包含1’s sequence，不受whitening process的約束，並且不含在CRC計算中。</p>
+<center><br><img src="/images/ble_89.png" alt=""><br></center>
+
+<h2 id="GATT-Caching-Enhancements"><a href="#GATT-Caching-Enhancements" class="headerlink" title="GATT Caching Enhancements"></a>GATT Caching Enhancements</h2><h2 id="背景知識"><a href="#背景知識" class="headerlink" title="背景知識"></a>背景知識</h2><p>所有BLE連接設備都使用GATT。因此，GATT caching與各種device types相關。<br>GATT包含attribute table資料庫。attribute table包含GATT service，characteristic和descriptor和其值，該資料庫為 BLE 工作的核心。<br>GATT clients必須執行service discovery，以獲取已連接到GATT server端設備上的attribute table的詳細資訊。之後clients可以使用這些details，包括service 中Attribute Protocol（ATT） 的identifying attribute handles。</p>
+<center><br><img src="/images/ble_90.png" alt=""><br></center>
+
+
+<p>有些設備在其整個生命週期內不會更改其attribute table結構。表示GATT services , characteristics descriptors始終相同，並且只有characteristics或descriptors的值才會更改。 其他設備會不時更改其attribute table。<br>Service discovery需要時間並且也會消耗能量。因此，BT 5.1定義了一種attribute暫存策略，目的在於允許clients在attribute沒有任何變化時跳過Service discovery。<br>以前，僅使用可能GATT service中的service Changed characteristic來控制client/server attribute table同步。GATT service透過向client發送ATT indication來通知連接的client其attribute table已經改變。 client則回覆ATT indication，並執行service discovery來同步attribute cache。<br>為了避免GATT server需要追蹤每個連接的client，以及每個client都需要被告知最新的attribute table change，早期BT規格規定了沒有信任關係(no trusted relationship) (沒有配對)的clients和servers（即每次連接時都需要執行service discovery。此規定可能會導致某些產品的效能及使用體驗差。<br>此外，除了使用ATT Service Changed indication通知client attribute table已更改之外，早期規格沒有針對client 及 server 的attribute table執行進一步的狀態管理。 允許client和server通信中的race condition， attribute table changes和general ATT可能會互相存在，因此client可能在連接到server之後等Service Changed indication時timeout ，繼續發送一般ATT PDU，接著等Service Changed indication。</p>
+<h2 id="Improved-Caching-Strategy-改進的暫存策略"><a href="#Improved-Caching-Strategy-改進的暫存策略" class="headerlink" title="Improved Caching Strategy (改進的暫存策略)"></a>Improved Caching Strategy (改進的暫存策略)</h2><p>BT5.1更改了GATT clients和servers如何caching attribute和cache同步。它允許沒有與server建立信任關係的client保留其attribute cache，從而提供顯著的用戶體驗和能效提升連接並解決上述race condition issue。<br>多了兩個新characteristics，每個characteristics都是Generic Attribute Service的成員：<br>Database Hash和Client Supported Features。如果Clients支持新的Database Hash characteristic，那麼與server沒有綁定(配對)的Client現在可以連接attribute table，這些 characterisitic 在 server中的”Client Supported Features characteristic ” 中會被indicated<br>Database Hash characteristic允許client詢問server是否有任何更改，而不是依賴server使用Service Changed indication來告訴client。server負責維護Database Hash characteristic的值，該characteristic是從attribute table計算的Hash。server在建立連接後立即讀取其值。client可以緩存Database Hash value並隨後使用它來確定remote attribute table是否已更改。如果已更改，則clienty再次執行service<br>discovery。如果沒有更改，則不需要執行。這為某些設備較好的用戶體驗和能源效率優勢。<br>此外，client現在可以推斷出它所連接的設備是與先前連接到的設備為相同類型，並且其attribute table已經被client緩存。 如果來自連接設備的database hash與與client attribute table關聯的database hash相同，並且其他詳細訊息（例如設備製造商）相同，則客戶端可以得出結論：<br>因為從另一個設備獲得的屬性高速緩存已經包含等效數據，所以不需要為連接的設備執行服務發現。<br>對於某些應用，這種變化具有相當大的價值。 例如，藍牙鎖，其中智慧手機或其他client設備在使用者接近門時對用戶進行認證和打開門。 只有在使用者第一次嘗試通過具有藍牙鎖的門時才需要執行service discovery。在第一次使用期間，使用者可能會感覺到門解鎖的延遲，但是隨後使用者接近門不需要service discovery，對於藍牙鎖的使用體驗會更迅速。</p>
+<h2 id="Better-State-Management-更好的狀態管理"><a href="#Better-State-Management-更好的狀態管理" class="headerlink" title="Better State Management (更好的狀態管理)"></a>Better State Management (更好的狀態管理)</h2><p>state machine定義client 及 server attribute table是否同步，client是否需要執行service discovery。<br>attribute caching引入了嚴格定義的Robust Caching概念，該概念使該state machine正式化並引入了使用它的機制。<br>Clients會有兩種state：change-aware state或change-unaware state。該規範列出了轉換到適當狀態的精確規則以及在每種狀態下的行為方式。<br>如果server認為client attribute table與server不同步，則可能會回傳“Database Out Of Sync” ATT error response。當server處於change-unaware state時，server將忽略從client收到的所有ATT command。許多事件可以將client的狀態轉換為change-aware，包括server接收到先前已發送的Service Changed indication的ATT confirmation或server已通知client使用 &lt;&lt; Database Out Of Sync &gt;&gt;error並隨後從client接收其他ATT PDU。<br>從client的角度來看，如果它轉移為change-unaware狀態，client將不會使用其attribute cache，將其視為無效。<br>在client的attribute cache和servers再次同步之前，attribute cache將繼續被視為無效。</p>
+<h2 id="Advertising-Enhancement-1-Randomized-Advertising-Channel-Indexing"><a href="#Advertising-Enhancement-1-Randomized-Advertising-Channel-Indexing" class="headerlink" title="Advertising Enhancement 1: Randomized Advertising Channel Indexing"></a>Advertising Enhancement 1: Randomized Advertising Channel Indexing</h2><p>在BT 5.0中，advertising events被定義為“在primary advertising channel發送一個以上advertising PDUs，從第一個使用的advertising channel index開始，以最後使用的advertising channel index結束”。<br>實際上，這意味著當所有三個channel都在使用時（通常是這種情況），廣告按照嚴格的順序使用sequence 37, 38, 39。<br>為了減少持續packet衝突的可能性，其中兩個或多個設備在重疊時間段(overlapping time period) 內在同一same channel上進行廣播，藍牙核心規範v5.0規定連續advertising events間隔時間為0-10毫秒之間的隨機延遲。</p>
+<center><br><img src="/images/ble_91.png" alt=""><br></center>
+
+<h3 id="Improved-Packet-Collision-Avoidance"><a href="#Improved-Packet-Collision-Avoidance" class="headerlink" title="Improved Packet Collision Avoidance"></a>Improved Packet Collision Avoidance</h3><p>在BT 5.1中，處於advertising state的設備不再需要以嚴格且不變的順序選擇advertising channels。 現在允許隨機選擇channel index。 channel index的隨機化進一步降低了advertising packet衝突發生的可能性。<br>透過BT5.1對channel index的更改，使用advertising來執行connectionless communication的應用將提升可擴展性和可靠性。</p>
+<center><br><img src="/images/ble_92.png" alt=""><br></center>
+
+<h2 id="Advertising-Enhancement-2-Periodic-Advertising-Sync-Transfer"><a href="#Advertising-Enhancement-2-Periodic-Advertising-Sync-Transfer" class="headerlink" title="Advertising Enhancement 2: Periodic Advertising Sync Transfer"></a>Advertising Enhancement 2: Periodic Advertising Sync Transfer</h2><p>BT 5.0引入了periodic advertising，該advertising使用advertising events的deterministic scheduling，並提供設備可用於將其掃描與另一設備的advertising schedule同步的procedure。scanning和advertising的timing同步可以使scanning device更加節能並且可以使得在數據交換中需要精確timing的一些使用情況成為可能。<br>為了允許與remote device的periodic advertising同步，remote device 廣播包含SyncInfo field 的AUX_ADV_IND PDUs。 SyncInfo內有receiving device需要知道的所有內容，以便與remote device從該點開始執行的AUX_SYNC_IND PDU的periodic advertising同步。然而，該periodic advertising synchronization procedure可能是相對昂貴的操作。</p>
+<h2 id="The-Power-of-Two"><a href="#The-Power-of-Two" class="headerlink" title="The Power of Two"></a>The Power of Two</h2><p>具有limited power的一些device types可能無法承擔與periodic advertising synchronization procedure相關聯的能量成本，或者可能具有妨礙其duty cycle或scan time的限制。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/藍牙/" rel="tag"># 藍牙</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/30/ble_ch4_3/" rel="next" title="4. 低功耗藍牙規範-鏈結層(3)">
+                <i class="fa fa-chevron-left"></i> 4. 低功耗藍牙規範-鏈結層(3)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/06/12/vocal_teach1/" rel="prev" title="歌唱小教室-真聲?假聲?強假聲?混聲?如何讓高音銜接好?">
+                歌唱小教室-真聲?假聲?強假聲?混聲?如何讓高音銜接好? <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">顯示 Gitment 評論</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Timmy Chi" />
+            
+              <p class="site-author-name" itemprop="name">Timmy Chi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/tingchuchi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:a22533884@hotmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/tccfab" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://streetvoice.com/timmy780311/songs/" target="_blank" title="StreetVoice">
+                      
+                        <i class="fa fa-fw fa-music"></i>StreetVoice</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#藍牙5-1-更新功能介紹"><span class="nav-number">1.</span> <span class="nav-text">藍牙5.1 更新功能介紹</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Direction-Finding"><span class="nav-number">1.2.</span> <span class="nav-text">Direction Finding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技術細節"><span class="nav-number">1.3.</span> <span class="nav-text">技術細節</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GATT-Caching-Enhancements"><span class="nav-number">1.4.</span> <span class="nav-text">GATT Caching Enhancements</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#背景知識"><span class="nav-number">1.5.</span> <span class="nav-text">背景知識</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Improved-Caching-Strategy-改進的暫存策略"><span class="nav-number">1.6.</span> <span class="nav-text">Improved Caching Strategy (改進的暫存策略)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Better-State-Management-更好的狀態管理"><span class="nav-number">1.7.</span> <span class="nav-text">Better State Management (更好的狀態管理)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Advertising-Enhancement-1-Randomized-Advertising-Channel-Indexing"><span class="nav-number">1.8.</span> <span class="nav-text">Advertising Enhancement 1: Randomized Advertising Channel Indexing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Improved-Packet-Collision-Avoidance"><span class="nav-number">1.8.1.</span> <span class="nav-text">Improved Packet Collision Avoidance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Advertising-Enhancement-2-Periodic-Advertising-Sync-Transfer"><span class="nav-number">1.9.</span> <span class="nav-text">Advertising Enhancement 2: Periodic Advertising Sync Transfer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Power-of-Two"><span class="nav-number">1.10.</span> <span class="nav-text">The Power of Two</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<span id="busuanzi_container_site_pv">
+  本站總訪問量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Timmy Chi</span>
+
+  
+</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+    
+    
+    
+    
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+    
+        <script type="text/javascript">
+            function showGitment(){
+                document.getElementById("gitment-display-button").style.display = "none";
+                document.getElementById("gitment-container").style.display = "block";
+                var gitment = new Gitment({
+                        id: window.location.pathname, 
+                        owner: 'tingchuchi',
+                        repo: 'tingchuchi.github.io',
+                        oauth: {
+                            client_id: '7c5785b3c57623a58628',
+                            client_secret: 'b96ca94c2a2fe25a9a983fad789736360c10c2b4',
+                        }});
+                gitment.render('gitment-container');
+            }
+        </script>
+    
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("l4uPF5dh0nTJm8tqLG24rPjE-gzGzoHsz", "Enrp30fd6WNpGEClJmlsOKAi");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

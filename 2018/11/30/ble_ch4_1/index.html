@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="藍牙," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Link layer 定義了兩個設備如何利用無線電來傳輸訊息。其中包含了封包(Packet)、廣播(Advertising)、資料通道(Data Channel)的詳細定義，也規定了發現(Discover)其他設備的流程、廣播資料(Broadcasting Data)、連接建立、連接管理以及連接中的資料傳輸。2.4GHz ISM 頻段中的干擾、噪音、嚴重衰減(Deep Fade)等無線傳輸系統的挑">
+<meta name="keywords" content="藍牙">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4. 低功耗藍牙規範-鏈結層(1)">
+<meta property="og:url" content="https://tingchuchi.github.io/2018/11/30/ble_ch4_1/index.html">
+<meta property="og:site_name" content="Timmy 技術筆記">
+<meta property="og:description" content="Link layer 定義了兩個設備如何利用無線電來傳輸訊息。其中包含了封包(Packet)、廣播(Advertising)、資料通道(Data Channel)的詳細定義，也規定了發現(Discover)其他設備的流程、廣播資料(Broadcasting Data)、連接建立、連接管理以及連接中的資料傳輸。2.4GHz ISM 頻段中的干擾、噪音、嚴重衰減(Deep Fade)等無線傳輸系統的挑">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_6.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_7.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_8.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_9.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_10.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_11.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_12.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_13.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_14.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_15.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_16.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_17.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_18.png">
+<meta property="og:updated_time" content="2018-11-30T07:36:13.392Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4. 低功耗藍牙規範-鏈結層(1)">
+<meta name="twitter:description" content="Link layer 定義了兩個設備如何利用無線電來傳輸訊息。其中包含了封包(Packet)、廣播(Advertising)、資料通道(Data Channel)的詳細定義，也規定了發現(Discover)其他設備的流程、廣播資料(Broadcasting Data)、連接建立、連接管理以及連接中的資料傳輸。2.4GHz ISM 頻段中的干擾、噪音、嚴重衰減(Deep Fade)等無線傳輸系統的挑">
+<meta name="twitter:image" content="https://tingchuchi.github.io/images/ble_6.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://tingchuchi.github.io/2018/11/30/ble_ch4_1/"/>
+
+
+
+
+
+  <title>4. 低功耗藍牙規範-鏈結層(1) | Timmy 技術筆記</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Timmy 技術筆記</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-vocal">
+          <a href="/categories/歌唱教學" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            歌唱教學
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-music">
+          <a href="/categories/音樂" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            音樂相關
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-musiccreate">
+          <a href="/categories/詞曲創作" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-building"></i> <br />
+            
+            詞曲創作
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guitar">
+          <a href="/categories/吉他" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            吉他
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bluetooth">
+          <a href="/categories/藍牙" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-bluetooth"></i> <br />
+            
+            藍牙技術
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://tingchuchi.github.io/2018/11/30/ble_ch4_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Timmy Chi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timmy 技術筆記">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">4. 低功耗藍牙規範-鏈結層(1)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+		    
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-11-30T17:00:01+08:00">
+                2018-11-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/藍牙/" itemprop="url" rel="index">
+                    <span itemprop="name">藍牙</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/30/ble_ch4_1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/11/30/ble_ch4_1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/11/30/ble_ch4_1/" class="leancloud_visitors" data-flag-title="4. 低功耗藍牙規範-鏈結層(1)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Link layer 定義了兩個設備如何利用無線電來傳輸訊息。其中包含了封包(Packet)、廣播(Advertising)、資料通道(Data Channel)的詳細定義，也規定了發現(Discover)其他設備的流程、廣播資料(Broadcasting Data)、連接建立、連接管理以及連接中的資料傳輸。2.4GHz ISM 頻段中的干擾、噪音、嚴重衰減(Deep Fade)等無線傳輸系統的挑戰也加深了Link Layer的複雜度。</p>
+<a id="more"></a>
+<h2 id="1-一般描述"><a href="#1-一般描述" class="headerlink" title="1 一般描述"></a>1 一般描述</h2><h3 id="1-1-鏈結層狀態-Link-Layer-States"><a href="#1-1-鏈結層狀態-Link-Layer-States" class="headerlink" title="1.1 鏈結層狀態(Link Layer States)"></a>1.1 鏈結層狀態(Link Layer States)</h3><p>Link Layer的操作可以用狀態機來描述，總共有以下五個狀態：</p>
+<p>• Standby State (就緒狀態)</p>
+<p>• Advertising State (廣播狀態)</p>
+<p>• Scanning State (掃描狀態)</p>
+<p>• Initiating State (發起狀態)</p>
+<p>• Connection State (連接狀態)</p>
+<center><br><img src="/images/ble_6.png" alt=""><br>圖6. 鏈結層狀態<br></center>
+
+<p>Link Layer 狀態機只允許一次一個狀態為Active。Link Layer 至少有一個狀態支持 Advertising State或Scanning State。一個Link Layer 的具體實現可以擁有多個獨立的狀態機。</p>
+<h4 id="Standby-State"><a href="#Standby-State" class="headerlink" title="Standby State"></a>Standby State</h4><p>BLE裝置上電後，Link layer進入並且維持Standby State直到接到來自Host的命令，在Standby State時，裝置不發送或接收任何的Packet。Standby State 可以進入Advertising State 或是 Initiating State；從其他任意狀態也可以進入Standby State。Standby State 是 Link layer狀態機的中心狀態，儘管是非活動狀態，但也是最為重要。</p>
+<h4 id="Advertising-State"><a href="#Advertising-State" class="headerlink" title="Advertising State"></a>Advertising State</h4><p>Advertising State 的裝置負責發送Advertising Packet，也可以發送 Scan Request用來回應主動掃描的裝置。進入Advertising State的裝置稱為Advertiser。Advertising State的裝置停止Advertise後可以進入Standby state。</p>
+<p>Discoverable 或是 Connectable 的裝置需要處於Advertising State，想在一定區域內向其他裝置Advertise也需要處於Advertise State。</p>
+<p>為了要成為Advertiser，設備必須要有發射器(Transmitter)，當然也可以有接收器(Receiver)，只支援Advertising State的裝置可以設有接收器來降低晶片成本。不過實際上出貨量大的收發器往往會比出貨量小的單一發射器來便宜。</p>
+<h4 id="Scanning-State"><a href="#Scanning-State" class="headerlink" title="Scanning State"></a>Scanning State</h4><p>Scanning State 的裝置能夠接收Advertise Channel Packet 。處於Scanning State 的裝置稱為掃描者(Scanner)。Scanning State可由Standby State進入。Scanning State 可分為兩個子狀態： Passive Scanning(被動掃描)及 Active Scanning(主動掃描)。</p>
+<h5 id="Passive-Scanning-被動掃描"><a href="#Passive-Scanning-被動掃描" class="headerlink" title="Passive Scanning(被動掃描)"></a>Passive Scanning(被動掃描)</h5><p>在Passive Scanning中，裝置只能被動地掃瞄，無法發送任何Packet。因此，Passive Scanning可以在只有Transmitter的裝置中實現。</p>
+<h5 id="Active-Scanning-主動掃描"><a href="#Active-Scanning-主動掃描" class="headerlink" title="Active Scanning(主動掃描)"></a>Active Scanning(主動掃描)</h5><p>Active Scanning中，Link Layer一旦發現了新的Advertising State 裝置，都會發送Scanning Request(掃描請求)，並等待該Request的回應。Scan Request及Response Packet都會在Advertising channel 中傳輸。</p>
+<p>為了使Active Scanning可以更有效率的工作，Scanning response應盡量為Static(靜態資料)，因為就能源消耗而言，Scanning Request及Response這兩個額外的packet會使得data在使用上更加珍貴。然而，原始的Advertising Packet Data則能夠定期變更，因為Advertising Packet總會被接收到。</p>
+<h4 id="Initiating-State"><a href="#Initiating-State" class="headerlink" title="Initiating State"></a>Initiating State</h4><p>為了能夠發起連接，Link Layer需要處於Initiating State。Initiating State 可以從Standby State進入。處於Initiating State的裝置稱為Initiator，Initiator其接收器用來監聽自己試圖連接的裝置。如果收到了來自該裝置的Advertise Packet，Link Layer會向其發送Connect Request並進入Connection State。如果initiator不再試圖發起連接，會進入Standby State。</p>
+<h4 id="Connection-State"><a href="#Connection-State" class="headerlink" title="Connection State"></a>Connection State</h4><p>從Advertising State 或是Initiating State均可進入Connection State。兩種情況均源自於Initiator向Advertiser發起Connect Request Packet。</p>
+<p>Connection State中，兩個設備相互傳輸Data Channel Packets，這也是唯一一個用到Data Channel 的狀態，其他各個狀態均使用到Broadcast Channel。</p>
+<p>Connection State有兩個子狀態: Master及Slave。</p>
+<h5 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h5><p>Master只能從Initiating State進入。為了成為Master裝置，它必須向Peer Device發起連接。Master Device會與 Slave Device 進行通訊並且定義傳輸的時間。Slave Device 只能藉由response packet才能夠傳自己的資料。</p>
+<h5 id="Slave"><a href="#Slave" class="headerlink" title="Slave"></a>Slave</h5><p>Slave只能從Broadcast State進入。為了成為Slave裝置，它必須向Peer Device進行Broadcast。Slave Device 只能在正確接收來自Master device 的packet才能傳資料。如果Slave想傳更多資料，則必須等待Master device傳送另外的Packet再回復。當然Slave Device可隨時忽略Master Device來達到省電的目的。如此一來，Slave Device可以透過”休眠”來節省大量的能量。</p>
+<p>下表為Link Layer 全部操作狀態的簡易整理描述</p>
+<center><br><img src="/images/ble_7.png" alt=""><br>圖7. 鏈結層各狀態描述<br></center>
+
+
+<h3 id="1-2-允許的狀態及角色組合限制-Permitted-State-and-Role-Combination-Restrictions"><a href="#1-2-允許的狀態及角色組合限制-Permitted-State-and-Role-Combination-Restrictions" class="headerlink" title="1.2 允許的狀態及角色組合限制 (Permitted State and Role Combination Restrictions)"></a>1.2 允許的狀態及角色組合限制 (Permitted State and Role Combination Restrictions)</h3><p>在一個時刻，狀態機只能處於一種狀態，而Link Layer可同時擁有多個狀態機。這意味著BLE設備在一個狀態機中保持Connection狀態的同時，另一個狀態機可保持Advertising狀態，或者多個Link Layer狀態機同時處於連接狀態，這也是BLE設備實現多個連接的基礎。</p>
+<p>以下為同時建立多個連接的場景：</p>
+<ol>
+<li>如果設備A已經跟設備B保持連接，那麼設備A可以執行廣播或掃描操作。</li>
+<li>如果設備A已經跟設備B保持連接，並且設備A是主設備，那麼設備A能夠跟其他從設備C再次建立連接。</li>
+<li>如果設備A已經跟設備B保持連接，並且設備A是從設備，那麼設備A能夠跟其他主設備C再次建立連接。</li>
+<li>如果設備A已經跟設備B保持連接，那麼不能實現設備A掃描，設備B廣播並再次建立連接。設備A與B之間只能維持一個連接狀態機。</li>
+</ol>
+<h3 id="1-3-位元順序-Bit-Order"><a href="#1-3-位元順序-Bit-Order" class="headerlink" title="1.3 位元順序(Bit Order)"></a>1.3 位元順序(Bit Order)</h3><p>Packet 是1個bit 1個bit傳輸的，但是它們同時也是由資料的bytes組成。當資料的各個 byte傳輸時，是從最低位開始，因此，3bit 的變數 X = 3 會照以下順序發送：</p>
+<p>b0b1b2 = 1 1 0</p>
+<h3 id="1-4-裝置位址-Device-Address"><a href="#1-4-裝置位址-Device-Address" class="headerlink" title="1.4 裝置位址 (Device Address)"></a>1.4 裝置位址 (Device Address)</h3><p>裝置使用Device Address(裝置位址)進行辨認。不同的裝置必須具有不同的Device Address</p>
+<h4 id="1-4-1-Public-Device-Address"><a href="#1-4-1-Public-Device-Address" class="headerlink" title="1.4.1 Public Device Address"></a>1.4.1 Public Device Address</h4><p>在通訊系統當中，Device Address是用來唯一辨識一個物理設備的，像是TCP/IP 中的 MAC Address, Bluetooth Classic 的 Bluetooth Device Address。對於Device Address來說一個很重要的特性就是唯一性，否則很可能會造成很多問題。</p>
+<p>Public Address屬於一種48-bit的MA-L類型地址，它的結構為：NN:NN:NN:NN:NN:NN。其中前三個byte使用OUI（Organizationally Unique Identifier），後三個byte自由分配。OUI代表了一個指定的組織機構識別碼，全球已經有許多公司申請了自己的OUI。開發者可以從IEEE網站<br><a href="https://standards.ieee.org/develop/regauth/oui/oui.csv" target="_blank" rel="noopener">https://standards.ieee.org/develop/regauth/oui/oui.csv</a> 下載已被分配的MA-L位址。</p>
+<p>但是，在BLE當中只有Public Device Adderss是不夠的，有以下原因：</p>
+<h5 id="Public-Device-Address-需要購買，相對於Chip-的成本是不小的開銷"><a href="#Public-Device-Address-需要購買，相對於Chip-的成本是不小的開銷" class="headerlink" title="Public Device Address 需要購買，相對於Chip 的成本是不小的開銷"></a>Public Device Address 需要購買，相對於Chip 的成本是不小的開銷</h5><h5 id="Public-Device-Address-申請及管理相當繁瑣複雜，再加上BLE裝置數量眾多，維護的成本相當大。"><a href="#Public-Device-Address-申請及管理相當繁瑣複雜，再加上BLE裝置數量眾多，維護的成本相當大。" class="headerlink" title="Public Device Address 申請及管理相當繁瑣複雜，再加上BLE裝置數量眾多，維護的成本相當大。"></a>Public Device Address 申請及管理相當繁瑣複雜，再加上BLE裝置數量眾多，維護的成本相當大。</h5><h5 id="安全考量。BLE很大部分的應用場景為Broadcast-Communication，如果知道了Public-Device-Address，就可以獲取所有的訊息，加深了訊息洩漏的風險。"><a href="#安全考量。BLE很大部分的應用場景為Broadcast-Communication，如果知道了Public-Device-Address，就可以獲取所有的訊息，加深了訊息洩漏的風險。" class="headerlink" title="安全考量。BLE很大部分的應用場景為Broadcast Communication，如果知道了Public Device Address，就可以獲取所有的訊息，加深了訊息洩漏的風險。"></a>安全考量。BLE很大部分的應用場景為Broadcast Communication，如果知道了Public Device Address，就可以獲取所有的訊息，加深了訊息洩漏的風險。</h5><h4 id="1-4-2-Random-Device-Address"><a href="#1-4-2-Random-Device-Address" class="headerlink" title="1.4.2 Random Device Address"></a>1.4.2 Random Device Address</h4><p>為了解決訊息洩漏的風險問題，BLE 規範新增了 Random Device Address，Device Address是在裝置啟動後隨機產生。Random Address分為Static Address和Private Address兩類，Private Address又分為Resolvable private address和Non-resolvable private address兩類。</p>
+<h5 id="1-4-2-1-Static-Device-Address"><a href="#1-4-2-1-Static-Device-Address" class="headerlink" title="1.4.2.1 Static Device Address"></a>1.4.2.1 Static Device Address</h5><p>Static Device Address 是裝置在上電時隨機生成的地址，總共有48 bit，需遵守以下原則：</p>
+<ol>
+<li>最高兩個bit為”11”。</li>
+<li>剩餘的46 bit是一個隨機數，不能全部為0也不可以全部為1</li>
+<li>在一個上電周期內保持不變</li>
+<li>下一次上電的時候可以改變Static Device Address。但不是強制的，因此也可以保持不變。</li>
+<li>如裝置的Static Device Address發生改變，則儲存在Peer devices中的地址將無效，舊地址將無法用於重新連接。</li>
+</ol>
+<p>Static Device Address的格式如下圖所示：</p>
+<center><br><img src="/images/ble_8.png" alt=""><br>圖8. Static Device Address格式<br></center>
+
+<p>46 bit的隨機數能夠裝置位址唯一性的問題，因為隨機產生重複的機率很小。<br>同時也可以解決Public Device Address申請所帶來的費用和維護問題。</p>
+<h5 id="1-4-2-2-Private-Device-Address"><a href="#1-4-2-2-Private-Device-Address" class="headerlink" title="1.4.2.2 Private Device Address"></a>1.4.2.2 Private Device Address</h5><p>Static Device Address透過地址隨機生成的方式，解決了部分問題，Private Device Address則更進一步，透過定時更新和地址加密兩種方法來提高藍牙位址的可靠性和安全性。根據地址是否加密，Private Device Address又分為兩類，</p>
+<p>Non-resolvable Private Address和Resolvable Private Address。下面我們分別描述。</p>
+<h6 id="Non-resolvable-Private-Address"><a href="#Non-resolvable-Private-Address" class="headerlink" title="Non-resolvable Private Address"></a>Non-resolvable Private Address</h6><p>Non-resolvable private address和Static Device Address類似，不同之處在於，Non-resolvable private address會定時更新。更新的週期則是由GAP規定的，稱作T_GAP(private_addr_int) ，建議值是15分鐘。其格式如下：</p>
+<ol>
+<li>最高兩個bit為“00”。</li>
+<li>剩餘的46bits是一個亂數，不能全部為0，也不能全部為1。</li>
+<li>Non-resolvable private address不可以與Public Address一樣</li>
+<li>以T_GAP(private_addr_int)為週期，定時更新。<br>Non-resolvable Private Address的格式如下圖所示：</li>
+</ol>
+<center><br><img src="/images/ble_9.png" alt=""><br>圖9. Non-resolvable Private Address格式<br></center>
+
+<h6 id="Resolvable-Private-Address"><a href="#Resolvable-Private-Address" class="headerlink" title="Resolvable Private Address"></a>Resolvable Private Address</h6><p>Resolvable private address不能單獨使用，因此需要使用該類型的位址的話，設備要同時具備Public Device Address或者Static Device Address中的一種。<br>Resolvable private address透過24-bit亂數和Identity Resolving Key (IRK) 的密碼生成，因此只能被擁有相同IRK的設備掃描到，可以防止被未知設備掃描和追蹤。其格式如下：</p>
+<center><br><img src="/images/ble_10.png" alt=""><br>圖10. Resolvable Private Address格式<br></center>
+
+<p>高位24bits是亂數部分稱為prand，其中最高兩個bit為“10”，用於標識網址類型。剩餘的46bits是一個亂數，不能全部為0，也不能全部為1。<br>低位24bits是亂數和IRK經過hash運算得到的hash值，運算的公式如下：<br>hash = ah(IRK, prand)。</p>
+<h4 id="1-4-2-3-Private-Device-Address-Resolution"><a href="#1-4-2-3-Private-Device-Address-Resolution" class="headerlink" title="1.4.2.3 Private Device Address Resolution"></a>1.4.2.3 Private Device Address Resolution</h4><p>當BLE裝置掃描到該類型的藍牙位址後，會使用保存在本機的IRK和該位址中的prand，進行同樣的Hash運算，並將運算結果和位址中的Hash欄位比較，相同的時候，才進行後續的操作。如果一個設備有多個存儲的IRK，設備會重複上述操作，</p>
+<p>直到一個IRK的地址解析成功或全部嘗試完成為止。這個過程稱作resolve（解析），這也是Non-resolvable private address/Resolvable private address命名的由來。</p>
+<p>Resolvable private address以T_GAP(private_addr_int)為週期，定時更新。所以在廣播、掃描、已連接等過程中，Resolvable private address也可能改變。</p>
+<p>下圖為Device Address分類及特點：</p>
+<center><br><img src="/images/ble_11.png" alt=""><br>圖11. Device Address分類及特點<br></center>
+
+<h3 id="1-5-Physical-Channel"><a href="#1-5-Physical-Channel" class="headerlink" title="1.5 Physical Channel"></a>1.5 Physical Channel</h3><p>BLE使用40個Channel 來搜尋裝置、啟動連接以及廣播資料。因為Relaxed Modulation Index(調變率放寬)，BLE的Channel與Bluetooth Classic不同。這意味著在Relaxed Modulation Index之下，每個Channel的Radio Energy(無線電能)會更寬。因此，為了避免鄰近Channel干擾，BLE規範定義Channel寬度為2MHz，而不是Bluetooth Classic的1MHz。</p>
+<p>在Link layer中將Physical channel分為幾個部分：</p>
+<h4 id="Primary-Advertising-Channel-廣播通道"><a href="#Primary-Advertising-Channel-廣播通道" class="headerlink" title="Primary Advertising Channel (廣播通道)"></a>Primary Advertising Channel (廣播通道)</h4><p>用來初始化Advertising及所有Legacy Advertising Activities，如果Payload在Primary Advertising Channel上傳輸，則為Advertising Payload。</p>
+<h4 id="Secondary-Advertising-channel-次級廣播通道"><a href="#Secondary-Advertising-channel-次級廣播通道" class="headerlink" title="Secondary Advertising channel (次級廣播通道)"></a>Secondary Advertising channel (次級廣播通道)</h4><p>位於Channel 0-36。用來處理Extended Advertising Data、Period Advertising Data。</p>
+<h4 id="Data-Physical-Channel-資料實體通道"><a href="#Data-Physical-Channel-資料實體通道" class="headerlink" title="Data Physical Channel (資料實體通道)"></a>Data Physical Channel (資料實體通道)</h4><p>位於Channel 0-36。用來處理大部分的資料傳輸。如果Payload在Data Physical channel上傳輸，則為Data payload。</p>
+<p>兩個裝置之間希望能用同個共享的Physical Channel來進行通訊。為了要達成這麼目的，裝置的收發器就必須要同時調整到同一個RF channel。但RF channel數量是有限的，在相同的空間與時間當中，可能有許多各自獨立的藍牙裝置。有可能因為其收發器都調整到相同的RF channel，導致Physical Channel 碰撞。</p>
+<p>為了減輕這類衝突產生的影響，藍牙在每次傳輸都會先從Access Address開始。Access Address會出現在每一個傳輸Packet的開始處。</p>
+<p>Link layer會在一個既定的時間內使用一個Physical Channel。如果裝置之間在Physical Channel中的Timing, Frequency, Access Address達到同步，我們可稱為裝置之間為已連接(Connected)或是已同步(Synchronized)</p>
+<h3 id="1-5-1-Advertising-Channel及Data-Channel"><a href="#1-5-1-Advertising-Channel及Data-Channel" class="headerlink" title="1.5.1 Advertising Channel及Data Channel"></a>1.5.1 Advertising Channel及Data Channel</h3><p>下圖為Physical Channel上與RF Frequency、Channel Index、Channel Type對應的關係：</p>
+<center><br><img src="/images/ble_12.png" alt=""><br>圖12. Physical Channel 描述<br></center>
+
+<center><br><img src="/images/ble_13.png" alt=""><br>圖13. Physical Channel 分布<br></center>
+
+<p>由圖可看出，BLE共有3個Advertising Channel以及37個Data Channel。3個Advertising Channel分散在ISM頻段的不同區域，如果他們集中在某個頻段，則可能因為這個頻段的嚴重衰減而造成所有Advertise無法進行。因此，各個Advertising channel 之間(2402MHz,2426MHz,2480MHz)至少相差了24M Hz。Advertising channel的編號為37~39，Data channel 的編號為0~36，用這樣的編號方式來區分使得跳頻演算法的實現變得容易。</p>
+<p>Advertising Channel頻點的選擇，原則上是為了遠離Wi-Fi接入點的嚴重干擾。這些接入點通常選擇802.11Channel中的3個，這三個Wi-Fi channel的中心頻率分別為2412MHz,2437MHz,2462MHz，頻寬占了20MHz，意味著這些Wi-Fi channel佔據2402 MHz ~ 2422MHz、2427MHz ~ 2447 MHz、2452 MHz ~ 2472 MHz。</p>
+<center><br><img src="/images/ble_14.png" alt=""><br>圖14. Physical Channel BT/WIFI 分布<br></center>
+
+<p>BLE的Advertising Channel 位於2402MHz、2426MHz、2480MHz。也就是說，第1個BLE Advertising Channel低於Wi-Fi channel 1，第2個BLE Advertising Channel介於Wi-Fi Channel 1和Wi-Fi channel 6之間，第3個BLE Advertising Channel高於Wi-Fi Channel 11。3個BLE Advertising Channel皆在這些Wi-Fi Channel的干擾之外。</p>
+<h4 id="1-5-1-1跳頻-Frequency-Hopping"><a href="#1-5-1-1跳頻-Frequency-Hopping" class="headerlink" title="1.5.1.1跳頻 (Frequency Hopping)"></a>1.5.1.1跳頻 (Frequency Hopping)</h4><p>Frequency-hopping Algorithm(跳頻演算法)用在Data Connection 中。跳頻演算法公式如下：</p>
+<p>fn+1 = (fn+hop) mod 37</p>
+<p>hop 是一個5~16範圍的值，每次跳頻之後，中心頻率會+hop並且mod37。在演算法的實現中，可以先加上hop，如果大於36則減去37。如此一來就不需要除法乘法的複雜運算。</p>
+<center><br><img src="/images/ble_15.png" alt=""><br>圖15. 跳頻<br></center>
+
+<h4 id="1-5-1-2-自適應調頻-Adaptive-Frequency-Hopping"><a href="#1-5-1-2-自適應調頻-Adaptive-Frequency-Hopping" class="headerlink" title="1.5.1.2 自適應調頻(Adaptive Frequency Hopping )"></a>1.5.1.2 自適應調頻(Adaptive Frequency Hopping )</h4><p>Adaptive Frequency Hopping能夠將一個已知的Bad Channel 對應到一個已知的 Good Channel，進而減少其他設備對Data packet的干擾。為了要實現這一點，連接中的兩個設備必須要記錄Bad Channel和Good Channel的對應關係。如果跳頻演算法公式所計算出的Channel是Good Channel則使用它；如果是Bad channel則會重新對應到Good Channel的集合。如下圖所示Master需要至少將兩個Data Channel標示為 Good Channel。</p>
+<center><br><img src="/images/ble_16.png" alt=""><br>圖16. 自適應調頻<br></center>
+
+<p>假設BLE Device處於使用Wi-Fi 1 Channel 連續通訊的 Wi-Fi 接入點和設備的干擾範圍之內。BLE Device會將編號0~8的 Link Layer Data Channel 標記為 Bad Channel。這意味者當雙方通訊時，他們會循環切換這些Bad Channel，並將其對應到Good Channel之上。如下表所示</p>
+<center><br><img src="/images/ble_17.png" alt=""><br></center>
+
+<p>Channel 重新對應保證了BLE面對嚴重干擾時依然能告傳輸資料，同時此一機制能讓設備迅速對應對新的干擾。對於Bluetooth Classic，大多數Controller也能在幾秒鐘內應對新的干擾。所以兩者是很容易共存的。</p>
+<center><br><img src="/images/ble_18.png" alt=""><br></center>
+
+<p>為了輔助重新對應。Host可以告知Controller當前Channel的狀況，告知訊息有可能來自該裝置的其他干擾無線電收發器或是其他地方。大多數藍牙Controller能夠進行被動式頻段掃描，在無需Host任何幫助的情況下，就能確定干擾範圍程度。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/藍牙/" rel="tag"># 藍牙</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/30/ble_ch3/" rel="next" title="3. 低功耗藍牙規範-架構">
+                <i class="fa fa-chevron-left"></i> 3. 低功耗藍牙規範-架構
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/30/ble_ch4_2/" rel="prev" title="4. 低功耗藍牙規範-鏈結層(2)">
+                4. 低功耗藍牙規範-鏈結層(2) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">顯示 Gitment 評論</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Timmy Chi" />
+            
+              <p class="site-author-name" itemprop="name">Timmy Chi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/tingchuchi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:a22533884@hotmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/tccfab" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://streetvoice.com/timmy780311/songs/" target="_blank" title="StreetVoice">
+                      
+                        <i class="fa fa-fw fa-music"></i>StreetVoice</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-一般描述"><span class="nav-number">1.</span> <span class="nav-text">1 一般描述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-鏈結層狀態-Link-Layer-States"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 鏈結層狀態(Link Layer States)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Standby-State"><span class="nav-number">1.1.1.</span> <span class="nav-text">Standby State</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Advertising-State"><span class="nav-number">1.1.2.</span> <span class="nav-text">Advertising State</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Scanning-State"><span class="nav-number">1.1.3.</span> <span class="nav-text">Scanning State</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Passive-Scanning-被動掃描"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Passive Scanning(被動掃描)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Active-Scanning-主動掃描"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Active Scanning(主動掃描)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Initiating-State"><span class="nav-number">1.1.4.</span> <span class="nav-text">Initiating State</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Connection-State"><span class="nav-number">1.1.5.</span> <span class="nav-text">Connection State</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Master"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">Master</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Slave"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">Slave</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-允許的狀態及角色組合限制-Permitted-State-and-Role-Combination-Restrictions"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 允許的狀態及角色組合限制 (Permitted State and Role Combination Restrictions)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-位元順序-Bit-Order"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 位元順序(Bit Order)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-裝置位址-Device-Address"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 裝置位址 (Device Address)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-Public-Device-Address"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.4.1 Public Device Address</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Public-Device-Address-需要購買，相對於Chip-的成本是不小的開銷"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">Public Device Address 需要購買，相對於Chip 的成本是不小的開銷</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Public-Device-Address-申請及管理相當繁瑣複雜，再加上BLE裝置數量眾多，維護的成本相當大。"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">Public Device Address 申請及管理相當繁瑣複雜，再加上BLE裝置數量眾多，維護的成本相當大。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安全考量。BLE很大部分的應用場景為Broadcast-Communication，如果知道了Public-Device-Address，就可以獲取所有的訊息，加深了訊息洩漏的風險。"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">安全考量。BLE很大部分的應用場景為Broadcast Communication，如果知道了Public Device Address，就可以獲取所有的訊息，加深了訊息洩漏的風險。</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2-Random-Device-Address"><span class="nav-number">1.4.2.</span> <span class="nav-text">1.4.2 Random Device Address</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-2-1-Static-Device-Address"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">1.4.2.1 Static Device Address</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-2-2-Private-Device-Address"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">1.4.2.2 Private Device Address</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Non-resolvable-Private-Address"><span class="nav-number">1.4.2.2.1.</span> <span class="nav-text">Non-resolvable Private Address</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Resolvable-Private-Address"><span class="nav-number">1.4.2.2.2.</span> <span class="nav-text">Resolvable Private Address</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2-3-Private-Device-Address-Resolution"><span class="nav-number">1.4.3.</span> <span class="nav-text">1.4.2.3 Private Device Address Resolution</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Physical-Channel"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 Physical Channel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Primary-Advertising-Channel-廣播通道"><span class="nav-number">1.5.1.</span> <span class="nav-text">Primary Advertising Channel (廣播通道)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Secondary-Advertising-channel-次級廣播通道"><span class="nav-number">1.5.2.</span> <span class="nav-text">Secondary Advertising channel (次級廣播通道)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Data-Physical-Channel-資料實體通道"><span class="nav-number">1.5.3.</span> <span class="nav-text">Data Physical Channel (資料實體通道)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-1-Advertising-Channel及Data-Channel"><span class="nav-number">1.6.</span> <span class="nav-text">1.5.1 Advertising Channel及Data Channel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-1-1跳頻-Frequency-Hopping"><span class="nav-number">1.6.1.</span> <span class="nav-text">1.5.1.1跳頻 (Frequency Hopping)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-1-2-自適應調頻-Adaptive-Frequency-Hopping"><span class="nav-number">1.6.2.</span> <span class="nav-text">1.5.1.2 自適應調頻(Adaptive Frequency Hopping )</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<span id="busuanzi_container_site_pv">
+  本站總訪問量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Timmy Chi</span>
+
+  
+</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+    
+    
+    
+    
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+    
+        <script type="text/javascript">
+            function showGitment(){
+                document.getElementById("gitment-display-button").style.display = "none";
+                document.getElementById("gitment-container").style.display = "block";
+                var gitment = new Gitment({
+                        id: window.location.pathname, 
+                        owner: 'tingchuchi',
+                        repo: 'tingchuchi.github.io',
+                        oauth: {
+                            client_id: '7c5785b3c57623a58628',
+                            client_secret: 'b96ca94c2a2fe25a9a983fad789736360c10c2b4',
+                        }});
+                gitment.render('gitment-container');
+            }
+        </script>
+    
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("l4uPF5dh0nTJm8tqLG24rPjE-gzGzoHsz", "Enrp30fd6WNpGEClJmlsOKAi");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

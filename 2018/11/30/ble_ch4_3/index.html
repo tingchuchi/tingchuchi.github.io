@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="藍牙," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="3. Bit Stream Processing (位元串流處理)非編碼型實體層(LE Uncoded PHYs)資料處理流程如下：">
+<meta name="keywords" content="藍牙">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4. 低功耗藍牙規範-鏈結層(3)">
+<meta property="og:url" content="https://tingchuchi.github.io/2018/11/30/ble_ch4_3/index.html">
+<meta property="og:site_name" content="Timmy 技術筆記">
+<meta property="og:description" content="3. Bit Stream Processing (位元串流處理)非編碼型實體層(LE Uncoded PHYs)資料處理流程如下：">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_81.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_82.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_83.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_84.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_85.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_86.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/ble_87.png">
+<meta property="og:updated_time" content="2018-11-30T08:32:39.766Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4. 低功耗藍牙規範-鏈結層(3)">
+<meta name="twitter:description" content="3. Bit Stream Processing (位元串流處理)非編碼型實體層(LE Uncoded PHYs)資料處理流程如下：">
+<meta name="twitter:image" content="https://tingchuchi.github.io/images/ble_81.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://tingchuchi.github.io/2018/11/30/ble_ch4_3/"/>
+
+
+
+
+
+  <title>4. 低功耗藍牙規範-鏈結層(3) | Timmy 技術筆記</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Timmy 技術筆記</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-vocal">
+          <a href="/categories/歌唱教學" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            歌唱教學
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-music">
+          <a href="/categories/音樂" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            音樂相關
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-musiccreate">
+          <a href="/categories/詞曲創作" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-building"></i> <br />
+            
+            詞曲創作
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guitar">
+          <a href="/categories/吉他" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            吉他
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bluetooth">
+          <a href="/categories/藍牙" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-bluetooth"></i> <br />
+            
+            藍牙技術
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://tingchuchi.github.io/2018/11/30/ble_ch4_3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Timmy Chi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timmy 技術筆記">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">4. 低功耗藍牙規範-鏈結層(3)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+		    
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-11-30T17:00:03+08:00">
+                2018-11-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/藍牙/" itemprop="url" rel="index">
+                    <span itemprop="name">藍牙</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/30/ble_ch4_3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/11/30/ble_ch4_3/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/11/30/ble_ch4_3/" class="leancloud_visitors" data-flag-title="4. 低功耗藍牙規範-鏈結層(3)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="3-Bit-Stream-Processing-位元串流處理"><a href="#3-Bit-Stream-Processing-位元串流處理" class="headerlink" title="3. Bit Stream Processing (位元串流處理)"></a>3. Bit Stream Processing (位元串流處理)</h2><p>非編碼型實體層(LE Uncoded PHYs)資料處理流程如下：</p>
+<center><br><img src="/images/ble_81.png" alt=""><br></center>
+
+<a id="more"></a>
+<p>上面一行表示發送過程，資料流程從左至右，BLE資料先進行加密然後生成CRC校驗資訊，再進行白化(Whiten)從天線發射出去；下面一行表示接收過程，資料流程從右至左執行發送過程的逆過程。</p>
+<p>Whitening過程對Data Sequence執行多項式變化，使連續的0或連續的1數字序列被打散。Dewhitening則將Whitening Data還原成原始資料。由於Whitening和Dewhitening是公開可逆的，所以它們無需加密。</p>
+<p>BLE資料接收後進入Dewhitening前，首先會檢查Access Address是否正確，檢測失敗的資料會被丟棄。CRC校驗失敗的資料也會被丟棄。</p>
+<p>編碼型實體層(LE Coded PHYs)資料處理流程如下： </p>
+<center><br><img src="/images/ble_82.png" alt=""><br></center>
+
+<p>編碼流程包含前向錯誤更正編碼(FEC)和模式映射(Pattern Mapper)兩個子過程。</p>
+<h2 id="3-1-Error-Checking"><a href="#3-1-Error-Checking" class="headerlink" title="3.1 Error Checking"></a>3.1 Error Checking</h2><h3 id="3-1-1-CRC-Generation"><a href="#3-1-1-CRC-Generation" class="headerlink" title="3.1.1 CRC Generation"></a>3.1.1 CRC Generation</h3><p>在BLE當中CRC的強度比Bluetooth Classic 或是大部分的短距離無線技術還要多50%，Bluetooth Classic已經證明16 bits的CRC對於2.4GHz ISM頻段來說強度不夠，所以在L2CAP層上另外加上16 bit CRC，但這樣的做法導致L2CAP Data Packet變長了許多，實作上較麻煩。</p>
+<p>於是BLE選擇了24 bits CRC來保護Data Packet。該CRC能夠檢測Data Packet中所有的1 – 5 bit 以及奇數位錯誤，公式為：</p>
+<p>X24+X10+X9+X6+X4+X3+X</p>
+<p>對於每個Data Channel PDU，Shift Register應預先設置Link Layer連接的CRC初始化值，並在CONNECT_IND PDU中傳送。</p>
+<p>對於AUX_SYNC_IND PDU及其子集合，Shift Register應預先設置在AUX_ADV_IND PDU的SyncInfo欄位（參見第2.3.4.6節），該欄位描述Periodic Advertising。 對於其他Advertising Channel PDU，Shift Register應預置為0x555555</p>
+<p>下圖表示了linear feedback shift register(LFSR)產生CRC的方法。Position 0為LSB ，Position 23 為MSB。</p>
+<center><br><img src="/images/ble_83.png" alt=""><br></center>
+
+<h2 id="3-2-DATA-WHITENING-資料白化"><a href="#3-2-DATA-WHITENING-資料白化" class="headerlink" title="3.2 DATA WHITENING (資料白化)"></a>3.2 DATA WHITENING (資料白化)</h2><p>FSK 接收機其接收連續相同bit的能力很差。例如當接收一串”0000000000000” bit序列時。接收機會認為發射機的中心頻率向左移動了，進而倒置頻率失鎖。之後的Bit “1”會被錯過，Packet 接收也會因此失敗。所以BLE使用了Whitening來隨機化發送的資料。</p>
+<p>Whitening是一個很短的輸出”0”、”1”序列的隨機數產生器。接收機可以使用相同的隨機數產生器來恢復原始的bit。為了在輸出序列中保留原始訊息，需要對原始數據和Whitener數使用Exclusive-Or (XOR)操作。</p>
+<p>透過使用Random Whitener，原始訊息中的一段bit會被轉化成一段隨機化的序列。Whitening Random Number Sequence是透過LFSR產生的，類似於計算CRC。生成多項式如下：</p>
+<p>Whitener = X7+X4+1</p>
+<p>LFSR的初始值由packet傳輸所在的Link Layer Channel決定。規則如下：</p>
+<p>‧Position 0 (最高位)為1</p>
+<p>‧Position 1 到 Position 6 設定為發送或接收時使用的Channel Index。</p>
+<p>下圖為LFSR產生Data Whitening的例子，Bit4的值為上一個Bit3 XOR Bit6 產生的。</p>
+<p>假如Channel = 23 ，Position為 1010111，Whitening Random Number Sequence 為 1010111,1101111, 1110011, 1111101, 1111010, 0111101, 1011010, 0101101, 1010010….</p>
+<center><br><img src="/images/ble_84.png" alt=""><br></center>
+
+<p>這意味著即使一個Packet Whitened 後在某個Channel上引起了接收器失鎖，當它在其他Channel上傳輸時，由於使用了不同的Whitening Sequence，所以接收機還是能夠正確接收。儘管這是非常罕見的現象，Whitener還是能夠解決這種問題。</p>
+<h2 id="3-3-Coding-編碼"><a href="#3-3-Coding-編碼" class="headerlink" title="3.3 Coding (編碼)"></a>3.3 Coding (編碼)</h2><p>編碼總共有兩個流程，首先會先做Forward Error Correction (FEC)編碼定義於3.3.1章節、接下來會透過Pattern Mapper轉換為P Symbols定義於3.3.2章節。</p>
+<h3 id="3-3-1-Forward-Error-Correction-Encoder-前向錯誤更正編碼"><a href="#3-3-1-Forward-Error-Correction-Encoder-前向錯誤更正編碼" class="headerlink" title="3.3.1 Forward Error Correction Encoder (前向錯誤更正編碼)"></a>3.3.1 Forward Error Correction Encoder (前向錯誤更正編碼)</h3><p>The Convolutional FEC Encoder生成多項式如下：<br>G0(x) = 1 + x + x2 + x3<br>G1(x) = 1 + x2 + x3</p>
+<p>傳送順序為G0-&gt;G1</p>
+<p>FEC Encoder在初始狀態為0，三個連續的0序列會讓FEC encoder回到原始的狀態，該序列被稱為Termination Sequence。下圖說明了FEC encoder 的操作。每個輸入位元會轉換為兩個輸入位元，這意味著Packet使用FEC時，傳輸的位元數將會增加。</p>
+<center><br><img src="/images/ble_85.png" alt=""><br></center>
+
+<p>下圖為傳輸”011”的FEC Encoder轉換的狀態，最後的packet會變成”001101”。</p>
+<center><br><img src="/images/ble_86.png" alt=""><br></center>
+
+<h3 id="3-3-2-Pattern-Mapper"><a href="#3-3-2-Pattern-Mapper" class="headerlink" title="3.3.2 Pattern Mapper"></a>3.3.2 Pattern Mapper</h3><p>Pattern mapper 會將每個Bit透過FEC Encoder轉換為 P Symbols，其中P值取決於所使用的編碼方案，如下表所示：</p>
+<center><br><img src="/images/ble_87.png" alt=""><br></center>
+
+<p>舉例來說，當FEC Encoder 產生出 “00110101” Sequence，若 P = 1(S = 2)時Sequence 維持不變 ”00110101”；當P = 4時變為 ”0011 0011 1100 1100 0011 1100 1100 1100 1100”<br>使用S=2時，無線傳輸範圍大約會增加為二倍， S=8時則為四倍。FEC演算法所要求的額外位元會對有效負載產生負擔，這是增加傳輸範圍的缺點。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/藍牙/" rel="tag"># 藍牙</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/30/ble_ch4_2/" rel="next" title="4. 低功耗藍牙規範-鏈結層(2)">
+                <i class="fa fa-chevron-left"></i> 4. 低功耗藍牙規範-鏈結層(2)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/30/bt5_1/" rel="prev" title="藍牙5.1 更新功能介紹">
+                藍牙5.1 更新功能介紹 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">顯示 Gitment 評論</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Timmy Chi" />
+            
+              <p class="site-author-name" itemprop="name">Timmy Chi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/tingchuchi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:a22533884@hotmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/tccfab" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://streetvoice.com/timmy780311/songs/" target="_blank" title="StreetVoice">
+                      
+                        <i class="fa fa-fw fa-music"></i>StreetVoice</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Bit-Stream-Processing-位元串流處理"><span class="nav-number">1.</span> <span class="nav-text">3. Bit Stream Processing (位元串流處理)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-Error-Checking"><span class="nav-number">2.</span> <span class="nav-text">3.1 Error Checking</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-CRC-Generation"><span class="nav-number">2.1.</span> <span class="nav-text">3.1.1 CRC Generation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-DATA-WHITENING-資料白化"><span class="nav-number">3.</span> <span class="nav-text">3.2 DATA WHITENING (資料白化)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-Coding-編碼"><span class="nav-number">4.</span> <span class="nav-text">3.3 Coding (編碼)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-Forward-Error-Correction-Encoder-前向錯誤更正編碼"><span class="nav-number">4.1.</span> <span class="nav-text">3.3.1 Forward Error Correction Encoder (前向錯誤更正編碼)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-Pattern-Mapper"><span class="nav-number">4.2.</span> <span class="nav-text">3.3.2 Pattern Mapper</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<span id="busuanzi_container_site_pv">
+  本站總訪問量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Timmy Chi</span>
+
+  
+</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+    
+    
+    
+    
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+    
+        <script type="text/javascript">
+            function showGitment(){
+                document.getElementById("gitment-display-button").style.display = "none";
+                document.getElementById("gitment-container").style.display = "block";
+                var gitment = new Gitment({
+                        id: window.location.pathname, 
+                        owner: 'tingchuchi',
+                        repo: 'tingchuchi.github.io',
+                        oauth: {
+                            client_id: '7c5785b3c57623a58628',
+                            client_secret: 'b96ca94c2a2fe25a9a983fad789736360c10c2b4',
+                        }});
+                gitment.render('gitment-container');
+            }
+        </script>
+    
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("l4uPF5dh0nTJm8tqLG24rPjE-gzGzoHsz", "Enrp30fd6WNpGEClJmlsOKAi");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

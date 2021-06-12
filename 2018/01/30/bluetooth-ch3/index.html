@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="藍牙," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="藍牙實體層介紹 圖3. 藍牙各層架構">
+<meta name="keywords" content="藍牙">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.藍牙技術-藍牙實體層介紹">
+<meta property="og:url" content="https://tingchuchi.github.io/2018/01/30/bluetooth-ch3/index.html">
+<meta property="og:site_name" content="Timmy 技術筆記">
+<meta property="og:description" content="藍牙實體層介紹 圖3. 藍牙各層架構">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_3a.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_3b.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_4.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_5.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_6.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_7.png">
+<meta property="og:updated_time" content="2018-01-30T02:29:13.420Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.藍牙技術-藍牙實體層介紹">
+<meta name="twitter:description" content="藍牙實體層介紹 圖3. 藍牙各層架構">
+<meta name="twitter:image" content="https://tingchuchi.github.io/images/bt_3a.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://tingchuchi.github.io/2018/01/30/bluetooth-ch3/"/>
+
+
+
+
+
+  <title>3.藍牙技術-藍牙實體層介紹 | Timmy 技術筆記</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Timmy 技術筆記</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-vocal">
+          <a href="/categories/歌唱教學" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            歌唱教學
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-music">
+          <a href="/categories/音樂" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            音樂相關
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-musiccreate">
+          <a href="/categories/詞曲創作" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-building"></i> <br />
+            
+            詞曲創作
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guitar">
+          <a href="/categories/吉他" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            吉他
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bluetooth">
+          <a href="/categories/藍牙" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-bluetooth"></i> <br />
+            
+            藍牙技術
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://tingchuchi.github.io/2018/01/30/bluetooth-ch3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Timmy Chi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timmy 技術筆記">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">3.藍牙技術-藍牙實體層介紹</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+		    
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-30T09:28:27+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/藍牙/" itemprop="url" rel="index">
+                    <span itemprop="name">藍牙</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/30/bluetooth-ch3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/01/30/bluetooth-ch3/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/30/bluetooth-ch3/" class="leancloud_visitors" data-flag-title="3.藍牙技術-藍牙實體層介紹">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="藍牙實體層介紹"><a href="#藍牙實體層介紹" class="headerlink" title="藍牙實體層介紹"></a>藍牙實體層介紹</h2><center><br><img src="/images/bt_3a.png" alt=""> <img src="/images/bt_3b.png" alt=""><br>圖3. 藍牙各層架構<br></center>
+
+<a id="more"></a>
+<h3 id="定義模式"><a href="#定義模式" class="headerlink" title="定義模式"></a>定義模式</h3><p>藍牙Physical Layer層操作在不需執照的2.4GHz ISM頻帶上，採用跳頻GFSK無線技術。<br>主要定義了藍牙設備位址、連接至其他藍牙裝備的方式、藍牙的工作模式、電路交換式與封包交換式的連線型態。設備位址主要可分為BD_ADDR, AM_ADDR, PM_ADDR, AR_ADDR</p>
+<h4 id="藍牙裝置位址-Bluetooth-Device-Address-BD-ADDR"><a href="#藍牙裝置位址-Bluetooth-Device-Address-BD-ADDR" class="headerlink" title="藍牙裝置位址 (Bluetooth Device Address, BD_ADDR)"></a>藍牙裝置位址 (Bluetooth Device Address, BD_ADDR)</h4><p>分為LAP,UAP,NAP</p>
+<table>
+<thead>
+<tr>
+<th>NAP(16bits)</th>
+<th>UAP(8bits)</th>
+<th>LAP(24bits)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>A. 較低位址(Lower Address Part, LAP)</p>
+<p>當多個藍牙設備彼此連接時，或是藍牙設備內部不同的階層傳遞資料時，可使用LAP代替BD_ADDR位址來減少傳輸的資料量。分為CAC(Channel Access Code) (Master) 和DAC (Device Access Code) (Slave)</p>
+<p>B. 較高位址(Upper Address Part, UAP) </p>
+<p>決定Master的跳頻順序</p>
+<p>C. 未定義(備用)位址(Non-signification Address Part, NAP) </p>
+<p>備用的位址，目前不具備功能。</p>
+<h4 id="活動組員位址-Active-Member-Address-AM-ADDR"><a href="#活動組員位址-Active-Member-Address-AM-ADDR" class="headerlink" title="活動組員位址 (Active Member Address, AM_ADDR)"></a>活動組員位址 (Active Member Address, AM_ADDR)</h4><p>一個Piconet網路中最多可以支援8個屬於Active狀態的設備。這些屬於Active狀態的設備都必須使用AM_ADDR位址予以相互識別。因此AM_ADDR位址只需要使用3個位元進行排列而產生8組號碼，其中Master設備固定使用「000」這個號碼。另外7個號碼(001,010,011,100.101,110,111)由Master設備分配給其他處於Active狀態的slave設備，用來識別不同的slave設備。</p>
+<h4 id="停放組員位址-Parked-Member-Address-PM-ADDR"><a href="#停放組員位址-Parked-Member-Address-PM-ADDR" class="headerlink" title="停放組員位址 (Parked Member Address, PM_ADDR)"></a>停放組員位址 (Parked Member Address, PM_ADDR)</h4><p>Active狀態進入Park狀態的藍牙設備，將由Master指定一個PM_ADDR。PM_ADDR佔用8bit，支援256個Park狀態的設備。</p>
+<h4 id="存取要求位址-Access-Request-Address-AR-ADDR"><a href="#存取要求位址-Access-Request-Address-AR-ADDR" class="headerlink" title="存取要求位址 (Access Request Address, AR_ADDR )"></a>存取要求位址 (Access Request Address, AR_ADDR )</h4><p>當Slave裝置從Park狀態回復到Active狀態時，需要利用AR_ADDR向Master裝置要求可傳送的Slave-to-Master time slot。</p>
+<p>Physical Layer主要可分為Physical Channel 和 Physical Links 兩個子層。</p>
+<h3 id="Physical-Channel"><a href="#Physical-Channel" class="headerlink" title="Physical Channel"></a>Physical Channel</h3><p>兩個互相通訊的設備，透過收發器(transceivers)調諧到同一個RF頻率。</p>
+<p>A. BR/EDR ISM頻率範圍分為79個channel，每一個channel占用1M的頻寬，在0 channel和78 channel之外設立了保護頻帶guard band[註2] (Lower Guard Band為2MHz，Upper Guard Band為3.5MHz)，並採用跳頻(hopping)[註3]技術，並且採用時分多址（TDMA，Time Divesion Muli-Access），不同的時間點使用不同的channel。<br>B. BLE 則分為40個channel，每一個channel占用2M的頻寬，在0 channel和39 channel之外設立了保護頻帶guard band。</p>
+<center><br><img src="/images/bt_4.png" alt=""><br>圖4. guard band<br><em>[註2]guard band: 保護頻帶，因整個頻譜的資源有限，為了避免頻帶間互相干擾，通常會預留一些頻帶做緩衝。<br>[註3]hopping: 以藍牙而言，有79個channel，但並不是固定占用某一個channel，而是以一定的規則來跳動。 </em><br></center>
+
+<h4 id="BR-EDR技術定義了5種物理通道（跳頻通道）"><a href="#BR-EDR技術定義了5種物理通道（跳頻通道）" class="headerlink" title="BR/EDR技術定義了5種物理通道（跳頻通道）"></a>BR/EDR技術定義了5種物理通道（跳頻通道）</h4><p>A. BR/EDR Basic Piconet Physical Channel<br>用於藍牙已連接狀態時的通信，使用全部79個跳頻點</p>
+<p>B. BR/EDR Adapted Piconet[註4] Physical Channel<br>藍牙已連接狀態時的通信，用於連接支援AFH(Adapter Frequency Hopping)的設備時使用的。當藍牙與其他無線裝置(如WIFI)共存頻段時，AFH會避開跳頻點會共存的頻點，跳頻數目不會小於20個。如果當下的環境很差(跳頻數目小於20)，AFH機制將無法運行。</p>
+<center><br><img src="/images/bt_5.png" alt=""><br>圖5. AFH 技術<br><em>AFH技術允許藍牙透過辨別固定干擾源，將其從可用的頻段列表中移除。</em><br></center>
+
+<p>C. BR/EDR Page Scan Physical Channel<br>藍牙搜尋其他裝備(discover)及被其他藍牙裝置搜索時(discoverable)的通道。</p>
+<p>D. BR/EDR Inquiry Scan Physical Channel<br>連接其他藍牙裝置(connect)或是被其他藍牙裝置連接時的通道。</p>
+<p>E. BR/EDR Synchronization Scan Channel<br>可用於不需連線的廣播通訊，後續章節會詳細介紹</p>
+<p><em>[註4] piconet: 藍牙屬於點對點(Point-to-Point)或是點對多點(Point-to-Multipoint)的架構，點對點之間有一條物理通道，點對多點之間共享一條物理通道。我們將這些物理通道的集合稱為(piconet)</em></p>
+<center><br><img src="/images/bt_6.png" alt=""><br>圖6. piconet<br></center>
+
+<h4 id="BLE-定義了2個物理通道"><a href="#BLE-定義了2個物理通道" class="headerlink" title="BLE 定義了2個物理通道"></a>BLE 定義了2個物理通道</h4><p>A. LE Piconet Channel<br>用於連接狀態下藍牙設備之間的通訊。和BR/EDR一樣採用跳頻模式，但只會在40個channel中的37個上面跳頻。</p>
+<p>B. LE Advertisement Broadcast Channel<br>用於在設備間無連接的廣播通訊，這類廣播的資訊可用在藍牙設備的發現(discover)、連接(connect)操作，也可以用在無連接的資料傳輸。</p>
+<h4 id="AMP定義了1個物理通道"><a href="#AMP定義了1個物理通道" class="headerlink" title="AMP定義了1個物理通道"></a>AMP定義了1個物理通道</h4><p>A. AMP Physical Channel<br>用於已連接設備之間的通訊，和 BR/EDR Adapted Piconet Physical Channel 位於同一個級別，可以互相切換使用。</p>
+<p>在同一個時間點，藍牙設備只能在其中一個Physical Channel 上通訊，為了支援多個並行的操作，藍牙採用分時多工(TSMA)技術，在不同的時間點使用不同的通道。</p>
+<h3 id="Physical-Link"><a href="#Physical-Link" class="headerlink" title="Physical Link"></a>Physical Link</h3><p>Physical Link是一種抽象概念，不對應Protocol中任何的實體。</p>
+<h4 id="BR-EDR"><a href="#BR-EDR" class="headerlink" title="BR/EDR"></a>BR/EDR</h4><p>針對Basic Piconet Physical Channel及Adapted Piconet Physical Channel 做進一步封裝(Page Scan Physical Channel、Inquiry Scan Physical Channel、Synchronization Scan Channel因只在特定時間使用，且無法控制相關屬性，因此不需要在Physical Link中實現)。可分為3種:</p>
+<p>A. BR/EDR Active Physical Link:<br>定義了連接狀態的藍牙處於active狀態時的 link，Basic/Adapted Piconet Physical Channel會使用到。</p>
+<p>B. BR/EDR Parked Physical Link<br>定義了連接狀態的藍牙處於parked狀態時的 link，Basic/Adapted Piconet Physical Channel會使用到，park狀態為連接時，表示雙方並沒有正在進行的數據傳輸，這時可透過降低在Physical Channel上的收發頻率降低功耗。</p>
+<p>C. Connectionless Slave Broadcast Physical Link<br>BR/EDR Adapted Piconet Physical Channel會使用到，用於廣播通訊。</p>
+<center><br><img src="/images/bt_7.png" alt=""><br>圖7. Physical Link 對應 Physical Channel<br></center>
+
+<h4 id="BLE"><a href="#BLE" class="headerlink" title="BLE"></a>BLE</h4><p>A. LE Advertisement Physical Channel 分別對應到 LE Piconet Physical Link及LE Advertising Physical Link</p>
+<p>B. AMP 的 Physical Channel 對應到 AMP Physical Link</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/藍牙/" rel="tag"># 藍牙</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/30/bluetooth-ch2/" rel="next" title="2.藍牙技術-藍牙系統架構">
+                <i class="fa fa-chevron-left"></i> 2.藍牙技術-藍牙系統架構
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/30/bluetooth-ch4/" rel="prev" title="4.藍牙技術-Link Layer介紹">
+                4.藍牙技術-Link Layer介紹 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">顯示 Gitment 評論</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Timmy Chi" />
+            
+              <p class="site-author-name" itemprop="name">Timmy Chi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/tingchuchi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:a22533884@hotmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/tccfab" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://streetvoice.com/timmy780311/songs/" target="_blank" title="StreetVoice">
+                      
+                        <i class="fa fa-fw fa-music"></i>StreetVoice</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#藍牙實體層介紹"><span class="nav-number">1.</span> <span class="nav-text">藍牙實體層介紹</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定義模式"><span class="nav-number">1.1.</span> <span class="nav-text">定義模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#藍牙裝置位址-Bluetooth-Device-Address-BD-ADDR"><span class="nav-number">1.1.1.</span> <span class="nav-text">藍牙裝置位址 (Bluetooth Device Address, BD_ADDR)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#活動組員位址-Active-Member-Address-AM-ADDR"><span class="nav-number">1.1.2.</span> <span class="nav-text">活動組員位址 (Active Member Address, AM_ADDR)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#停放組員位址-Parked-Member-Address-PM-ADDR"><span class="nav-number">1.1.3.</span> <span class="nav-text">停放組員位址 (Parked Member Address, PM_ADDR)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#存取要求位址-Access-Request-Address-AR-ADDR"><span class="nav-number">1.1.4.</span> <span class="nav-text">存取要求位址 (Access Request Address, AR_ADDR )</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Physical-Channel"><span class="nav-number">1.2.</span> <span class="nav-text">Physical Channel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BR-EDR技術定義了5種物理通道（跳頻通道）"><span class="nav-number">1.2.1.</span> <span class="nav-text">BR/EDR技術定義了5種物理通道（跳頻通道）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BLE-定義了2個物理通道"><span class="nav-number">1.2.2.</span> <span class="nav-text">BLE 定義了2個物理通道</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AMP定義了1個物理通道"><span class="nav-number">1.2.3.</span> <span class="nav-text">AMP定義了1個物理通道</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Physical-Link"><span class="nav-number">1.3.</span> <span class="nav-text">Physical Link</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BR-EDR"><span class="nav-number">1.3.1.</span> <span class="nav-text">BR/EDR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BLE"><span class="nav-number">1.3.2.</span> <span class="nav-text">BLE</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<span id="busuanzi_container_site_pv">
+  本站總訪問量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Timmy Chi</span>
+
+  
+</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+    
+    
+    
+    
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+    
+        <script type="text/javascript">
+            function showGitment(){
+                document.getElementById("gitment-display-button").style.display = "none";
+                document.getElementById("gitment-container").style.display = "block";
+                var gitment = new Gitment({
+                        id: window.location.pathname, 
+                        owner: 'tingchuchi',
+                        repo: 'tingchuchi.github.io',
+                        oauth: {
+                            client_id: '7c5785b3c57623a58628',
+                            client_secret: 'b96ca94c2a2fe25a9a983fad789736360c10c2b4',
+                        }});
+                gitment.render('gitment-container');
+            }
+        </script>
+    
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("l4uPF5dh0nTJm8tqLG24rPjE-gzGzoHsz", "Enrp30fd6WNpGEClJmlsOKAi");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

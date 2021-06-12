@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="藍牙," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="L2CAP 介紹L2CAP (Logic Link Control and Adaptation Protocol邏輯鏈路控制和適配協定)，負責分配Baseband中的上層協議，向上層提供兩個選擇性服務:A. 無連結服務:每個通道都是單向的，用於Master廣播多個Slave裝置B. 連結模式服務: 每個通道都是雙向的">
+<meta name="keywords" content="藍牙">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.藍牙技術-L2CAP介紹">
+<meta property="og:url" content="https://tingchuchi.github.io/2018/01/30/bluetooth-ch6/index.html">
+<meta property="og:site_name" content="Timmy 技術筆記">
+<meta property="og:description" content="L2CAP 介紹L2CAP (Logic Link Control and Adaptation Protocol邏輯鏈路控制和適配協定)，負責分配Baseband中的上層協議，向上層提供兩個選擇性服務:A. 無連結服務:每個通道都是單向的，用於Master廣播多個Slave裝置B. 連結模式服務: 每個通道都是雙向的">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_12.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_13.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_14.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_15.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_16.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_17.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_18.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_19.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_20.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_21.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_22.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_23.png">
+<meta property="og:image" content="https://tingchuchi.github.io/images/bt_24.png">
+<meta property="og:updated_time" content="2018-01-30T02:36:43.789Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6.藍牙技術-L2CAP介紹">
+<meta name="twitter:description" content="L2CAP 介紹L2CAP (Logic Link Control and Adaptation Protocol邏輯鏈路控制和適配協定)，負責分配Baseband中的上層協議，向上層提供兩個選擇性服務:A. 無連結服務:每個通道都是單向的，用於Master廣播多個Slave裝置B. 連結模式服務: 每個通道都是雙向的">
+<meta name="twitter:image" content="https://tingchuchi.github.io/images/bt_12.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://tingchuchi.github.io/2018/01/30/bluetooth-ch6/"/>
+
+
+
+
+
+  <title>6.藍牙技術-L2CAP介紹 | Timmy 技術筆記</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Timmy 技術筆記</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-vocal">
+          <a href="/categories/歌唱教學" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            歌唱教學
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-music">
+          <a href="/categories/音樂" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            音樂相關
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-musiccreate">
+          <a href="/categories/詞曲創作" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-building"></i> <br />
+            
+            詞曲創作
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guitar">
+          <a href="/categories/吉他" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            吉他
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bluetooth">
+          <a href="/categories/藍牙" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-bluetooth"></i> <br />
+            
+            藍牙技術
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://tingchuchi.github.io/2018/01/30/bluetooth-ch6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Timmy Chi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timmy 技術筆記">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">6.藍牙技術-L2CAP介紹</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+		    
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-30T09:56:17+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/藍牙/" itemprop="url" rel="index">
+                    <span itemprop="name">藍牙</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/30/bluetooth-ch6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/01/30/bluetooth-ch6/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/30/bluetooth-ch6/" class="leancloud_visitors" data-flag-title="6.藍牙技術-L2CAP介紹">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="L2CAP-介紹"><a href="#L2CAP-介紹" class="headerlink" title="L2CAP 介紹"></a>L2CAP 介紹</h2><p>L2CAP (Logic Link Control and Adaptation Protocol邏輯鏈路控制和適配協定)，負責分配Baseband中的上層協議，向上層提供兩個選擇性服務:<br>A. 無連結服務:每個通道都是單向的，用於Master廣播多個Slave裝置<br>B. 連結模式服務: 每個通道都是雙向的</p>
+<a id="more"></a>
+<p>L2CAP可分為 Channel Manager 及 Resource Manager</p>
+<p>A. Channel Manager負責創建、管理、釋放L2CAP channel<br>B. Resource Manager負責統一管理、調配L2CAP channel上面傳送的 PDU(Packer Data Unit)，以確保那些高QoS的packet可以獲得對物理通道的控制權</p>
+<p>下圖為L2CAP的架構示意圖(Core v5.0 p.1719)</p>
+<center><br><img src="/images/bt_12.png" alt=""><br></center>
+
+<p>簡要來說，L2CAP Channel大致上分為傳送資料封包及控制類別兩部分(為方便解釋，後面會再詳細介紹封包類型)，傳送資料封包可以用來傳送一般資料(SDP、RFCOMM..)及語音資料(Audio)，但他們的下層只支援ACL，而不支援SCO。下圖為L2CAP上下層的示意圖:</p>
+<center><br><img src="/images/bt_13.png" alt=""><br></center>
+
+<h2 id="L2CAP-主要操作模式"><a href="#L2CAP-主要操作模式" class="headerlink" title="L2CAP 主要操作模式"></a>L2CAP 主要操作模式</h2><p>L2CAP以通道標示符(CID)的概念為基礎，通過CID識別對應到每條L2CAP通道的端點。不同設備之間CID可以重複使用，而同設備(local)CID不可重複。</p>
+<p>以下列出ACL-U, AMP-U 對應到的CID</p>
+<table>
+<thead>
+<tr>
+<th>CID</th>
+<th></th>
+<th>Local Link Supported</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x0000</td>
+<td>Null identifier</td>
+<td></td>
+</tr>
+<tr>
+<td>0x0001</td>
+<td>L2CAP Signaling Channel</td>
+<td>ACL-U</td>
+</tr>
+<tr>
+<td>0x0002</td>
+<td>Connectionless Channel</td>
+<td>ACL-U</td>
+</tr>
+<tr>
+<td>0x0003</td>
+<td>AMP Manager Protocol</td>
+<td>ACL-U</td>
+</tr>
+<tr>
+<td>0x0004</td>
+<td>Attribute Protocol</td>
+<td>LE-U</td>
+</tr>
+<tr>
+<td>0x0005</td>
+<td>Low Energy L2CAP Signaling Channel</td>
+<td>LE-U</td>
+</tr>
+<tr>
+<td>0x0006</td>
+<td>Security Manager Protocol</td>
+<td>LE-U</td>
+</tr>
+<tr>
+<td>0x0007-0x001F</td>
+<td>Reserved for Future Use</td>
+<td>ACL-U</td>
+</tr>
+<tr>
+<td>0x0020~0x003E</td>
+<td>Assigned Numbers</td>
+<td>ACL-U</td>
+</tr>
+<tr>
+<td>0x003F</td>
+<td>AMP Test Manager    ACL-U</td>
+</tr>
+<tr>
+<td>0x0040~0xFFFF</td>
+<td>Dynamically allocated</td>
+<td>ACL-U, AMP-U</td>
+</tr>
+</tbody>
+</table>
+<h2 id="設備之間通訊方式"><a href="#設備之間通訊方式" class="headerlink" title="設備之間通訊方式"></a>設備之間通訊方式</h2><center><br><img src="/images/bt_14.png" alt=""><br></center>
+
+<p>上圖(Core v5.0 p.1729)說明了CID在不同設備間L2CAP通訊的方式。<br>連接導向式數據通道(connection-oriented data channels)提供了設備間的連接，CID用於識別通道的每一端。當用於廣播的模式來傳輸時，非連線型通道(connectionless channel)會限制資料只傳送到單一方向這些通道用來傳送資料給所有的active slave。</p>
+<p>如圖所示，中間上面的Device，運用同樣一個CID建立起connectionless channel傳送給Device 1~4使用。而針對connection-oriented data channels，不同的Device端點，就會建立用不同的CID來對應。</p>
+<h2 id="L2CAP-與上下層間的溝通"><a href="#L2CAP-與上下層間的溝通" class="headerlink" title="L2CAP 與上下層間的溝通"></a>L2CAP 與上下層間的溝通</h2><center><br><img src="/images/bt_15.png" alt=""><br></center>
+
+<p>L2CAP與上下層間溝通如上圖。圖中列出L2ACP應用中會實現的服務。每個應用都必須支持一組用於L2CAP應用間通訊的指令。</p>
+<h2 id="L2CAP資料封包格式-Data-Packet-Format"><a href="#L2CAP資料封包格式-Data-Packet-Format" class="headerlink" title="L2CAP資料封包格式(Data Packet Format)"></a>L2CAP資料封包格式(Data Packet Format)</h2><p>L2CAP分為5種operation mode</p>
+<p>A. Basic L2CAP Mode<br>B. Flow Control Mode<br>C. Retransmission Mode<br>D. Enhanced Retransmission Mode<br>E. Streaming Mode</p>
+<p>L2CAP針對5種operation mode有以下幾種連接類型</p>
+<p>A. Connection-oriented channels (連接導向式數據通道) in basic L2CAP mode<br>B. Connectionless data channel  (非連線型通道) in basic L2CAP mode<br>C. Connection-oriented channels in flow control / retransmission/ streaming mode</p>
+<p>針對這三種類型會有不同的封包格式</p>
+<h3 id="Connection-oriented-channels-in-basic-L2CAP-mode"><a href="#Connection-oriented-channels-in-basic-L2CAP-mode" class="headerlink" title="Connection-oriented channels in basic L2CAP mode"></a>Connection-oriented channels in basic L2CAP mode</h3><p>採用 Basic information frame ( B-frame)，格式如下</p>
+<center><br><img src="/images/bt_16.png" alt=""><br></center>
+
+<p>Length: Information payload 的字節數 (0~65535 octets)</p>
+<h3 id="Connectionless-data-channel-用-Group-information-frame-G-frame-，格式如下"><a href="#Connectionless-data-channel-用-Group-information-frame-G-frame-，格式如下" class="headerlink" title="Connectionless data channel - 用 Group information frame ( G-frame)，格式如下"></a>Connectionless data channel - 用 Group information frame ( G-frame)，格式如下</h3><center><br><img src="/images/bt_17.png" alt=""><br></center>
+
+<p>Length : PSM (&gt;2 octets) + information payload (0~65533 octets) 的字節數<br>Channel ID: 0x02 (Connectionless data channel)</p>
+<p>PSM(Protocol/Service Multiplexer)，至少為16bit，並且有以下限制</p>
+<p>A. PSM值必須為奇數(最低字節最低位元必須為1)<br>B. 最高字節最低位元必須為0</p>
+<p>定義如下(Core_v5.0 p.1751)</p>
+<center><br><img src="/images/bt_18.png" alt=""><br></center>
+
+<p>第一個range (0x0001-0x0EFF)是SIG用來表示對應到的protocol。<br>第二個range(&gt;0x1000)為動態分配的，用來與SDP通訊，這個值可以用來實現特定的protocol。所以，我們在申請psm的時候是從0x1001開始申請的。原因在於0x0001~0x0eff被SIG保留。</p>
+<p>下表列出SIG保留的值對應到的protocol</p>
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>PSM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SDP</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>RFCOMM</td>
+<td>0x0003</td>
+</tr>
+<tr>
+<td>TCS-BIN</td>
+<td>0x0005</td>
+</tr>
+<tr>
+<td>TCS-BIN-CORDLESS</td>
+<td>0x0007</td>
+</tr>
+<tr>
+<td>BNEP</td>
+<td>0x000F</td>
+</tr>
+<tr>
+<td>HID-Control</td>
+<td>0x0011</td>
+</tr>
+<tr>
+<td>HID_Interrupt</td>
+<td>0x0013</td>
+</tr>
+<tr>
+<td>UPnP</td>
+<td>0x0015</td>
+</tr>
+<tr>
+<td>AVCTP</td>
+<td>0x0017</td>
+</tr>
+<tr>
+<td>AVDTP</td>
+<td>0x0019</td>
+</tr>
+<tr>
+<td>AVDTP_Browsing</td>
+<td>0x001B</td>
+</tr>
+<tr>
+<td>UDI_C-Plane</td>
+<td>0x001D</td>
+</tr>
+<tr>
+<td>ATT</td>
+<td>0x001F</td>
+</tr>
+<tr>
+<td>3DSP</td>
+<td>0x0021</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Connection-oriented-channels-in-flow-control-retransmission-streaming-mode"><a href="#Connection-oriented-channels-in-flow-control-retransmission-streaming-mode" class="headerlink" title="Connection-oriented channels in flow control / retransmission/ streaming mode"></a>Connection-oriented channels in flow control / retransmission/ streaming mode</h3><p>Information frame (I-frame) 和 Supervisory frame (S-frame)配合使用，格式如下:</p>
+<center><br><img src="/images/bt_19.png" alt=""><br></center>
+
+
+<p>I-Frame 主要用於L2CAP實體之間進行訊息傳輸<br>S-Frame主要用來確認I-frame已傳送到，以及請求重新發送I-frame<br>針對各欄位解釋如下<br>A. Length:  2bytes, 為Control length + FCS 的字節數<br>B. Control: 分為三種形態</p>
+<h4 id="Standard-Control-Field-用於-Retransmission-mode-and-Flow-Control，格式如下"><a href="#Standard-Control-Field-用於-Retransmission-mode-and-Flow-Control，格式如下" class="headerlink" title="Standard Control Field: 用於 Retransmission mode and Flow Control，格式如下"></a>Standard Control Field: 用於 Retransmission mode and Flow Control，格式如下</h4><center><br><img src="/images/bt_20.png" alt=""><br></center>
+
+<h4 id="Enhance-Control-Field-用於-Enhanced-Retransmission-mode-and-Streaming-mode，格式如下"><a href="#Enhance-Control-Field-用於-Enhanced-Retransmission-mode-and-Streaming-mode，格式如下" class="headerlink" title="Enhance Control Field : 用於 Enhanced Retransmission mode and Streaming mode，格式如下"></a>Enhance Control Field : 用於 Enhanced Retransmission mode and Streaming mode，格式如下</h4><center><br><img src="/images/bt_21.png" alt=""><br></center>
+
+<h4 id="Enhance-Control-Field-用於-Enhanced-Retransmission-mode-and-Streaming-mode，格式如下-1"><a href="#Enhance-Control-Field-用於-Enhanced-Retransmission-mode-and-Streaming-mode，格式如下-1" class="headerlink" title="Enhance Control Field : 用於 Enhanced Retransmission mode and Streaming mode，格式如下"></a>Enhance Control Field : 用於 Enhanced Retransmission mode and Streaming mode，格式如下</h4><center><br><img src="/images/bt_22.png" alt=""><br></center>
+
+<p>針對部分參數解釋</p>
+<p>A. SAR: Segmentation and Reassembly，指名該L2CAP是否分段過，格式如下</p>
+<table>
+<thead>
+<tr>
+<th>00b</th>
+<th>Unsegmented L2CAP SDU</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01b</td>
+<td>Start of L2CAP SDU</td>
+</tr>
+<tr>
+<td>10b</td>
+<td>End of L2CAP SDU</td>
+</tr>
+<tr>
+<td>11b</td>
+<td>Continuation of L2CAP SDU</td>
+</tr>
+</tbody>
+</table>
+<p>B. TxSeq: Send Sequence Number，對發送的I-Frame計數，用於分段和重組<br>C. ReqSeq: Receive Sequence Number，接收訊號，用於重傳<br>D. R: Retransmission Disable Bit，用來實現Flow Control</p>
+<p>S: Supervisory function,表示S-Frame的type,定義如下：</p>
+<table>
+<thead>
+<tr>
+<th>00b</th>
+<th>RR - Receiver Ready</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01b</td>
+<td>REJ -Reject</td>
+</tr>
+<tr>
+<td>10b</td>
+<td>RNR - Receiver Not Ready</td>
+</tr>
+<tr>
+<td>11b</td>
+<td>SREJ - Select Reject</td>
+</tr>
+</tbody>
+</table>
+<p>E. P: Poll(1bit)，設定為1表示從接收方徵求回應。<br>F. F: Final: 用來回應S-frame的 P bit被設定為1，如 P bit被設定為1，則F-bit設定為1。<br>G. L2CAP SDU Length(byte):<br>如果L2CAP的SDU比較大，跨越了好幾個I-Frame，則SDU Length表示SDU的總長度。如果SDU沒有分段的話，就不需要這個欄位。SDU Length只出現在一開始的I-Frame，此時I-Frame的SAR=0x01。故在所有分段的I-Frame裡，只有最開始的需要指定SDU Length，其餘的I-Frame都不需要。<br>H. FCS (Frame Check Sequence)(2byte): 用來檢查這個Frame</p>
+<h2 id="L2CAP訊號封包格式-L2CAP-Signaling-Packet-Format"><a href="#L2CAP訊號封包格式-L2CAP-Signaling-Packet-Format" class="headerlink" title="L2CAP訊號封包格式(L2CAP Signaling Packet Format)"></a>L2CAP訊號封包格式(L2CAP Signaling Packet Format)</h2><p>前面講了幾種類型的PDU都屬於資料封包格式(Data Packet Format)，而在傳送訊號時則是透過C-Frame。C-Frame專用在signaling channel（0x0001或者0x0005）上，signaling commands在上面傳輸。需要注意的是：0x0001通道的一個C-frame可以同時傳輸多個command，0x0005只能傳輸一個。payload Length不能超過MTU sig。下圖為定義的Minimum Signaling MTU：</p>
+<table>
+<thead>
+<tr>
+<th>Logical Link</th>
+<th>Minimum Supported Payload</th>
+<th>Length for the C-frame (MTUsig)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACL-U</td>
+<td>not supporting Extended Flow Specification</td>
+<td>48 octets</td>
+</tr>
+<tr>
+<td>ACL-U</td>
+<td>supporting the Extended Flow Specification</td>
+<td>672 octets</td>
+</tr>
+<tr>
+<td>LE-U</td>
+<td>23 octets</td>
+</tr>
+</tbody>
+</table>
+<p>在signaling channel上定義的L2CAP PDU的格式如下：</p>
+<center><br><img src="/images/bt_23.png" alt=""><br></center>
+
+<p>由圖可知，結構跟B-frame 是一樣的。而signaling command 的格式如圖</p>
+<center><br><img src="/images/bt_24.png" alt=""><br></center>
+
+<p>參數的定義如下:</p>
+<p>A. Identifier (1 octet): 表示 request 和 response<br>B. Length(2 octer): 表示 data field 字節數<br>C. Data : command 數據<br>D. Code (1 octet): 指定Command 的 type ，有以下幾種：</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+<th>CIDs on which Code is Allowed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x00</td>
+<td>Reserved for Future Use</td>
+<td>Any</td>
+</tr>
+<tr>
+<td>0x01</td>
+<td>Command reject</td>
+<td>0x0001 and 0x0005</td>
+</tr>
+<tr>
+<td>0x02</td>
+<td>Connection request</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x03</td>
+<td>Connection response</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x04</td>
+<td>Configure request</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x05</td>
+<td>Configure response</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x06</td>
+<td>Disconnection request</td>
+<td>0x0001 and 0x0005</td>
+</tr>
+<tr>
+<td>0x07</td>
+<td>Disconnection response</td>
+<td>0x0001 and 0x0005</td>
+</tr>
+<tr>
+<td>0x08</td>
+<td>Echo request</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x09</td>
+<td>Echo response</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x0A</td>
+<td>Information request</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x0B</td>
+<td>Information response</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x0C</td>
+<td>Create Channel request</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x0D</td>
+<td>Create Channel response</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x0E</td>
+<td>Move Channel request</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x0F</td>
+<td>Move Channel response</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x10</td>
+<td>Move Channel Confirmation</td>
+<td>0x0001</td>
+</tr>
+<tr>
+<td>0x11</td>
+<td>Move Channel Confirmation response</td>
+<td>0x0001</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/藍牙/" rel="tag"># 藍牙</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/30/bluetooth-ch5/" rel="next" title="5.藍牙技術-HCI Layer介紹">
+                <i class="fa fa-chevron-left"></i> 5.藍牙技術-HCI Layer介紹
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/30/Adobe-Audition-CC-教學-錄音篇/" rel="prev" title="Adobe Audition CC 教學 - 錄音篇">
+                Adobe Audition CC 教學 - 錄音篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">顯示 Gitment 評論</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+  
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Timmy Chi" />
+            
+              <p class="site-author-name" itemprop="name">Timmy Chi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/tingchuchi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:a22533884@hotmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/tccfab" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://streetvoice.com/timmy780311/songs/" target="_blank" title="StreetVoice">
+                      
+                        <i class="fa fa-fw fa-music"></i>StreetVoice</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#L2CAP-介紹"><span class="nav-number">1.</span> <span class="nav-text">L2CAP 介紹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L2CAP-主要操作模式"><span class="nav-number">2.</span> <span class="nav-text">L2CAP 主要操作模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#設備之間通訊方式"><span class="nav-number">3.</span> <span class="nav-text">設備之間通訊方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L2CAP-與上下層間的溝通"><span class="nav-number">4.</span> <span class="nav-text">L2CAP 與上下層間的溝通</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L2CAP資料封包格式-Data-Packet-Format"><span class="nav-number">5.</span> <span class="nav-text">L2CAP資料封包格式(Data Packet Format)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Connection-oriented-channels-in-basic-L2CAP-mode"><span class="nav-number">5.1.</span> <span class="nav-text">Connection-oriented channels in basic L2CAP mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Connectionless-data-channel-用-Group-information-frame-G-frame-，格式如下"><span class="nav-number">5.2.</span> <span class="nav-text">Connectionless data channel - 用 Group information frame ( G-frame)，格式如下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Connection-oriented-channels-in-flow-control-retransmission-streaming-mode"><span class="nav-number">5.3.</span> <span class="nav-text">Connection-oriented channels in flow control / retransmission/ streaming mode</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Standard-Control-Field-用於-Retransmission-mode-and-Flow-Control，格式如下"><span class="nav-number">5.3.1.</span> <span class="nav-text">Standard Control Field: 用於 Retransmission mode and Flow Control，格式如下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Enhance-Control-Field-用於-Enhanced-Retransmission-mode-and-Streaming-mode，格式如下"><span class="nav-number">5.3.2.</span> <span class="nav-text">Enhance Control Field : 用於 Enhanced Retransmission mode and Streaming mode，格式如下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Enhance-Control-Field-用於-Enhanced-Retransmission-mode-and-Streaming-mode，格式如下-1"><span class="nav-number">5.3.3.</span> <span class="nav-text">Enhance Control Field : 用於 Enhanced Retransmission mode and Streaming mode，格式如下</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L2CAP訊號封包格式-L2CAP-Signaling-Packet-Format"><span class="nav-number">6.</span> <span class="nav-text">L2CAP訊號封包格式(L2CAP Signaling Packet Format)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<span id="busuanzi_container_site_pv">
+  本站總訪問量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Timmy Chi</span>
+
+  
+</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+    
+    
+    
+    
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+    
+        <script type="text/javascript">
+            function showGitment(){
+                document.getElementById("gitment-display-button").style.display = "none";
+                document.getElementById("gitment-container").style.display = "block";
+                var gitment = new Gitment({
+                        id: window.location.pathname, 
+                        owner: 'tingchuchi',
+                        repo: 'tingchuchi.github.io',
+                        oauth: {
+                            client_id: '7c5785b3c57623a58628',
+                            client_secret: 'b96ca94c2a2fe25a9a983fad789736360c10c2b4',
+                        }});
+                gitment.render('gitment-container');
+            }
+        </script>
+    
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("l4uPF5dh0nTJm8tqLG24rPjE-gzGzoHsz", "Enrp30fd6WNpGEClJmlsOKAi");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
