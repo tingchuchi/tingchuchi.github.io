@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>1.藍牙技術-藍牙簡介 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="藍牙(Bluetooth)是一種無線通訊協定，名稱來自於第十世紀(約958年-985年)的一位丹麥國王Harald Blatand (中譯: 藍牙哈拉爾德)。Logo源自盧恩字母 (H&amp;B) 。藍牙採用2.4GHz頻段通訊，創始者是瑞典愛立信(Ericsson)公司。1998年，愛立信與諾基亞(Nokia)、IBM、東芝(Toshiba)及Intel組成了技術性組織(SIG)，希望能建立一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1.藍牙技術-藍牙簡介">
+<meta property="og:url" content="http://example.com/2018/01/29/bluetooth_ch1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="藍牙(Bluetooth)是一種無線通訊協定，名稱來自於第十世紀(約958年-985年)的一位丹麥國王Harald Blatand (中譯: 藍牙哈拉爾德)。Logo源自盧恩字母 (H&amp;B) 。藍牙採用2.4GHz頻段通訊，創始者是瑞典愛立信(Ericsson)公司。1998年，愛立信與諾基亞(Nokia)、IBM、東芝(Toshiba)及Intel組成了技術性組織(SIG)，希望能建立一">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-01-29T06:54:23.000Z">
+<meta property="article:modified_time" content="2018-01-29T13:44:37.182Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="藍牙">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-bluetooth_ch1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/29/bluetooth_ch1/" class="article-date">
+  <time class="dt-published" datetime="2018-01-29T06:54:23.000Z" itemprop="datePublished">2018-01-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%97%8D%E7%89%99/">藍牙</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      1.藍牙技術-藍牙簡介
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>藍牙(Bluetooth)是一種無線通訊協定，名稱來自於第十世紀(約958年-985年)的一位丹麥國王Harald Blatand (中譯: 藍牙哈拉爾德)。Logo源自盧恩字母 (H&amp;B) 。<br>藍牙採用2.4GHz頻段通訊，創始者是瑞典愛立信(Ericsson)公司。1998年，愛立信與諾基亞(Nokia)、IBM、東芝(Toshiba)及Intel組成了技術性組織(SIG)，希望能建立一個短距離無線通信技術，就是藍牙技術的前身。透過藍牙，我們可簡化短距離設備間的通訊，進一步達成更多無線通信的應用。</p>
+<span id="more"></span>
+
+<h2 id="藍牙版本演進"><a href="#藍牙版本演進" class="headerlink" title="藍牙版本演進"></a>藍牙版本演進</h2><h3 id="1-0-1999年"><a href="#1-0-1999年" class="headerlink" title="1.0(1999年)"></a>1.0(1999年)</h3><p>確定使用2.4G頻段</p>
+<h3 id="1-0B-2000年"><a href="#1-0B-2000年" class="headerlink" title="1.0B(2000年)"></a>1.0B(2000年)</h3><p>增加對WAP無線應用協議的支持<br>問題:版本1.0及版本1.0B在連線過程中會傳輸藍牙裝置位址，在安全性上有許多隱憂。</p>
+<h3 id="1-1-2001年"><a href="#1-1-2001年" class="headerlink" title="1.1(2001年)"></a>1.1(2001年)</h3><p>A. 原有的1.0版本為了適應某些國家軍用產品，所以定義子頻段，但也造成裝置之間不相容問題。1.1版本取消了23個子頻段標準，所有的Bluetooth 1.1設備都使用79個子頻段在2.4GHz的頻譜範圍之內通訊。傳輸率約在748kbps~810kps ，因是早期設計，容易受到同樣頻率的產品干擾。<br>B. 列入IEEE 802.1-20025標準，修正許多V1.0B版本的錯誤。</p>
+<h3 id="1-2-2003年"><a href="#1-2-2003年" class="headerlink" title="1.2(2003年)"></a>1.2(2003年)</h3><p>A. Adaptive Frequency Hopping（AFH）：避免使用跳躍序列中的擁擠頻率，來減少藍牙產品與其它無線通訊裝置之間所產生的干擾問題。<br>B. Extended Synchronous Connection-Oriented links（eSCO）：延伸同步連結導向通道技術，可以對語音傳輸執行錯誤偵測，並在錯誤發生時重傳語音資料，提升通話品質。<br>C. Faster Connection： 1.1版本，藍牙進行重新連接往往需要1.25-5.5秒的時間，連接時有時也會發生找不到裝置的狀況。1.2版本增加Faster Connection技術，縮短重新搜索與連接的時間，使連結的過程更穩定快速。<br>D. 匿名方式：遮蔽裝置的硬體位址（Bluetooth Address），保護用戶免受攻擊。從1.1版開始已經可以實現硬體匿名，但未被實施。<br>E. 列入IEEE 802.15.1a 標準。</p>
+<h3 id="2-0-2004年"><a href="#2-0-2004年" class="headerlink" title="2.0(2004年)"></a>2.0(2004年)</h3><p>加入Enhanced Data Rate(EDR)技術，速度提升至1.8M~2.1Mbps。EDR 技術有以下特點:<br>A. 資料傳輸速度可達當前速率的3倍(在某些情況下可高達10倍)<br>B. 可以通過減少Duty Cycle(工作負載循環)來降低功耗。<br>C. 頻段增加簡化多連接模式。<br>D. 進一步改善位元錯誤率(Bit Error Rate, BER)的表現。</p>
+<h3 id="2-1-2007年"><a href="#2-1-2007年" class="headerlink" title="2.1(2007年)"></a>2.1(2007年)</h3><p>A. 改善配對過程 SSP (Secure Simple Pairing)。不需要輸入配對碼即可配對，<br>B. 更佳的省電效果。加入了Sniff Subrating [註1]的功能，藉由設定裝置間確認訊號的發送間隔，達到節省功耗的目的。</p>
+<center>
+![](/images/bt_1.png)
+圖1. Sniff Subrating
+</center>
+*[註1] Sniff Subrating: 當兩個連接的藍牙裝置進入待機狀態時，裝置之間仍需要互相呼叫來確認彼此是否保持連線狀態。舊版的時間間隔(Sniff interval)為0.1s，新版的時間拉長到0.5s，如此一來可以讓藍牙裝置有更多的時間能休息。如圖1所示，在正常工作情況下slave需要在每一個master的tx點進行監聽。而Sniff Subrating則讓slave在特定時間監聽master的tx。*
+
+<h3 id="3-0-2009年"><a href="#3-0-2009年" class="headerlink" title="3.0(2009年)"></a>3.0(2009年)</h3><p>A.    增加了HS (Hight Speed)，理論上傳輸速度可達到(24Mbps)。Hight Speed 主要是應用AMP（Alternative MAC/PHY，交替射頻）技術，AMP技術可在傳輸時用Wi-Fi來做為傳輸連接。HS為可選技術，如果設備端沒有Wi-Fi，傳輸還是藍牙2.0的速度。<br>B.    加入L2CAP增強模式、單播無連接數據和EPC（增強電源控制）機制。</p>
+<h3 id="4-0-2010年"><a href="#4-0-2010年" class="headerlink" title="4.0(2010年)"></a>4.0(2010年)</h3><p>A. 提出了Single mode和 Dual mode (第二章有相關的架構)<br>Single mode:低功耗藍牙(Bluetooth Low Energy :BLE)<br>Dual mode:包含傳統藍牙(Bluetooth Classic : BR/EDR + HS)及低功耗藍牙<br>B. 安全性:使用AES-128 CCM加密演算法進行封包加密和認證</p>
+<h3 id="4-1-2014年"><a href="#4-1-2014年" class="headerlink" title="4.1(2014年)"></a>4.1(2014年)</h3><p>A. 讓藍牙可以跟LTE共存，透過錯開傳輸順序降低鄰近頻譜的干擾<br>B. 可以彈性控制重連的間隔時間(reconnection timeout interval)</p>
+<h3 id="4-2-2014年"><a href="#4-2-2014年" class="headerlink" title="4.2(2014年)"></a>4.2(2014年)</h3><p>A. 增加Internet Protocol Support Profile，可讓BLE裝置直接存取Interner(IPv6/6LoWPAN)<br>B. 傳輸封包容量加大，降低傳輸錯誤機率，可達到比前一版快2.5倍的速度<br>C. 透過技術改善讓BLE更省電<br>D. 新增隱私權設定，確保資料的機密性</p>
+<h3 id="5-0-2016年"><a href="#5-0-2016年" class="headerlink" title="5.0(2016年)"></a>5.0(2016年)</h3><p>A. 傳輸距離提升4倍、傳輸速度提升兩倍<br>B. 因應未來市場IOT的應用，廣播訊息量提升到8倍(31*8=248byte)</p>
+<h2 id="藍牙通訊距離"><a href="#藍牙通訊距離" class="headerlink" title="藍牙通訊距離"></a>藍牙通訊距離</h2><p>根據藍牙通訊距離的遠近，藍牙技術可分為Class1/Class2/Class3三個級別。<br>A. Class 1 : 1mW (0dBm) ~ 100mW (20dBm)<br>用在大功率及遠距離的產品上，也因成本高及耗電量大，不適合做個人通訊產品用。通常用於商業及特殊用途上，通訊距離大約在80<del>100m<br>B. Class 2 : 0.25mW (-6dBm) ~ 2.5mW (4dBm), Normally at 1mW(0dBm)<br>通訊距離大約在8</del>30m 之間，根據產品的設計而定，為目前最普遍的形式。常用於手機/藍牙耳機喇叭/藍牙Dongle產品上。耗電體積較小，方便攜帶<br>C. Class 3 : &lt;= 1mW (0dBm)<br>因通訊距離短，目前已經很少採用。</p>
+<h2 id="藍牙通訊的主從關係及配對連線流程"><a href="#藍牙通訊的主從關係及配對連線流程" class="headerlink" title="藍牙通訊的主從關係及配對連線流程"></a>藍牙通訊的主從關係及配對連線流程</h2><p>傳統藍牙技術規定每一對設備之間進行通訊時，必須一個為主角色(Master)，另一個為從角色(Slave)，才能進行通訊。通訊時Master會以跳頻的方式尋找slave，slave在固定間隔會進行page scan，當slave scan到外部的page時會回應該page，進而讓Master發起配對訊息，最後進行連接做不同profile的應用。理論上一個Master可以同時與7個Slave進行通訊。<br>低功耗藍牙配對的過程則是在連接之後，使用的是Secure Simple Pairing(SSP) 。另外，低功耗藍牙可在不需配對的情況下進行通訊。</p>
+<h2 id="藍牙配對模式"><a href="#藍牙配對模式" class="headerlink" title="藍牙配對模式"></a>藍牙配對模式</h2><p>傳統藍牙在2.0版本以前，使用的配對模式是PIN Code模式，藉由輸入4位元以上的數字代碼進行比對，若無法比對則無法建立正常藍牙通訊。在2.0版本之後使用的是Secure Simple Pairing(SSP)，主要可分為幾種形態</p>
+<p>A. Just works - 針對於沒有交互介面的設備，無需使用者操作，其無法提供中間人攻擊(MITM)防護<br>B. Passkey entry - 使用者需輸入另一設備的顯示幕所顯示的passkey，其提供MITM防護<br>C. Numeric comparison - 使用者需要確認雙方顯示幕所顯示的passkey。其提供MITM防護。<br>D. Out-of-band - 用其他技術交換keys，比如NFC</p>
+<p>BLE在4.0~4.1版本主要使用Secure Simple Pairing(SSP)，在4.2版本使用Secure Connections，在安全方面有更大的提升。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/01/29/bluetooth_ch1/" data-id="ckpt7u04d000w4cui5rvrefli" data-title="1.藍牙技術-藍牙簡介" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%97%8D%E7%89%99/" rel="tag">藍牙</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/30/bluetooth-ch2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          2.藍牙技術-藍牙系統架構
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/29/about_me/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Timmy 技術筆記</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%89%E4%BB%96/">吉他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%97%8D%E7%89%99/">藍牙</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/">詞曲創作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E6%A8%82/">音樂</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%89%E4%BB%96/" rel="tag">吉他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%97%8D%E7%89%99/" rel="tag">藍牙</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/" rel="tag">詞曲創作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9F%B3%E6%A8%82/" rel="tag">音樂</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%90%89%E4%BB%96/" style="font-size: 13.33px;">吉他</a> <a href="/tags/%E8%97%8D%E7%89%99/" style="font-size: 20px;">藍牙</a> <a href="/tags/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/" style="font-size: 16.67px;">詞曲創作</a> <a href="/tags/%E9%9F%B3%E6%A8%82/" style="font-size: 10px;">音樂</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/01/30/bt5_1/">藍牙5.1 更新功能介紹</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/30/ble_ch4_3/">4. 低功耗藍牙規範-鏈結層(3)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/30/ble_ch4_2/">4. 低功耗藍牙規範-鏈結層(2)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/30/ble_ch4_1/">4. 低功耗藍牙規範-鏈結層(1)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/30/ble_ch3/">3. 低功耗藍牙規範-架構</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

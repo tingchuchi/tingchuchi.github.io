@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>3. 低功耗藍牙規範-架構 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="低功耗藍牙(BLE)的架構如下圖所示：分為三個部分，Controller、Host、Application。  ![](&#x2F;images&#x2F;ble_1.png) 圖1. 低功耗藍牙架構圖   Controller通常為一個實體設備，它能夠發送及接收無線電訊號，並懂得如何將這些訊號解讀成能攜帶訊息的Data packet。 Host是軟體堆疊(Software stack)，用來管理兩台或多台裝置間如何">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3. 低功耗藍牙規範-架構">
+<meta property="og:url" content="http://example.com/2018/11/30/ble_ch3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="低功耗藍牙(BLE)的架構如下圖所示：分為三個部分，Controller、Host、Application。  ![](&#x2F;images&#x2F;ble_1.png) 圖1. 低功耗藍牙架構圖   Controller通常為一個實體設備，它能夠發送及接收無線電訊號，並懂得如何將這些訊號解讀成能攜帶訊息的Data packet。 Host是軟體堆疊(Software stack)，用來管理兩台或多台裝置間如何">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-11-30T09:00:00.000Z">
+<meta property="article:modified_time" content="2018-11-30T07:15:49.723Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="藍牙">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ble_ch3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/11/30/ble_ch3/" class="article-date">
+  <time class="dt-published" datetime="2018-11-30T09:00:00.000Z" itemprop="datePublished">2018-11-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%97%8D%E7%89%99/">藍牙</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      3. 低功耗藍牙規範-架構
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>低功耗藍牙(BLE)的架構如下圖所示：分為三個部分，Controller、Host、Application。</p>
+<center>
+![](/images/ble_1.png)
+圖1. 低功耗藍牙架構圖
+</center>
+
+<p>Controller通常為一個實體設備，它能夠發送及接收無線電訊號，並懂得如何將這些訊號解讀成能攜帶訊息的Data packet。</p>
+<p>Host是軟體堆疊(Software stack)，用來管理兩台或多台裝置間如何通訊以及如何利用無線電同時提供數種不同的服務。</p>
+<p>Application使用Software stack，進而利用Controller來實現現實中應用。</p>
+<p>Controller內有Physical Layer及Link Layer，又有Direct Test Mode和HCI Layer的下半部分。在Host內有三個協定：L2CAP、Attribute Protocol、Security Manager Protocol，此外還包含GATT、GAP等。在本章節，根據低功耗藍牙架構的每個部份做簡要介紹，在後續章節會針對每個部份做詳細說明。</p>
+<span id="more"></span>
+
+<h2 id="3-1-Controller"><a href="#3-1-Controller" class="headerlink" title="3.1 Controller"></a>3.1 Controller</h2><p>Controller被許多人視為藍牙Chip的特色之一。Controller包含了RF元件的類比及數位部分，以及負責收發Data Packet的硬體組成。BLE Controller與外界透過天線相連，與Host透過Host Controller Interface(HCI)相連。</p>
+<h3 id="3-1-1-Physical-Layer"><a href="#3-1-1-Physical-Layer" class="headerlink" title="3.1.1 Physical Layer"></a>3.1.1 Physical Layer</h3><p>Physical Layer採用2.4GHz無線電完成傳輸及接收工作。無線電波通常在給定的某個頻段下，藉由改變幅度、頻率或相位來攜帶訊息。在BLE中，採用GFSK(高斯頻移鍵控)改變無線電波頻率來傳輸0或1訊息。</p>
+<p>FSK(頻移鍵控) 是一種利用頻率差異的訊號來傳送資料的調變方式，將0和1透過輕微升高或者降低訊號頻率進行編碼。</p>
+<p>如果頻率在改變的一瞬間突然從一端移到另一端，將會在更寬的頻段上出現一個能量脈衝(Pulse of Energy)。因此會用一個濾波器來阻止能量擴散到更高或更低的頻率處。在GFSK的情況下，採用的濾波器波形與高斯曲線一致。用於BLE的濾波器不像用Bluetooth Classic的濾波器那樣嚴格，這也意味者BLE無線電訊號比Bluetooth Classic 無線電訊號還要分散(無線電訊號較寬)。</p>
+<p>適當拓寬無線電訊號的好處在於寬鬆的濾波器波形，可減少跳頻的頻率。反之如果沒有較寬鬆的濾波器波形，BLE將無法只在三個Channel上廣播，如果使用更多的Channel，會導致系統耗能升高。</p>
+<p>無線電訊號的適當拓寬稱為調製指數(Modulation Index)，Modulation Index表示圍繞頻道的中心頻率上下之間的寬度。傳輸無線電訊號時，從中心頻率出發，超過185KHz的正向偏移代表bit1；超過185KHz的負向偏移代表bit 0。</p>
+<p>為了使實體層能夠工作，尤其要對應同區域有大量無線電同時傳輸的情形，BLE 在2.4GHz頻段被劃分為40個RF Channel，各頻道的寬度為2M Hz。實體層每µs傳輸1 bit應用數據。例如要發送80 bit以UTF-8格式編碼的字串”low energy”將花費80 µs。</p>
+<h3 id="3-1-2-Direct-Test-Mode"><a href="#3-1-2-Direct-Test-Mode" class="headerlink" title="3.1.2 Direct Test Mode"></a>3.1.2 Direct Test Mode</h3><p>Direct Test Mode 是一種測試實體層的新方法。絕大部分的無線標準並未提供對實體層執行標準測試的統一方法。所以不同的公司可能採用專門的方法來測試實體層，如此一來整個產業的成本增加。對於終端產品製造商來說，從一家晶片供應商快速轉換到另一家的門檻也提高，BLE的Direct Test Mode制定，藉由統一測試標準，能解決測試的成本。</p>
+<p>Direct Test Mode允許測試人員讓Controller 的 Physical 傳送一系列Test Data Packet或是接收Test Data Packet。測試人員隨後可以分析收到的Data Packet，根據這些Test Data Packet判斷實體層是否遵循RF規範。</p>
+<p>Direct Test Mode還能夠用於執行線性測試(line testing)及校準無線電。例如：快速命令實體層在指定的無線電頻率中發送訊號，並測量實際收到的訊號頻率，可以調整無線電直到正常工作。由於這類校準通常需要每個單元執行，因此擁有一台能高效完成測試的設備，將為產品製造商節約大量成本。</p>
+<h3 id="3-1-3-Link-Layer"><a href="#3-1-3-Link-Layer" class="headerlink" title="3.1.3 Link Layer"></a>3.1.3 Link Layer</h3><p>Link Layer是BLE中最複雜的部份。它負責廣播、掃描、建立和維護連接。以及確保Data Packet按照正確的方式組織、正確的計算校驗值及加密序列等。為了實現上述功能，定義下列三個基本概念：Channel、Packet、Procedures。 </p>
+<h4 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h4><p>Link Layer Channel 分為幾種：Primary Advertising Channel、Secondary Advertising Channel、Data Physical Channel<br>裝置利用Primary Advertising進行廣播，通告自身為可連接(Connectable)或可發現(Discoverable)的，並且執行掃描或發起連接。連接建立後，裝置利用Data Channel來傳送資料。Data Physical Channel共有37個，由一個自適應跳頻引擎控制。在Data Channel中，允許一端向另一端發送Data、確認，並在需要時重傳，此外還能為每個Data Packet進行加密及認證。</p>
+<h4 id="Packet-amp-Procedures"><a href="#Packet-amp-Procedures" class="headerlink" title="Packet &amp; Procedures"></a>Packet &amp; Procedures</h4><p>在任意Channel上發送的Data均為Packet。Packet封裝了發送者給接收者的少量Data，以及用來保障數據正確性的校驗和。無論在哪一種Channel，基本的Packet Format均相同。每個Data Packet包含至少有80 bit的 Address、Header及校驗訊息。下表表示了Link Layer的大致結構。</p>
+<center>
+![](/images/ble_2.png)
+圖2. Link Layer Packet Format
+</center>
+
+<p>8 bit Preamble (前導碼) 足夠接收者同步時間機制(Bit Timing)和設置自動增益控制(Automatic Gain Control)。32 bit Access Address在Advertising Channel中為固定值，在Data Physical Channel 中為隨機值；8 bit Header描述Data Packet的內容；Length表示 Payload 的長度；Data 則記錄該Packet相對應到的訊息；24 bit CRC則確認接收的Packet有沒有Bit Error(位元錯誤)。</p>
+<p>可以發送的最短Payload為空的Packet，時長為80 µs；滿載時的最長Packet為376 µs。大部分的Advertising Packet只有128 µs，大部分的Data Packet為144 µs。</p>
+<h3 id="3-1-4-HCI"><a href="#3-1-4-HCI" class="headerlink" title="3.1.4 HCI"></a>3.1.4 HCI</h3><p>HCI為Host 提供一個與Controller通訊的標準介面。這種結構上的分割在Bluetooth Classic十分盛行，大多數的Bluetooth Controller都使用HCI。HCI它允許Host將命令和資料發送到Controller，並且允許Controller將事件及資料發送到Host。HCI由兩個獨立的部分組成：Logical Interface及Physical Interface。</p>
+<h4 id="Logical-Interface"><a href="#Logical-Interface" class="headerlink" title="Logical Interface"></a>Logical Interface</h4><p>定義了命令和事件及其相關的行為，Logical Interface可以交付給任何實體傳輸(Physical Transport)，或者透過位於Controller之上的API交付給Controller。</p>
+<h4 id="Physical-Interface"><a href="#Physical-Interface" class="headerlink" title="Physical Interface"></a>Physical Interface</h4><p>定義了命令、事件、資料如何透過不同的連接技術來傳輸。已定義的Physical Interface包含USB、SDIO、UART等。對於大部分Controller而言，它們只支援一個或兩個Interface。考量到USB實現上需要較大量的硬體，並且功耗較高，所以不常使用於BLE的Single-mode Controller(單模控制器)上。<br>因HCI存在於Controller及Host內，位於Controller中的部分通常稱為HCI下層，位於Host的部分通常稱為HCI上層。</p>
+<h2 id="3-2-Host"><a href="#3-2-Host" class="headerlink" title="3.2 Host"></a>3.2 Host</h2><p> Host構建於HCI的上層，其上為L2CAP，再上為安全管理器(SM)(用來處理所有認證和安全連接)及屬性協定(ATT)(用來公開設備上的狀態資料) ，ATT之上為GATT，定義ATT是如何實現可重用的服務，而這些服務公開了裝置的標準特性。最後，通用訪問規範(GAP)定義了設備如何用一種可交互方式找到對方並且與對方連接。</p>
+<h3 id="3-2-1-L2CAP"><a href="#3-2-1-L2CAP" class="headerlink" title="3.2.1 L2CAP"></a>3.2.1 L2CAP</h3><p>L2CAP 為 BLE 的多工層(Multiplexing Layer)。該層定義了兩個基本概念：L2CAP Channel及L2CAP Signaling Command。L2CAP Channel為雙向Data Channel，通向對方裝置(Peer Device)上的某一特定協議或規範。每個Channel是獨立的，可以有自己的Flow Control和與其關聯的配置訊息。Bluetooth Class 使用了L2CAP的大部分功能，相比之下BLE只用到了最少的L2CAP功能。</p>
+<p>BLE只使用固定Channel：一個用於Command Channel、一個用於Security Manager。BLE只有一種Frame Format：B-Frame Format。包含2 byte的Length及2 byte的Channel Identifier(CID)，如下圖所示：</p>
+<center>
+![](/images/ble_3.png)
+圖3. L2CAP Payload Format
+</center>
+
+<h3 id="3-2-2-The-Security-Manager-Protocol"><a href="#3-2-2-The-Security-Manager-Protocol" class="headerlink" title="3.2.2. The Security Manager Protocol"></a>3.2.2. The Security Manager Protocol</h3><p>Security Manager Protocol 定義了一個簡單的配對和密鑰分發協定。配對是一個獲取對方裝置信任的過程。配對之後，緊接者是Link加密和密鑰分發。在密鑰分發過程中，Slave把秘密共享給Master，這兩台設備如果在未來需要重新連接時，它們可以使用先前分發的密鑰來進行加密，進而迅速認證彼此身分。Security Manager還提供一個Security Toolbox，負責產生Data的Hash值、確認值以及在配對過程中使用的短期密鑰。</p>
+<h3 id="3-2-3-Attribute-Protocol"><a href="#3-2-3-Attribute-Protocol" class="headerlink" title="3.2.3. Attribute Protocol"></a>3.2.3. Attribute Protocol</h3><p>Attribute Protocol 定義了訪問Peer Device Data的規則。Data儲存在Attribute Server的” Attribute”中，提供Client執行讀寫操作。Client將請求發送至Server，Server回復訊息。Client可以使用這些請求在Server找到所有的Attribute並且讀寫這些Attribute。<br>Attribute Protocol定義了六種類型的訊息</p>
+<ol>
+<li>Client送到Server的請求</li>
+<li>Server送到Client的回應請求</li>
+<li>Server送到 Client 的 Notifications(不需回復)</li>
+<li>Client送到 Server 的 Notifications(不需回復)的指令</li>
+<li>Server送到 Client 的Indication(需回復)</li>
+<li>Client送到 Server回復Indication確認</li>
+</ol>
+<p>Client及Server兩者都可以發起通訊。也可發送需要對方回覆或不需回復的訊息。<br>每個Attribute都包含一個標示該屬性的Unique Handle、一個標示儲存資料的類型(Type)及一個值(Value)。例如，一個類型是”溫度”、值為20.5度C的Attribute可能放在Handle為0x01CE的Attribute中。Attribute Protocol沒有定義任何Attribute Type，但規定某些Attribute可以分組，並且可以透過Attribute Protocol發現分組的語意。</p>
+<p>Attribute Protocol還定義一些Attribute權限：如果Client驗證了自身身分或得到了Server的授權，Client將獲得讀寫屬性的權限或是只允許訪問Attribute值的權限。Client需要透過發送請求並且接收錯誤的回應來嘗試獲得權限，該錯誤回應會說明不能完成請求的原因。</p>
+<p>Attribute Protocol大多是無狀態的，這也使Attribute Protocol本身只需要很少的記憶體就可以工作。當然準備和執行寫入請求會先將一組Data儲存在Server上，然後在Transaction中會依序執行所有的操作。</p>
+<h3 id="3-2-4-Attribute-Protocol"><a href="#3-2-4-Attribute-Protocol" class="headerlink" title="3.2.4. Attribute Protocol"></a>3.2.4. Attribute Protocol</h3><p>Generic Attribute Protocol 位於Attribute Protocol上層定義了Attribute Type及其使用方法。Generic Attribute Protocol引進了一些概念。包含了” Characteristics”,” “Services”、 Services之間的”Include”關係、”Characteristics Descriptors”等。他還定義了一些程序，用來發現Characteristics、Services之間的關係，以及用來讀寫Characteristics值。</p>
+<p>Services是裝置上Atomic behavior的不可變封裝，意思是一旦Services發布後就不會改變。這一點是必要的，因為若服務要被反覆使用，最好不要去改變它。一旦服務發生變化，像是版本號這類棘手的設置過程和向對應的配置將會耗費大量的時間。</p>
+<p>一旦知道某個Attribute Service的服務範圍，我們就能很快速的了解該Service裝載了那些信息，BLE透過了封裝的特性，使得它們被重用的可能性增加。</p>
+<p>Service之間的關係是實現裝置公開複雜行為的關鍵。Service是屬於Atomic本質，複雜的行為不應該僅透過某個Service來公開。舉例來說：一台測量溫度的裝置可以公開溫度Service，裝置可能由電池供電，會以會公開電池Service。然而如果電池還有一個溫度感應器，我們應該要在該裝置上公開另一個溫度Service。第二個溫度Service必須和電池Service相互聯繫，以便Client確定其關係，如下圖所示：</p>
+<center>
+![](/images/ble_4.png)
+圖4. Service 關係
+</center>
+
+<p>為了適應複雜的行為和Service之間的關係。Service分為Primary Services 及 Secondary Services。Primary Services從用戶角度公開Device的用途；Secondary Services被Primary Services或另一個Secondary Services使用，使裝置能提供完整的行為。在前面的例子中，Primary Services為溫度Service及電池Service，而第二個溫度Service用來表示電池Service的Secondary Services</p>
+<h3 id="3-2-5-The-Generic-Attribute-Profile"><a href="#3-2-5-The-Generic-Attribute-Profile" class="headerlink" title="3.2.5 The Generic Attribute Profile"></a>3.2.5 The Generic Attribute Profile</h3><p>Generic Attribute Profile 定義裝置如何發現、連接，以及為用戶提供有用的訊息。它還定義了裝置間如何建立長久的關係，成為綁定(Bonding)。要啟用此功能，Generic Attribute Profile定義裝置如何實現可發現(Discoverable)、可連接(Connectable)和可綁定(Bondable)。還介紹了裝置如何使用標準流程來發現其他裝置、連接到其他裝置、讀取它們的設備名稱並且和它們進行綁定。</p>
+<p>對於那些不斷告訴其他裝置能夠發現它，並且與之連接的裝置而言，隱私是非常重要的。希望保留隱私的裝置必須採用不斷變化的Random Address來廣播。如此其他裝置一來無法確定他們監聽到的是什麼設備，二來無法藉由追蹤Address來判斷哪些設備正在周圍移動。Generic Attribute Profile定義如何解析 Resolvable Private Addresses並且也定義了如何與Private設備做連接。</p>
+<h2 id="3-3-Application"><a href="#3-3-Application" class="headerlink" title="3.3 Application"></a>3.3 Application</h2><p>Control 和 Host之上為Application Layer。應用層規格定義了三種類型：特徵(Characteristic)、服務(Service)、規範(Profile)。這些規格均構建在Generic Attribute Profile上。Generic Attribute Profile為Characteristic及Service定義了Attribute 分組，Application為使用這些Attribute定義了規格。</p>
+<h3 id="3-3-1-Characteristic"><a href="#3-3-1-Characteristic" class="headerlink" title="3.3.1 Characteristic"></a>3.3.1 Characteristic</h3><p>Characteristic 是採用已知格式、以通用唯一識別碼(UUID)作為標記的一小塊資料。由於Characteristic要求能夠重複使用，在設計時不會去考量到其行為。Characteristic被定義為讀取規格(Computer-readable Specification)，而非人類的可讀文字。當遇到沒有看過的Characteristic時，可以下載 Computer-readable Specification，用來向使用者顯示該Characteristic。</p>
+<h3 id="3-3-2-Service"><a href="#3-3-2-Service" class="headerlink" title="3.3.2 Service"></a>3.3.2 Service</h3><p>Service為人類可讀的一組特徵及其相關的行為規範。Service指定義了位於Server上的Characteristic行為，而不定義Client行為。對於許多Service而言，Client的行為可以由服務的Server行為決定。然而還有些Service可能需要在Client上定義複雜的行為，這些行為由規範而非Service定義。</p>
+<p>一個Service可以包含其他Service。父Service只能定義自身的服務，他不能改變子Service的Characteristic和行為。但是，包含Service時，Service應該描述多個被包含的Service間該如何互動。</p>
+<p>Service有兩種類型：Primary 和Secondary，如3.2.4描述。一個Service為Primary 還是Secondary取決於Service的定義，或者可以由規範文件的實現來決定。</p>
+<p>Service並未規定Device間該如何連接，以及如何發現和使用Service。Service只描述Read或Write特性、Notified 還是 indicated特性時究竟做了什麼。</p>
+<h3 id="3-3-3-Profile"><a href="#3-3-3-Profile" class="headerlink" title="3.3.3 Profile"></a>3.3.3 Profile</h3><p>Profile為應用的最終呈現。每個Device提供一個或多個Service，Profile描述如何發現Service及Characteristic，進而為每個Device確定所需的拓樸結構。Profile還描述了Client行為，用來發現Service及Characteristic，以及使用該Service實現例子或應用所要求的功能。</p>
+<p>Profile和Service間為一種多對多的映射關係，如下圖所示，一個Service可以用於許多Profile以便在Device上實現需要的行為。此時，Service行為與使用該Service的Profile是相互獨立的。Application stores可以提交某個Device支援所有Service列表，進而找到使用這些Service的所有應用。</p>
+<center>
+![](/images/ble_5.png)
+圖5. Profile
+</center>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/11/30/ble_ch3/" data-id="ckpt7u04400084cui3swg24w7" data-title="3. 低功耗藍牙規範-架構" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%97%8D%E7%89%99/" rel="tag">藍牙</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/30/ble_ch4_1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          4. 低功耗藍牙規範-鏈結層(1)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/29/bluetooth_2018_info/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">藍牙 5.0後及未來發展趨勢</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%89%E4%BB%96/">吉他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%97%8D%E7%89%99/">藍牙</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/">詞曲創作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E6%A8%82/">音樂</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%89%E4%BB%96/" rel="tag">吉他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%97%8D%E7%89%99/" rel="tag">藍牙</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/" rel="tag">詞曲創作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9F%B3%E6%A8%82/" rel="tag">音樂</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%90%89%E4%BB%96/" style="font-size: 13.33px;">吉他</a> <a href="/tags/%E8%97%8D%E7%89%99/" style="font-size: 20px;">藍牙</a> <a href="/tags/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/" style="font-size: 16.67px;">詞曲創作</a> <a href="/tags/%E9%9F%B3%E6%A8%82/" style="font-size: 10px;">音樂</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/01/30/bt5_1/">藍牙5.1 更新功能介紹</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/30/ble_ch4_3/">4. 低功耗藍牙規範-鏈結層(3)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/30/ble_ch4_2/">4. 低功耗藍牙規範-鏈結層(2)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/30/ble_ch4_1/">4. 低功耗藍牙規範-鏈結層(1)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/30/ble_ch3/">3. 低功耗藍牙規範-架構</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

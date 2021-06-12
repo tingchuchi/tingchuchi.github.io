@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>4.藍牙技術-Link Layer介紹 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Link Layer 包含了 Logic Transport 及 Logic Link Logic Link在藍牙已連接的設備之間，根據Physical Link建立Logic Link，我們可以想像成將一條道路作為physical link，這條路根據行車的用途可以劃分為許多logic link (例如:直行、右轉、左轉車道..)。Logic Link可分為三類 A. 用來管理底層(Physic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4.藍牙技術-Link Layer介紹">
+<meta property="og:url" content="http://example.com/2018/01/30/bluetooth-ch4/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Link Layer 包含了 Logic Transport 及 Logic Link Logic Link在藍牙已連接的設備之間，根據Physical Link建立Logic Link，我們可以想像成將一條道路作為physical link，這條路根據行車的用途可以劃分為許多logic link (例如:直行、右轉、左轉車道..)。Logic Link可分為三類 A. 用來管理底層(Physic">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-01-30T01:47:22.000Z">
+<meta property="article:modified_time" content="2018-01-30T01:51:49.898Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="藍牙">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-bluetooth-ch4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/30/bluetooth-ch4/" class="article-date">
+  <time class="dt-published" datetime="2018-01-30T01:47:22.000Z" itemprop="datePublished">2018-01-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%97%8D%E7%89%99/">藍牙</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      4.藍牙技術-Link Layer介紹
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Link Layer 包含了 Logic Transport 及 Logic Link</p>
+<h2 id="Logic-Link"><a href="#Logic-Link" class="headerlink" title="Logic Link"></a>Logic Link</h2><p>在藍牙已連接的設備之間，根據Physical Link建立Logic Link，我們可以想像成將一條道路作為physical link，這條路根據行車的用途可以劃分為許多logic link (例如:直行、右轉、左轉車道..)。Logic Link可分為三類</p>
+<p>A. 用來管理底層(Physical Link)的控制類: AMP-C、ACL-C、PSB-C、LE-C、ADVB-C<br>B. 傳輸用戶資料類: AMP-U、ACL-U、PSB-U、LE-U、ADVB-U<br>C. 其它特殊類型: 串流(stream)、PBD(Profile Broadcast Data) </p>
+<span id="more"></span>
+
+<h2 id="Logic-Transport"><a href="#Logic-Transport" class="headerlink" title="Logic Transport"></a>Logic Transport</h2><p>每一個Logic Link 都會在下層對應一個Logic Transport： </p>
+<p>A. AMP ACL（Asynchronous Connection-Oriented Link）<br>AMP-U提供服務。<br>B. BR/EDR ACL-為ACL-C、ACL-U提供服務。<br>C. SCO/eSCO (Synchronous Connection-Oriented/Extended SCO)<br>Master和Slaver間的點對點傳輸，用在有時間限制的資料(ex:語音)<br>D. ASB(Active Slave Broadcast)-Master和Active Slaves通信<br>E. PSB（Parked Slave Broadcast）<br>Master和Parked Slaves通信，為ACL-U、PSB-U、PSB-C提供服務。<br>F. CSB (Connectionless Slave Broadcast)<br>用於Master發送Profile廣播，為PBD提供服務。<br>G. LE ACL<br>BLE技術，為連接導向式的非同步鍊路，為LE-U、LE-C提供服務<br>H. ADVB (Advertising Broadcast)<br>BLE技術，廣播鍊路，為ADVB-U、ADVB-C提供服務</p>
+<p>下圖表示藍牙Physical及Link 層的關係(摘自Core_v5.0.pdf P.194)</p>
+<h2 id="Link-State"><a href="#Link-State" class="headerlink" title="Link State"></a>Link State</h2><center>
+![](/images/bt_8.png)
+圖5. AFH 技術
+*AFH技術允許藍牙透過辨別固定干擾源，將其從可用的頻段列表中移除。*
+</center>
+
+<h2 id="SCO-與ACL"><a href="#SCO-與ACL" class="headerlink" title="SCO 與ACL"></a>SCO 與ACL</h2><p>SCO(Synchronous Connection Oriented,同步定向連接): 可支援3個全雙向的語音通訊，Master可以同時對同一個或不同的Slave裝置支援。<br>SCO連接建立後， Master和Slave會運用固定的time slot傳送資料，而其他的裝置不能用此連線的time slot來傳送資料。SCO提供了64kbps的傳輸速度，封包也不會重傳，這類資料有速度的保證，但不需要保證一定要送達，所以主要用來傳輸對於時間要求很高的資料，像是語音通話。</p>
+<center>
+![](/images/bt_9.png)
+</center>
+
+<p>ACL(Asynchronous Connection-Less,非同步無連接)，支援對稱及不對稱連結(可以一對一、一對多)。當實體通道沒有保留time slot給SCO Link時，ACL Link可佔用任何time slot進行封包交換。如果系統需要SCO Link，ACL Link則會空出time slot以供SCO連線使用。<br>在對稱連接的情況下，ACL的最大傳輸速率為雙向433.9 kbps；非對稱的情況，最大傳輸速率為正向723.2 kbps，反向57.6 kbps。Master負責控制Link Channel，決定每個Slave可以佔用多少頻寬及連接的對稱性。大多數ACL封包容易做到錯誤檢查並且資料重送，確保資料傳輸的完整性。</p>
+<center>
+![](/images/bt_10.png)
+</center>
+
+<p>通話時，我們必須要確保資料能盡快送到，但是音質不需要太過好，所以在語音的傳輸，SCO常用在語音通話的應用(HFP profile)。而聽音樂的情況，我們希望音訊資料還原度能夠高一點，所以需使用到較大的傳輸速率，所以ACL則常運用於播放音樂的應用(A2DP profile)，HFP及A2DP profile 則會在後續的章節中介紹。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/01/30/bluetooth-ch4/" data-id="ckpt7u049000j4cuifypwgzxz" data-title="4.藍牙技術-Link Layer介紹" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%97%8D%E7%89%99/" rel="tag">藍牙</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/30/bluetooth-ch5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          5.藍牙技術-HCI Layer介紹
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/30/bluetooth-ch3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">3.藍牙技術-藍牙實體層介紹</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%89%E4%BB%96/">吉他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%97%8D%E7%89%99/">藍牙</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/">詞曲創作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E6%A8%82/">音樂</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%89%E4%BB%96/" rel="tag">吉他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%97%8D%E7%89%99/" rel="tag">藍牙</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/" rel="tag">詞曲創作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9F%B3%E6%A8%82/" rel="tag">音樂</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%90%89%E4%BB%96/" style="font-size: 13.33px;">吉他</a> <a href="/tags/%E8%97%8D%E7%89%99/" style="font-size: 20px;">藍牙</a> <a href="/tags/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/" style="font-size: 16.67px;">詞曲創作</a> <a href="/tags/%E9%9F%B3%E6%A8%82/" style="font-size: 10px;">音樂</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/01/30/bt5_1/">藍牙5.1 更新功能介紹</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/30/ble_ch4_3/">4. 低功耗藍牙規範-鏈結層(3)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/30/ble_ch4_2/">4. 低功耗藍牙規範-鏈結層(2)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/30/ble_ch4_1/">4. 低功耗藍牙規範-鏈結層(1)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/30/ble_ch3/">3. 低功耗藍牙規範-架構</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
