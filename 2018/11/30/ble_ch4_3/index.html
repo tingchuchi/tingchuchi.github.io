@@ -1,317 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>4. 低功耗藍牙規範-鏈結層(3) | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="3. Bit Stream Processing (位元串流處理)非編碼型實體層(LE Uncoded PHYs)資料處理流程如下：  ![](&#x2F;images&#x2F;ble_81.png)">
-<meta property="og:type" content="article">
-<meta property="og:title" content="4. 低功耗藍牙規範-鏈結層(3)">
-<meta property="og:url" content="http://example.com/2018/11/30/ble_ch4_3/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="3. Bit Stream Processing (位元串流處理)非編碼型實體層(LE Uncoded PHYs)資料處理流程如下：  ![](&#x2F;images&#x2F;ble_81.png)">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2018-11-30T09:00:03.000Z">
-<meta property="article:modified_time" content="2018-11-30T08:32:39.766Z">
-<meta property="article:author" content="John Doe">
-<meta property="article:tag" content="藍牙">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-ble_ch4_3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/11/30/ble_ch4_3/" class="article-date">
-  <time class="dt-published" datetime="2018-11-30T09:00:03.000Z" itemprop="datePublished">2018-11-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E8%97%8D%E7%89%99/">藍牙</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      4. 低功耗藍牙規範-鏈結層(3)
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="3-Bit-Stream-Processing-位元串流處理"><a href="#3-Bit-Stream-Processing-位元串流處理" class="headerlink" title="3. Bit Stream Processing (位元串流處理)"></a>3. Bit Stream Processing (位元串流處理)</h2><p>非編碼型實體層(LE Uncoded PHYs)資料處理流程如下：</p>
-<center>
-![](/images/ble_81.png)
-</center>
-
-<span id="more"></span>
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
 
-<p>上面一行表示發送過程，資料流程從左至右，BLE資料先進行加密然後生成CRC校驗資訊，再進行白化(Whiten)從天線發射出去；下面一行表示接收過程，資料流程從右至左執行發送過程的逆過程。</p>
-<p>Whitening過程對Data Sequence執行多項式變化，使連續的0或連續的1數字序列被打散。Dewhitening則將Whitening Data還原成原始資料。由於Whitening和Dewhitening是公開可逆的，所以它們無需加密。</p>
-<p>BLE資料接收後進入Dewhitening前，首先會檢查Access Address是否正確，檢測失敗的資料會被丟棄。CRC校驗失敗的資料也會被丟棄。</p>
-<p>編碼型實體層(LE Coded PHYs)資料處理流程如下： </p>
-<center>
-![](/images/ble_82.png)
-</center>
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-<p>編碼流程包含前向錯誤更正編碼(FEC)和模式映射(Pattern Mapper)兩個子過程。</p>
-<h2 id="3-1-Error-Checking"><a href="#3-1-Error-Checking" class="headerlink" title="3.1 Error Checking"></a>3.1 Error Checking</h2><h3 id="3-1-1-CRC-Generation"><a href="#3-1-1-CRC-Generation" class="headerlink" title="3.1.1 CRC Generation"></a>3.1.1 CRC Generation</h3><p>在BLE當中CRC的強度比Bluetooth Classic 或是大部分的短距離無線技術還要多50%，Bluetooth Classic已經證明16 bits的CRC對於2.4GHz ISM頻段來說強度不夠，所以在L2CAP層上另外加上16 bit CRC，但這樣的做法導致L2CAP Data Packet變長了許多，實作上較麻煩。</p>
-<p>於是BLE選擇了24 bits CRC來保護Data Packet。該CRC能夠檢測Data Packet中所有的1 – 5 bit 以及奇數位錯誤，公式為：</p>
-<p>X24+X10+X9+X6+X4+X3+X</p>
-<p>對於每個Data Channel PDU，Shift Register應預先設置Link Layer連接的CRC初始化值，並在CONNECT_IND PDU中傳送。</p>
-<p>對於AUX_SYNC_IND PDU及其子集合，Shift Register應預先設置在AUX_ADV_IND PDU的SyncInfo欄位（參見第2.3.4.6節），該欄位描述Periodic Advertising。 對於其他Advertising Channel PDU，Shift Register應預置為0x555555</p>
-<p>下圖表示了linear feedback shift register(LFSR)產生CRC的方法。Position 0為LSB ，Position 23 為MSB。</p>
-<center>
-![](/images/ble_83.png)
-</center>
-
-<h2 id="3-2-DATA-WHITENING-資料白化"><a href="#3-2-DATA-WHITENING-資料白化" class="headerlink" title="3.2 DATA WHITENING (資料白化)"></a>3.2 DATA WHITENING (資料白化)</h2><p>FSK 接收機其接收連續相同bit的能力很差。例如當接收一串”0000000000000” bit序列時。接收機會認為發射機的中心頻率向左移動了，進而倒置頻率失鎖。之後的Bit “1”會被錯過，Packet 接收也會因此失敗。所以BLE使用了Whitening來隨機化發送的資料。</p>
-<p>Whitening是一個很短的輸出”0”、”1”序列的隨機數產生器。接收機可以使用相同的隨機數產生器來恢復原始的bit。為了在輸出序列中保留原始訊息，需要對原始數據和Whitener數使用Exclusive-Or (XOR)操作。</p>
-<p>透過使用Random Whitener，原始訊息中的一段bit會被轉化成一段隨機化的序列。Whitening Random Number Sequence是透過LFSR產生的，類似於計算CRC。生成多項式如下：</p>
-<p>Whitener = X7+X4+1</p>
-<p>LFSR的初始值由packet傳輸所在的Link Layer Channel決定。規則如下：</p>
-<p>‧Position 0 (最高位)為1</p>
-<p>‧Position 1 到 Position 6 設定為發送或接收時使用的Channel Index。</p>
-<p>下圖為LFSR產生Data Whitening的例子，Bit4的值為上一個Bit3 XOR Bit6 產生的。</p>
-<p>假如Channel = 23 ，Position為 1010111，Whitening Random Number Sequence 為 1010111,1101111, 1110011, 1111101, 1111010, 0111101, 1011010, 0101101, 1010010….</p>
-<center>
-![](/images/ble_84.png)
-</center>
-
-<p>這意味著即使一個Packet Whitened 後在某個Channel上引起了接收器失鎖，當它在其他Channel上傳輸時，由於使用了不同的Whitening Sequence，所以接收機還是能夠正確接收。儘管這是非常罕見的現象，Whitener還是能夠解決這種問題。</p>
-<h2 id="3-3-Coding-編碼"><a href="#3-3-Coding-編碼" class="headerlink" title="3.3 Coding (編碼)"></a>3.3 Coding (編碼)</h2><p>編碼總共有兩個流程，首先會先做Forward Error Correction (FEC)編碼定義於3.3.1章節、接下來會透過Pattern Mapper轉換為P Symbols定義於3.3.2章節。</p>
-<h3 id="3-3-1-Forward-Error-Correction-Encoder-前向錯誤更正編碼"><a href="#3-3-1-Forward-Error-Correction-Encoder-前向錯誤更正編碼" class="headerlink" title="3.3.1 Forward Error Correction Encoder (前向錯誤更正編碼)"></a>3.3.1 Forward Error Correction Encoder (前向錯誤更正編碼)</h3><p>The Convolutional FEC Encoder生成多項式如下：<br>G0(x) = 1 + x + x2 + x3<br>G1(x) = 1 + x2 + x3</p>
-<p>傳送順序為G0-&gt;G1</p>
-<p>FEC Encoder在初始狀態為0，三個連續的0序列會讓FEC encoder回到原始的狀態，該序列被稱為Termination Sequence。下圖說明了FEC encoder 的操作。每個輸入位元會轉換為兩個輸入位元，這意味著Packet使用FEC時，傳輸的位元數將會增加。</p>
-<center>
-![](/images/ble_85.png)
-</center>
-
-<p>下圖為傳輸”011”的FEC Encoder轉換的狀態，最後的packet會變成”001101”。</p>
-<center>
-![](/images/ble_86.png)
-</center>
-
-<h3 id="3-3-2-Pattern-Mapper"><a href="#3-3-2-Pattern-Mapper" class="headerlink" title="3.3.2 Pattern Mapper"></a>3.3.2 Pattern Mapper</h3><p>Pattern mapper 會將每個Bit透過FEC Encoder轉換為 P Symbols，其中P值取決於所使用的編碼方案，如下表所示：</p>
-<center>
-![](/images/ble_87.png)
-</center>
-
-<p>舉例來說，當FEC Encoder 產生出 “00110101” Sequence，若 P = 1(S = 2)時Sequence 維持不變 ”00110101”；當P = 4時變為 ”0011 0011 1100 1100 0011 1100 1100 1100 1100”<br>使用S=2時，無線傳輸範圍大約會增加為二倍， S=8時則為四倍。FEC演算法所要求的額外位元會對有效負載產生負擔，這是增加傳輸範圍的缺點。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2018/11/30/ble_ch4_3/" data-id="ckpt7u048000d4cui7svs7z7e" data-title="4. 低功耗藍牙規範-鏈結層(3)" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%97%8D%E7%89%99/" rel="tag">藍牙</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2019/01/30/bt5_1/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          藍牙5.1 更新功能介紹
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2018/11/30/ble_ch4_2/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">4. 低功耗藍牙規範-鏈結層(2)</div>
-    </a>
-  
-</nav>
-
-  
-</article>
+{% block page_class %}page-post-detail{% endblock %}
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%89%E4%BB%96/">吉他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%97%8D%E7%89%99/">藍牙</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/">詞曲創作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E6%A8%82/">音樂</a></li></ul>
+{% block content %}
+
+  <div id="posts" class="posts-expand">
+    {{ post_template.render(page) }}
+
+    <div class="post-spread">
+      {% if theme.jiathis %}
+        {% include '_partials/share/jiathis.swig' %}
+      {% elseif theme.baidushare %}
+        {% include '_partials/share/baidushare.swig' %}
+      {% elseif theme.add_this_id %}
+        {% include '_partials/share/add-this.swig' %}
+      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
+        {% include '_partials/share/duoshuo_share.swig' %}
+      {% endif %}
     </div>
   </div>
 
+{% endblock %}
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%89%E4%BB%96/" rel="tag">吉他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%97%8D%E7%89%99/" rel="tag">藍牙</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/" rel="tag">詞曲創作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9F%B3%E6%A8%82/" rel="tag">音樂</a></li></ul>
-    </div>
-  </div>
+{% block sidebar %}
+  {{ sidebar_template.render(true) }}
+{% endblock %}
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/%E5%90%89%E4%BB%96/" style="font-size: 13.33px;">吉他</a> <a href="/tags/%E8%97%8D%E7%89%99/" style="font-size: 20px;">藍牙</a> <a href="/tags/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/" style="font-size: 16.67px;">詞曲創作</a> <a href="/tags/%E9%9F%B3%E6%A8%82/" style="font-size: 10px;">音樂</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2019/01/30/bt5_1/">藍牙5.1 更新功能介紹</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/ble_ch4_3/">4. 低功耗藍牙規範-鏈結層(3)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/ble_ch4_2/">4. 低功耗藍牙規範-鏈結層(2)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/ble_ch4_1/">4. 低功耗藍牙規範-鏈結層(1)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/ble_ch3/">3. 低功耗藍牙規範-架構</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}

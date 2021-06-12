@@ -1,290 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>藍牙5.1 更新功能介紹 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="藍牙5.1 更新功能介紹前言藍牙 5.1 於 2019.1.21 正式發布，以下簡略介紹更新的功能。詳細內容及技術資訊在文章後面會提出。 A. Direction Finding Direction Finding 新增 Angle of Arrival (AoA) , Angle of Departure(AoD) 兩種方法，可提升定位的精準度。 B. GATT Caching Enhancem">
-<meta property="og:type" content="article">
-<meta property="og:title" content="藍牙5.1 更新功能介紹">
-<meta property="og:url" content="http://example.com/2019/01/30/bt5_1/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="藍牙5.1 更新功能介紹前言藍牙 5.1 於 2019.1.21 正式發布，以下簡略介紹更新的功能。詳細內容及技術資訊在文章後面會提出。 A. Direction Finding Direction Finding 新增 Angle of Arrival (AoA) , Angle of Departure(AoD) 兩種方法，可提升定位的精準度。 B. GATT Caching Enhancem">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2019-01-30T13:20:00.000Z">
-<meta property="article:modified_time" content="2021-06-12T03:19:20.234Z">
-<meta property="article:author" content="John Doe">
-<meta property="article:tag" content="藍牙">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-bt5_1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/01/30/bt5_1/" class="article-date">
-  <time class="dt-published" datetime="2019-01-30T13:20:00.000Z" itemprop="datePublished">2019-01-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E8%97%8D%E7%89%99/">藍牙</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      藍牙5.1 更新功能介紹
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="藍牙5-1-更新功能介紹"><a href="#藍牙5-1-更新功能介紹" class="headerlink" title="藍牙5.1 更新功能介紹"></a>藍牙5.1 更新功能介紹</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>藍牙 5.1 於 2019.1.21 正式發布，以下簡略介紹更新的功能。詳細內容及技術資訊在文章後面會提出。</p>
-<p>A. Direction Finding</p>
-<p>Direction Finding 新增 Angle of Arrival (AoA) , Angle of Departure(AoD) 兩種方法，可提升定位的精準度。</p>
-<p>B. GATT Caching Enhancements</p>
-<p>GATT Caching Enhancements 省略了BLE在連接時頻繁使用service discovery，藉以提升連接的效率及省電。</p>
-<p>C. Advertising Enhancement 1: Randomized Advertising Channel Indexing</p>
-<p>將原有固定Channel index廣播調整為隨機Channel index，提升BLE廣播在複雜環境下的可靠性。</p>
-<p>D. Advertising Enhancement 2: Periodic Advertising Sync Transfer</p>
-<p>因同步 Periodic Advertising 花的能量效益高，新版功能允許其他不受能量約束的裝置進行 同步 Periodic Advertising。 再將其資訊轉給受能量約束的裝置，進而減少設計成本。</p>
-<p>E. 其餘次要增強功能</p>
-<p>列於文章後面</p>
-<h2 id="Direction-Finding"><a href="#Direction-Finding" class="headerlink" title="Direction Finding"></a>Direction Finding</h2><p>原有的藍牙協議是用訊號強度(RSSI)來估算距離，BT 5.1提供了 Angle of Arrival (AoA) , Angle of Departure(AoD) 這兩種方法，可以高精度的確定藍牙訊號的傳輸角度。<br>這兩種技術要求藍牙設備發送端或接收端需要一個或多個天線陣列。若使用AoA方法，天線陣列要加在接收端，若使用AoD，天線要加在發送端。<br>該新增功能為BLE 接收端 controller 提供產生數據的能力，可使用該數據來計算發送端的方向角。<br>direction finding功能是藍牙核心規範中Bluetooth roadmap中的第一步，在未來，該規範會實現於藍牙定位服務(Bluetooth location services)。 藍牙開發人員將能夠利用新的direction finding controller功能來創建高精度的定位系統，如即時定位系統（RTLS）和室內定位系統（IPS）。</p>
-<center>
-![](/images/ble_88.png)
-</center>
-
-<h2 id="技術細節"><a href="#技術細節" class="headerlink" title="技術細節"></a>技術細節</h2><p>Bluetooth direction finding feature使用In-Phase和Quadrature（IQ）sampling來測量在特定時間發射到天線上的無線電波的相位。在AoA方法中，取樣過程一次一個地應用於陣列中每個天線，並且根據陣列的設計來進行合適的取樣順序應用。<br>取樣數據透過（HCI）向上傳遞，並且透過將演算法計算一個設備到另一個設備的方向。在此核心規範版本中未定義用於從（IQ）sampling計算角度的算法。一旦關聯的配置文件可用，程序開發人員將可實現演算法。<br>為了支持IQ sampling以及在high layer使用IQsamples，Link Layer和HCI 層都有做調整。<br>在Link Layer，定義了Constant Tone Extension（CTE）的field（參見下圖）。 CTE field提供恆定的頻率和波長信號，可以對其進行IQ sampling。CTE包含1’s sequence，不受whitening process的約束，並且不含在CRC計算中。</p>
-<center>
-![](/images/ble_89.png)
-</center>
-
-<h2 id="GATT-Caching-Enhancements"><a href="#GATT-Caching-Enhancements" class="headerlink" title="GATT Caching Enhancements"></a>GATT Caching Enhancements</h2><h2 id="背景知識"><a href="#背景知識" class="headerlink" title="背景知識"></a>背景知識</h2><p>所有BLE連接設備都使用GATT。因此，GATT caching與各種device types相關。<br>GATT包含attribute table資料庫。attribute table包含GATT service，characteristic和descriptor和其值，該資料庫為 BLE 工作的核心。<br>GATT clients必須執行service discovery，以獲取已連接到GATT server端設備上的attribute table的詳細資訊。之後clients可以使用這些details，包括service 中Attribute Protocol（ATT） 的identifying attribute handles。</p>
-<center>
-![](/images/ble_90.png)
-</center>
+{% extends '_layout.swig' %}
+{% import '_macro/post.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
 
-<p>有些設備在其整個生命週期內不會更改其attribute table結構。表示GATT services , characteristics descriptors始終相同，並且只有characteristics或descriptors的值才會更改。 其他設備會不時更改其attribute table。<br>Service discovery需要時間並且也會消耗能量。因此，BT 5.1定義了一種attribute暫存策略，目的在於允許clients在attribute沒有任何變化時跳過Service discovery。<br>以前，僅使用可能GATT service中的service Changed characteristic來控制client/server attribute table同步。GATT service透過向client發送ATT indication來通知連接的client其attribute table已經改變。 client則回覆ATT indication，並執行service discovery來同步attribute cache。<br>為了避免GATT server需要追蹤每個連接的client，以及每個client都需要被告知最新的attribute table change，早期BT規格規定了沒有信任關係(no trusted relationship) (沒有配對)的clients和servers（即每次連接時都需要執行service discovery。此規定可能會導致某些產品的效能及使用體驗差。<br>此外，除了使用ATT Service Changed indication通知client attribute table已更改之外，早期規格沒有針對client 及 server 的attribute table執行進一步的狀態管理。 允許client和server通信中的race condition， attribute table changes和general ATT可能會互相存在，因此client可能在連接到server之後等Service Changed indication時timeout ，繼續發送一般ATT PDU，接著等Service Changed indication。</p>
-<h2 id="Improved-Caching-Strategy-改進的暫存策略"><a href="#Improved-Caching-Strategy-改進的暫存策略" class="headerlink" title="Improved Caching Strategy (改進的暫存策略)"></a>Improved Caching Strategy (改進的暫存策略)</h2><p>BT5.1更改了GATT clients和servers如何caching attribute和cache同步。它允許沒有與server建立信任關係的client保留其attribute cache，從而提供顯著的用戶體驗和能效提升連接並解決上述race condition issue。<br>多了兩個新characteristics，每個characteristics都是Generic Attribute Service的成員：<br>Database Hash和Client Supported Features。如果Clients支持新的Database Hash characteristic，那麼與server沒有綁定(配對)的Client現在可以連接attribute table，這些 characterisitic 在 server中的”Client Supported Features characteristic ” 中會被indicated<br>Database Hash characteristic允許client詢問server是否有任何更改，而不是依賴server使用Service Changed indication來告訴client。server負責維護Database Hash characteristic的值，該characteristic是從attribute table計算的Hash。server在建立連接後立即讀取其值。client可以緩存Database Hash value並隨後使用它來確定remote attribute table是否已更改。如果已更改，則clienty再次執行service<br>discovery。如果沒有更改，則不需要執行。這為某些設備較好的用戶體驗和能源效率優勢。<br>此外，client現在可以推斷出它所連接的設備是與先前連接到的設備為相同類型，並且其attribute table已經被client緩存。 如果來自連接設備的database hash與與client attribute table關聯的database hash相同，並且其他詳細訊息（例如設備製造商）相同，則客戶端可以得出結論：<br>因為從另一個設備獲得的屬性高速緩存已經包含等效數據，所以不需要為連接的設備執行服務發現。<br>對於某些應用，這種變化具有相當大的價值。 例如，藍牙鎖，其中智慧手機或其他client設備在使用者接近門時對用戶進行認證和打開門。 只有在使用者第一次嘗試通過具有藍牙鎖的門時才需要執行service discovery。在第一次使用期間，使用者可能會感覺到門解鎖的延遲，但是隨後使用者接近門不需要service discovery，對於藍牙鎖的使用體驗會更迅速。</p>
-<h2 id="Better-State-Management-更好的狀態管理"><a href="#Better-State-Management-更好的狀態管理" class="headerlink" title="Better State Management (更好的狀態管理)"></a>Better State Management (更好的狀態管理)</h2><p>state machine定義client 及 server attribute table是否同步，client是否需要執行service discovery。<br>attribute caching引入了嚴格定義的Robust Caching概念，該概念使該state machine正式化並引入了使用它的機制。<br>Clients會有兩種state：change-aware state或change-unaware state。該規範列出了轉換到適當狀態的精確規則以及在每種狀態下的行為方式。<br>如果server認為client attribute table與server不同步，則可能會回傳“Database Out Of Sync” ATT error response。當server處於change-unaware state時，server將忽略從client收到的所有ATT command。許多事件可以將client的狀態轉換為change-aware，包括server接收到先前已發送的Service Changed indication的ATT confirmation或server已通知client使用 &lt;&lt; Database Out Of Sync &gt;&gt;error並隨後從client接收其他ATT PDU。<br>從client的角度來看，如果它轉移為change-unaware狀態，client將不會使用其attribute cache，將其視為無效。<br>在client的attribute cache和servers再次同步之前，attribute cache將繼續被視為無效。</p>
-<h2 id="Advertising-Enhancement-1-Randomized-Advertising-Channel-Indexing"><a href="#Advertising-Enhancement-1-Randomized-Advertising-Channel-Indexing" class="headerlink" title="Advertising Enhancement 1: Randomized Advertising Channel Indexing"></a>Advertising Enhancement 1: Randomized Advertising Channel Indexing</h2><p>在BT 5.0中，advertising events被定義為“在primary advertising channel發送一個以上advertising PDUs，從第一個使用的advertising channel index開始，以最後使用的advertising channel index結束”。<br>實際上，這意味著當所有三個channel都在使用時（通常是這種情況），廣告按照嚴格的順序使用sequence 37, 38, 39。<br>為了減少持續packet衝突的可能性，其中兩個或多個設備在重疊時間段(overlapping time period) 內在同一same channel上進行廣播，藍牙核心規範v5.0規定連續advertising events間隔時間為0-10毫秒之間的隨機延遲。</p>
-<center>
-![](/images/ble_91.png)
-</center>
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-<h3 id="Improved-Packet-Collision-Avoidance"><a href="#Improved-Packet-Collision-Avoidance" class="headerlink" title="Improved Packet Collision Avoidance"></a>Improved Packet Collision Avoidance</h3><p>在BT 5.1中，處於advertising state的設備不再需要以嚴格且不變的順序選擇advertising channels。 現在允許隨機選擇channel index。 channel index的隨機化進一步降低了advertising packet衝突發生的可能性。<br>透過BT5.1對channel index的更改，使用advertising來執行connectionless communication的應用將提升可擴展性和可靠性。</p>
-<center>
-![](/images/ble_92.png)
-</center>
-
-<h2 id="Advertising-Enhancement-2-Periodic-Advertising-Sync-Transfer"><a href="#Advertising-Enhancement-2-Periodic-Advertising-Sync-Transfer" class="headerlink" title="Advertising Enhancement 2: Periodic Advertising Sync Transfer"></a>Advertising Enhancement 2: Periodic Advertising Sync Transfer</h2><p>BT 5.0引入了periodic advertising，該advertising使用advertising events的deterministic scheduling，並提供設備可用於將其掃描與另一設備的advertising schedule同步的procedure。scanning和advertising的timing同步可以使scanning device更加節能並且可以使得在數據交換中需要精確timing的一些使用情況成為可能。<br>為了允許與remote device的periodic advertising同步，remote device 廣播包含SyncInfo field 的AUX_ADV_IND PDUs。 SyncInfo內有receiving device需要知道的所有內容，以便與remote device從該點開始執行的AUX_SYNC_IND PDU的periodic advertising同步。然而，該periodic advertising synchronization procedure可能是相對昂貴的操作。</p>
-<h2 id="The-Power-of-Two"><a href="#The-Power-of-Two" class="headerlink" title="The Power of Two"></a>The Power of Two</h2><p>具有limited power的一些device types可能無法承擔與periodic advertising synchronization procedure相關聯的能量成本，或者可能具有妨礙其duty cycle或scan time的限制。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/01/30/bt5_1/" data-id="ckpt7u04e000z4cuieiyjejzz" data-title="藍牙5.1 更新功能介紹" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%97%8D%E7%89%99/" rel="tag">藍牙</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-  
-    <a href="/2018/11/30/ble_ch4_3/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">4. 低功耗藍牙規範-鏈結層(3)</div>
-    </a>
-  
-</nav>
-
-  
-</article>
+{% block page_class %}page-post-detail{% endblock %}
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%89%E4%BB%96/">吉他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%97%8D%E7%89%99/">藍牙</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/">詞曲創作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E6%A8%82/">音樂</a></li></ul>
+{% block content %}
+
+  <div id="posts" class="posts-expand">
+    {{ post_template.render(page) }}
+
+    <div class="post-spread">
+      {% if theme.jiathis %}
+        {% include '_partials/share/jiathis.swig' %}
+      {% elseif theme.baidushare %}
+        {% include '_partials/share/baidushare.swig' %}
+      {% elseif theme.add_this_id %}
+        {% include '_partials/share/add-this.swig' %}
+      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
+        {% include '_partials/share/duoshuo_share.swig' %}
+      {% endif %}
     </div>
   </div>
 
+{% endblock %}
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%89%E4%BB%96/" rel="tag">吉他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%97%8D%E7%89%99/" rel="tag">藍牙</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/" rel="tag">詞曲創作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9F%B3%E6%A8%82/" rel="tag">音樂</a></li></ul>
-    </div>
-  </div>
+{% block sidebar %}
+  {{ sidebar_template.render(true) }}
+{% endblock %}
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/%E5%90%89%E4%BB%96/" style="font-size: 13.33px;">吉他</a> <a href="/tags/%E8%97%8D%E7%89%99/" style="font-size: 20px;">藍牙</a> <a href="/tags/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/" style="font-size: 16.67px;">詞曲創作</a> <a href="/tags/%E9%9F%B3%E6%A8%82/" style="font-size: 10px;">音樂</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2019/01/30/bt5_1/">藍牙5.1 更新功能介紹</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/ble_ch4_3/">4. 低功耗藍牙規範-鏈結層(3)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/ble_ch4_2/">4. 低功耗藍牙規範-鏈結層(2)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/ble_ch4_1/">4. 低功耗藍牙規範-鏈結層(1)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/ble_ch3/">3. 低功耗藍牙規範-架構</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}

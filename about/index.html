@@ -1,257 +1,70 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>關於我 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="7年級後段班雙魚座，喜愛寫程式及音樂。正職為工程師、副業為音樂工作者。 對於未知的事物感到好奇，樂於結交有想法的朋友。    EducationMS: National Changuha University of Education (2011.9-2013.7) BS: National Changuha University of Education (2007.9-2011.6)  P">
-<meta property="og:type" content="website">
-<meta property="og:title" content="關於我">
-<meta property="og:url" content="http://example.com/about/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="7年級後段班雙魚座，喜愛寫程式及音樂。正職為工程師、副業為音樂工作者。 對於未知的事物感到好奇，樂於結交有想法的朋友。    EducationMS: National Changuha University of Education (2011.9-2013.7) BS: National Changuha University of Education (2007.9-2011.6)  P">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2018-01-29T03:12:41.000Z">
-<meta property="article:modified_time" content="2021-06-12T02:58:28.987Z">
-<meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+{% extends '_layout.swig' %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+  {% block title %}{#
+  #}{% set page_title_suffix = ' | ' + config.title %}{#
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  #}{% if page.type === "categories" and not page.title %}{#
+    #}{{ __('title.category') + page_title_suffix }}{#
+  #}{% elif page.type === "tags" and not page.title %}{#
+    #}{{ __('title.tag') + page_title_suffix }}{#
+  #}{% else %}{#
+    #}{{ page.title + page_title_suffix }}{#
+  #}{% endif %}{#
+#}{% endblock %}
 
-  
-<meta name="generator" content="Hexo 5.4.0"></head>
+{% block page_class %}page-post-detail{% endblock %}
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+{% block content %}
+
+  <div id="posts" class="posts-expand">
+    {##################}
+    {### PAGE BLOCK ###}
+    {##################}
+    <div class="post-block page">
+      {% include '_partials/page-header.swig' %}
+      {#################}
+      {### PAGE BODY ###}
+      {#################}
+      <div class="post-body{% if theme.han %} han-init-context{% endif %}{% if page.direction && page.direction.toLowerCase() === 'rtl' %} rtl{% endif %}">
+        {# tagcloud page support #}
+        {% if page.type === "tags" %}
+          <div class="tag-cloud">
+            <div class="tag-cloud-title">
+                {{ _p('counter.tag_cloud', site.tags.length) }}
+            </div>
+            <div class="tag-cloud-tags">
+              {{ tagcloud({min_font: 12, max_font: 30, amount: 300, color: true, start_color: '#ccc', end_color: '#111'}) }}
+            </div>
+          </div>
+        {% elif page.type === 'categories' %}
+          <div class="category-all-page">
+            <div class="category-all-title">
+                {{ _p('counter.categories', site.categories.length) }}
+            </div>
+            <div class="category-all">
+              {{ list_categories() }}
+            </div>
+          </div>
+        {% else %}
+          {{ page.content }}
+        {% endif %}
       </div>
+      {#####################}
+      {### END PAGE BODY ###}
+      {#####################}
     </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="page-" class="h-entry article article-type-page" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/about/index.html" class="article-date">
-  <time class="dt-published" datetime="2018-01-29T03:12:41.000Z" itemprop="datePublished">2018-01-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      關於我
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <hr>
-<center>
-7年級後段班雙魚座，喜愛寫程式及音樂。正職為工程師、副業為音樂工作者。
-對於未知的事物感到好奇，樂於結交有想法的朋友。
-</center>
-
-<hr>
-<h2 id="Education"><a href="#Education" class="headerlink" title="Education"></a>Education</h2><p>MS: National Changuha University of Education (2011.9-2013.7)</p>
-<p>BS: National Changuha University of Education (2007.9-2011.6)</p>
-<hr>
-<h2 id="Programming-Language"><a href="#Programming-Language" class="headerlink" title="Programming Language"></a>Programming Language</h2><p>C/C++, C++.net, C#, Objective-C, Android, Java, PHP, JSP , Javascript,<br>Systemverilog (UVM, VMM)</p>
-<hr>
-<h2 id="Experience"><a href="#Experience" class="headerlink" title="Experience"></a>Experience</h2><h4 id="Realtek-IC-Design-Verification-Senior-Engineer-2020-12-Present"><a href="#Realtek-IC-Design-Verification-Senior-Engineer-2020-12-Present" class="headerlink" title="Realtek - IC Design Verification Senior Engineer(2020.12 - Present)"></a>Realtek - IC Design Verification Senior Engineer(2020.12 - Present)</h4><h4 id="Realtek-IC-Design-Verification-Engineer-2017-12-2020-12"><a href="#Realtek-IC-Design-Verification-Engineer-2017-12-2020-12" class="headerlink" title="Realtek - IC Design Verification Engineer(2017.12 - 2020.12)"></a>Realtek - IC Design Verification Engineer(2017.12 - 2020.12)</h4><ol>
-<li>Create verification plan and testbench documentation based on IP architecture specifications and work with the verification team to carry out all the IP verification tasks.</li>
-<li>Create a constrained-random verification environment using VMM and UVM.</li>
-<li> Close coverage measures to identify verification holes and to show progress towards tape-out.</li>
-</ol>
-<h5 id="Protocol"><a href="#Protocol" class="headerlink" title="Protocol"></a>Protocol</h5><p>Bluetooth, WIFI, ZigBee, I2C, I2S, PCM, HCI, USB, UART, BUS(AXI,AHB)</p>
-<h4 id="Coordiwise-Technology-Corp-Software-Firmware-Engineer-2014-8-2017-11"><a href="#Coordiwise-Technology-Corp-Software-Firmware-Engineer-2014-8-2017-11" class="headerlink" title="Coordiwise Technology Corp - Software/Firmware Engineer (2014.8-2017.11)"></a>Coordiwise Technology Corp - Software/Firmware Engineer (2014.8-2017.11)</h4><ol>
-<li> Embedded applications programming</li>
-<li> Linux/Android system programming</li>
-<li> Bluetooth driver/application development </li>
-<li>Internet of Things development</li>
-</ol>
-<h4 id="CSROC-中華民國電腦學會-MIS-2011-2013"><a href="#CSROC-中華民國電腦學會-MIS-2011-2013" class="headerlink" title="CSROC[中華民國電腦學會]-MIS (2011-2013)"></a>CSROC[中華民國電腦學會]-MIS (2011-2013)</h4><h4 id="Web-designer-in-clothing-website-2010"><a href="#Web-designer-in-clothing-website-2010" class="headerlink" title="Web designer in clothing website (2010)"></a>Web designer in clothing website (2010)</h4><h4 id="國立彰化師範大學資工週程式設計比賽-第一名-2008"><a href="#國立彰化師範大學資工週程式設計比賽-第一名-2008" class="headerlink" title="國立彰化師範大學資工週程式設計比賽-第一名 (2008)"></a>國立彰化師範大學資工週程式設計比賽-第一名 (2008)</h4><hr>
-<h2 id="Conference-and-Training"><a href="#Conference-and-Training" class="headerlink" title="Conference and Training"></a>Conference and Training</h2><h4 id="In-House-Training-AXI-AHB-Training-2020"><a href="#In-House-Training-AXI-AHB-Training-2020" class="headerlink" title="[In-House Training] AXI/AHB Training (2020)"></a>[In-House Training] AXI/AHB Training (2020)</h4><h4 id="In-House-Training-Synopsys-Power-Aware-Verification-Training-2018-10"><a href="#In-House-Training-Synopsys-Power-Aware-Verification-Training-2018-10" class="headerlink" title="[In-House Training] Synopsys Power-Aware Verification Training (2018.10)"></a>[In-House Training] Synopsys Power-Aware Verification Training (2018.10)</h4><h4 id="In-House-Training-UVM-Course-2018-3"><a href="#In-House-Training-UVM-Course-2018-3" class="headerlink" title="[In-House Training] UVM Course (2018.3)"></a>[In-House Training] UVM Course (2018.3)</h4><h4 id="Linux-Driver-Development-中華行動數位-2017-9"><a href="#Linux-Driver-Development-中華行動數位-2017-9" class="headerlink" title="Linux Driver Development [中華行動數位] (2017.9)"></a>Linux Driver Development [中華行動數位] (2017.9)</h4><h4 id="Android-BSP-Porting-中華行動數位-2017-10"><a href="#Android-BSP-Porting-中華行動數位-2017-10" class="headerlink" title="Android BSP Porting [中華行動數位] (2017.10)"></a>Android BSP Porting [中華行動數位] (2017.10)</h4><h4 id="Nordic-Bluetooth-Seminar-2016-12"><a href="#Nordic-Bluetooth-Seminar-2016-12" class="headerlink" title="Nordic Bluetooth Seminar (2016.12)"></a>Nordic Bluetooth Seminar (2016.12)</h4><h4 id="CSR-Seminar-2015-5"><a href="#CSR-Seminar-2015-5" class="headerlink" title="CSR Seminar (2015.5)"></a>CSR Seminar (2015.5)</h4><hr>
-<h2 id="Music-工作室接案項目-人聲後製、錄音、混音、詞曲創作、MIDI編曲"><a href="#Music-工作室接案項目-人聲後製、錄音、混音、詞曲創作、MIDI編曲" class="headerlink" title="Music [工作室接案項目: 人聲後製、錄音、混音、詞曲創作、MIDI編曲]"></a>Music [工作室接案項目: 人聲後製、錄音、混音、詞曲創作、MIDI編曲]</h2><h4 id="108年度-瑞昱半導體-尾牙演出-2020"><a href="#108年度-瑞昱半導體-尾牙演出-2020" class="headerlink" title="108年度 瑞昱半導體-尾牙演出 (2020)"></a>108年度 瑞昱半導體-尾牙演出 (2020)</h4><h4 id="107年度-瑞昱半導體-尾牙演出-2019"><a href="#107年度-瑞昱半導體-尾牙演出-2019" class="headerlink" title="107年度 瑞昱半導體-尾牙演出 (2019)"></a>107年度 瑞昱半導體-尾牙演出 (2019)</h4><h4 id="106年度-瑞昱半導體-尾牙演出-2018"><a href="#106年度-瑞昱半導體-尾牙演出-2018" class="headerlink" title="106年度 瑞昱半導體-尾牙演出 (2018)"></a>106年度 瑞昱半導體-尾牙演出 (2018)</h4><h4 id="舞台劇-魔女-歌唱指導-2016"><a href="#舞台劇-魔女-歌唱指導-2016" class="headerlink" title="舞台劇-魔女 歌唱指導 (2016)"></a>舞台劇-魔女 歌唱指導 (2016)</h4><h4 id="尾牙及婚禮表演歌手-2011-Present"><a href="#尾牙及婚禮表演歌手-2011-Present" class="headerlink" title="尾牙及婚禮表演歌手 (2011 - Present)"></a>尾牙及婚禮表演歌手 (2011 - Present)</h4><h4 id="流行歌曲吉他和弦彙編-作者-2012-Present"><a href="#流行歌曲吉他和弦彙編-作者-2012-Present" class="headerlink" title="流行歌曲吉他和弦彙編 作者 (2012 - Present)"></a>流行歌曲吉他和弦彙編 作者 (2012 - Present)</h4><h4 id="心築愛樂合唱團-男高音-2015-2017"><a href="#心築愛樂合唱團-男高音-2015-2017" class="headerlink" title="心築愛樂合唱團-男高音 (2015-2017)"></a>心築愛樂合唱團-男高音 (2015-2017)</h4><h4 id="凱悅奇兵餐廳-駐唱歌手-2011-2013"><a href="#凱悅奇兵餐廳-駐唱歌手-2011-2013" class="headerlink" title="凱悅奇兵餐廳-駐唱歌手 (2011-2013)"></a>凱悅奇兵餐廳-駐唱歌手 (2011-2013)</h4><h4 id="Gentlemusic-團長-2015-2017"><a href="#Gentlemusic-團長-2015-2017" class="headerlink" title="Gentlemusic 團長 (2015-2017)"></a>Gentlemusic 團長 (2015-2017)</h4><h4 id="國立彰化師範大學C大調合唱團-副團長-2008"><a href="#國立彰化師範大學C大調合唱團-副團長-2008" class="headerlink" title="國立彰化師範大學C大調合唱團-副團長 (2008)"></a>國立彰化師範大學C大調合唱團-副團長 (2008)</h4><h4 id="國立彰化師範大學C大調合唱團-團員-2007-2011"><a href="#國立彰化師範大學C大調合唱團-團員-2007-2011" class="headerlink" title="國立彰化師範大學C大調合唱團-團員 (2007-2011)"></a>國立彰化師範大學C大調合唱團-團員 (2007-2011)</h4>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/about/index.html" data-id="ckpt7u03v00004cui4t6w576u" data-title="關於我" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-    
-  
-</article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%89%E4%BB%96/">吉他</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%97%8D%E7%89%99/">藍牙</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/">詞曲創作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E6%A8%82/">音樂</a></li></ul>
-    </div>
+    {######################}
+    {### END PAGE BLOCK ###}
+    {######################}
   </div>
 
+{% endblock %}
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%89%E4%BB%96/" rel="tag">吉他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%97%8D%E7%89%99/" rel="tag">藍牙</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/" rel="tag">詞曲創作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9F%B3%E6%A8%82/" rel="tag">音樂</a></li></ul>
-    </div>
-  </div>
+{% block sidebar %}
+  {{ sidebar_template.render(false) }}
+{% endblock %}
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/%E5%90%89%E4%BB%96/" style="font-size: 13.33px;">吉他</a> <a href="/tags/%E8%97%8D%E7%89%99/" style="font-size: 20px;">藍牙</a> <a href="/tags/%E8%A9%9E%E6%9B%B2%E5%89%B5%E4%BD%9C/" style="font-size: 16.67px;">詞曲創作</a> <a href="/tags/%E9%9F%B3%E6%A8%82/" style="font-size: 10px;">音樂</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2019/01/30/bt5_1/">藍牙5.1 更新功能介紹</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/ble_ch4_3/">4. 低功耗藍牙規範-鏈結層(3)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/ble_ch4_2/">4. 低功耗藍牙規範-鏈結層(2)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/ble_ch4_1/">4. 低功耗藍牙規範-鏈結層(1)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/30/ble_ch3/">3. 低功耗藍牙規範-架構</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+{% block script_extra %}
+  {% include '_scripts/pages/post-details.swig' %}
+{% endblock %}
